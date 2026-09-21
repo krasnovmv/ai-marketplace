@@ -19,8 +19,24 @@ export function selectPlugins(source, snapshot, limits) {
     : source.plugins.filter(p => p.enabled).map(p => p.name);
   return wanted.map(n => {
     check(entries.has(n), source.id, `REMOVED: ${n} disappeared upstream; change config explicitly`);
-    const path = safePath(entries.get(n).source, `${source.id}/${n}.source`, true);
-    return { name: n, path };
+    const entry = entries.get(n);
+    const path = safePath(entry.source, `${source.id}/${n}.source`, true);
+    const marketplace = {};
+    for (const field of ['description', 'version']) {
+      if (entry[field] !== undefined) {
+        check(typeof entry[field] === 'string', `${source.id}/${n}.${field}`, 'expected string');
+        marketplace[field] = entry[field];
+      }
+    }
+    if (entry.strict !== undefined) {
+      check(typeof entry.strict === 'boolean', `${source.id}/${n}.strict`, 'expected boolean');
+      marketplace.strict = entry.strict;
+    }
+    if (entry.lspServers !== undefined) {
+      check(entry.lspServers && typeof entry.lspServers === 'object' && !Array.isArray(entry.lspServers), `${source.id}/${n}.lspServers`, 'expected object');
+      marketplace.lspServers = entry.lspServers;
+    }
+    return { name: n, path, marketplace };
   });
 }
 
@@ -48,7 +64,7 @@ export function readPackage(snapshot, plugin, limits) {
     check(Number.isFinite(total) && total <= limits.maxPluginSizeMb * 1048576, plugin.name, 'package size limit exceeded');
     return { path: entry.path.slice(prefix.length), mode: entry.mode, data: readBlob(snapshot.root, entry, limits.maxFileSizeMb * 1048576, true) };
   });
-  validatePackage(files, plugin.name, limits);
+  validatePackage(files, plugin.name, limits, plugin.marketplace);
   return files;
 }
 
@@ -98,7 +114,7 @@ export function resolveLinks(files) {
   return resolved;
 }
 
-export function validatePackage(files, pluginName, limits) {
+export function validatePackage(files, pluginName, limits, marketplace = {}) {
   check(files.length > 0, pluginName, 'empty package');
   const paths = new Map();
   const directories = new Map();
@@ -129,7 +145,8 @@ export function validatePackage(files, pluginName, limits) {
   const manifestPaths = ['plugin.json', '.claude-plugin/plugin.json', '.codex-plugin/plugin.json'];
   const manifests = files.filter(f => manifestPaths.includes(f.path));
   check(manifests.length > 0 || files.some(f => /(?:^|\/)SKILL\.md$/.test(f.path)
-    || /^(rules|agents|commands|hooks)\/.+/.test(f.path) || ['.mcp.json', 'mcp.json'].includes(f.path)), pluginName, 'missing plugin components');
+    || /^(rules|agents|commands|hooks)\/.+/.test(f.path) || ['.mcp.json', 'mcp.json'].includes(f.path))
+    || marketplace.lspServers !== undefined, pluginName, 'missing plugin components');
   let info = {};
   for (const file of manifests) {
     const manifest = parseJson((links.get(file.path) ?? file).data, `${pluginName}/${file.path}`);
@@ -183,6 +200,8 @@ export function contentHash(files) {
 export function metadataFor(source, plugin, commit, files, previous) {
   const origin = { id: source.id, type: source.type, repository: source.repository, branch: source.branch, path: plugin.path };
   const hash = contentHash(files);
-  if (previous && previous.integrity.contentHash === hash && Object.entries(origin).every(([key, value]) => previous.source[key] === value)) return previous;
-  return { name: plugin.name, source: { ...origin, commit }, integrity: { contentHash: hash } };
+  const marketplace = Object.keys(plugin.marketplace ?? {}).length ? plugin.marketplace : undefined;
+  if (previous && previous.integrity.contentHash === hash && Object.entries(origin).every(([key, value]) => previous.source[key] === value)
+    && JSON.stringify(previous.marketplace) === JSON.stringify(marketplace)) return previous;
+  return { name: plugin.name, source: { ...origin, commit }, ...(marketplace ? { marketplace } : {}), integrity: { contentHash: hash } };
 }

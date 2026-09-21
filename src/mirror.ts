@@ -85,7 +85,7 @@ export function readAccepted(root, config) {
     const pluginName = name(filename.slice(0, -5), 'metadata filename');
     const raw = read(root, `metadata/${filename}`);
     const metadata = parseJson(raw, filename);
-    object(metadata, ['name', 'source', 'integrity'], filename);
+    object(metadata, ['name', 'source', 'marketplace', 'integrity'], filename);
     check(metadata.name === pluginName, filename, 'metadata name mismatch');
     object(metadata.source, ['id', 'type', 'repository', 'branch', 'path', 'commit'], `${filename}.source`);
     name(metadata.source.id, `${filename}.source.id`);
@@ -96,10 +96,16 @@ export function readAccepted(root, config) {
     check(/^[a-f0-9]{40}$/.test(metadata.source.commit), filename, 'invalid commit SHA');
     object(metadata.integrity, ['contentHash'], `${filename}.integrity`);
     check(/^[a-f0-9]{64}$/.test(metadata.integrity.contentHash), filename, 'invalid content hash');
+    const marketplace = metadata.marketplace ?? {};
+    object(marketplace, ['description', 'version', 'strict', 'lspServers'], `${filename}.marketplace`);
+    if (marketplace.description !== undefined) check(typeof marketplace.description === 'string', `${filename}.marketplace.description`, 'expected string');
+    if (marketplace.version !== undefined) check(typeof marketplace.version === 'string', `${filename}.marketplace.version`, 'expected string');
+    if (marketplace.strict !== undefined) check(typeof marketplace.strict === 'boolean', `${filename}.marketplace.strict`, 'expected boolean');
+    if (marketplace.lspServers !== undefined) check(marketplace.lspServers && typeof marketplace.lspServers === 'object' && !Array.isArray(marketplace.lspServers), `${filename}.marketplace.lspServers`, 'expected object');
     const files = localFiles(root, pluginName, config.limits);
-    const info = validatePackage(files, pluginName, config.limits);
+    const info = validatePackage(files, pluginName, config.limits, marketplace);
     check(contentHash(files) === metadata.integrity.contentHash, `plugins/${pluginName}`, 'content hash mismatch');
-    accepted.set(pluginName, { metadata, raw, files, info });
+    accepted.set(pluginName, { metadata, raw, files, info, marketplace });
   }
   for (const pluginName of children(root, 'plugins')) {
     check(accepted.has(pluginName), `plugins/${pluginName}`, 'unknown occupied path without metadata');
@@ -111,8 +117,10 @@ export function catalogs(config, accepted) {
   const entries = [...accepted.entries()].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0);
   return [
     json({ name: config.marketplace.name, owner: config.marketplace.owner, plugins: entries.map(([n, p]) => ({
-      name: n, source: `./plugins/${n}`, ...(p.info.description ? { description: p.info.description } : {}),
-      ...(p.info.version ? { version: p.info.version } : {}),
+      name: n, source: `./plugins/${n}`, ...(p.info.description ?? p.marketplace?.description ? { description: p.info.description ?? p.marketplace.description } : {}),
+      ...(p.info.version ?? p.marketplace?.version ? { version: p.info.version ?? p.marketplace.version } : {}),
+      ...(p.marketplace?.strict === false ? { strict: false } : {}),
+      ...(p.marketplace?.lspServers ? { lspServers: p.marketplace.lspServers } : {}),
     })) }),
     json({ name: config.marketplace.name, interface: { displayName: config.marketplace.name }, plugins: entries.map(([n]) => ({
       name: n, source: { source: 'local', path: `./plugins/${n}` },
@@ -181,9 +189,9 @@ export function prepare(root, { fetch = fetchSource, dryRun = false } = {}) {
           const previous = old.get(plugin.name);
           checkOrigin(previous?.metadata, source, plugin);
           const files = readPackage(snapshot, plugin, config.limits);
-          const info = validatePackage(files, plugin.name, config.limits);
+          const info = validatePackage(files, plugin.name, config.limits, plugin.marketplace);
           const metadata = metadataFor(source, plugin, snapshot.commit, files, previous?.metadata);
-          next.set(plugin.name, { metadata, info, files, raw: metadata === previous?.metadata ? previous.raw : Buffer.from(json(metadata)) });
+          next.set(plugin.name, { metadata, info, files, marketplace: metadata.marketplace ?? {}, raw: metadata === previous?.metadata ? previous.raw : Buffer.from(json(metadata)) });
           reports.push({ source: source.id, repository: source.repository, name: plugin.name, status: previous ? metadata === previous.metadata ? 'UNCHANGED' : 'UPDATED' : 'ADDED',
             accepted: previous?.metadata.source.commit ?? null, checked: snapshot.commit });
         }

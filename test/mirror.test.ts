@@ -198,6 +198,19 @@ test('portable package validation, size boundaries, executable signatures and br
   assert.throws(() => validatePackage([file('.claude-plugin/plugin.json', json({ name: 'other' }))], 'alpha', limits), /name differs/);
 });
 
+test('marketplace LSP configuration makes a manifest-less package installable in Claude', () => {
+  const marketplace = {
+    strict: false,
+    lspServers: { typescript: { command: 'typescript-language-server', args: ['--stdio'] } },
+  };
+  validatePackage([file('README.md', '# TypeScript LSP\n')], 'typescript-lsp', limits, marketplace);
+  const catalog = JSON.parse(catalogs(validateConfig(config()), new Map([
+    ['typescript-lsp', { info: {}, marketplace }],
+  ]))[0]);
+  assert.deepEqual(catalog.plugins[0].lspServers, marketplace.lspServers);
+  assert.equal(catalog.plugins[0].strict, false);
+});
+
 test('hash includes all bytes, path and executable mode; metadata tracks explicit origin changes', () => {
   const files = pkg();
   assert.equal(contentHash(files), contentHash([...files].reverse()));
