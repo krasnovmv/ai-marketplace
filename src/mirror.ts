@@ -47,12 +47,12 @@ export function write(root, path, data, mode = '100644') {
 
 export function localFiles(root, pluginName, limits) {
   const prefix = `plugins/${pluginName}`;
-  const modes = new Map();
+  const trackedFiles = new Map();
   const tracked = git(root, ['ls-files', '--stage', '-z', '--', prefix]).toString();
   for (const entry of tracked.split('\0').filter(Boolean)) {
-    const match = /^(\d+) [a-f0-9]+ (\d)\t([\s\S]+)$/.exec(entry);
-    check(match && match[2] === '0', prefix, 'unmerged index');
-    modes.set(match[3], match[1]);
+    const match = /^(\d+) ([a-f0-9]+) (\d)\t([\s\S]+)$/.exec(entry);
+    check(match && match[3] === '0', prefix, 'unmerged index');
+    trackedFiles.set(match[4], { mode: match[1], oid: match[2] });
   }
   const files = [];
   let total = 0;
@@ -62,16 +62,20 @@ export function localFiles(root, pluginName, limits) {
     if (stat.isDirectory()) {
       for (const child of readdirSync(full).sort()) visit(`${path}/${child}`);
     } else {
-      const indexed = modes.get(path);
+      const indexed = trackedFiles.get(path);
       const link = stat.isSymbolicLink();
-      check(stat.isFile() || link && indexed === '120000', path, 'special or untracked link is unsupported');
-      total += stat.size;
-      check(stat.size <= limits.maxFileSizeMb * 1048576, path, 'file size limit exceeded');
+      check(stat.isFile() || link && indexed?.mode === '120000', path, 'special or untracked link is unsupported');
+      const data = link ? readlinkSync(full, { encoding: 'buffer' })
+        : process.platform === 'win32' && indexed?.mode === '120000'
+          ? git(root, ['cat-file', 'blob', indexed.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 })
+          : readFileSync(full);
+      total += data.length;
+      check(data.length <= limits.maxFileSizeMb * 1048576, path, 'file size limit exceeded');
       check(total <= limits.maxPluginSizeMb * 1048576, prefix, 'package size limit exceeded');
-      check(!indexed || ['100644', '100755', '120000'].includes(indexed), path, 'unsupported index mode');
-      check(indexed !== '120000' || link || process.platform === 'win32', path, 'expected symlink');
-      const mode = link ? '120000' : process.platform === 'win32' ? indexed ?? '100644' : stat.mode & 0o111 ? '100755' : '100644';
-      files.push({ path: path.slice(prefix.length + 1), mode, data: link ? readlinkSync(full, { encoding: 'buffer' }) : readFileSync(full) });
+      check(!indexed || ['100644', '100755', '120000'].includes(indexed.mode), path, 'unsupported index mode');
+      check(indexed?.mode !== '120000' || link || process.platform === 'win32', path, 'expected symlink');
+      const mode = link ? '120000' : process.platform === 'win32' ? indexed?.mode ?? '100644' : stat.mode & 0o111 ? '100755' : '100644';
+      files.push({ path: path.slice(prefix.length + 1), mode, data });
     }
   }
   visit(prefix);

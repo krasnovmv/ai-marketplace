@@ -242,6 +242,8 @@ test('internal symlinks survive sync, validation, a second sync and target updat
   save(source, 'alpha/CLAUDE.md', '# Instructions');
   const oid = git(source, ['hash-object', '-w', '--stdin'], { input: Buffer.from('CLAUDE.md') }).toString().trim();
   git(source, ['update-index', '--add', '--cacheinfo', `120000,${oid},alpha/AGENTS.md`]);
+  const directoryOid = git(source, ['hash-object', '-w', '--stdin'], { input: Buffer.from('../../skills/sample') }).toString().trim();
+  git(source, ['update-index', '--add', '--cacheinfo', `120000,${directoryOid},alpha/.claude/skills/sample`]);
   commit(source);
   const root = mirror(t);
   const before = git(root, ['status', '--porcelain=v1', '-z']);
@@ -259,6 +261,7 @@ test('internal symlinks survive sync, validation, a second sync and target updat
   assert.equal(staged.find(e => e.path === 'plugins/alpha/AGENTS.md').mode, '120000');
   assert.equal(validate(first.root).accepted.get('alpha').files.find(f => f.path === 'AGENTS.md').data.toString(), 'CLAUDE.md');
   commit(first.root);
+  if (process.platform === 'win32') writeFileSync(join(first.root, 'plugins/alpha/.claude/skills/sample'), '../../skills/sample\r\n');
   assert.deepEqual(sync(t, first.root, source).changed, []);
   save(source, 'alpha/CLAUDE.md', '# Changed instructions');
   commit(source);
