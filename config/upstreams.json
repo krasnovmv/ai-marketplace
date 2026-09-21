@@ -37,6 +37,16 @@
       "plugins": [
         { "name": "typescript-lsp" }
       ]
+    },
+    {
+      "id": "ru-text",
+      "type": "repository",
+      "repository": "talkstream/ru-text",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "ru-text", "path": "." }
+      ]
     }
   ]
 }
