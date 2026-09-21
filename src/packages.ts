@@ -80,6 +80,7 @@ export function resolveLinks(files) {
   for (const start of files.filter(file => file.mode === '120000')) {
     let file = start;
     const seen = new Set();
+    let directoryTarget = false;
     while (file.mode === '120000' && !resolved.has(file.path)) {
       check(!seen.has(file.path), start.path, 'symlink cycle');
       seen.add(file.path);
@@ -104,9 +105,14 @@ export function resolveLinks(files) {
         }
       }
       const path = parts.join('/');
-      check(byPath.has(path), file.path, 'symlink target must be an existing file in this package');
+      if (!byPath.has(path)) {
+        check(directories.has(path), file.path, 'symlink target must be an existing file or directory in this package');
+        directoryTarget = true;
+        break;
+      }
       file = byPath.get(path);
     }
+    if (directoryTarget) continue;
     file = resolved.get(file.path) ?? file;
     check(['100644', '100755'].includes(file.mode), start.path, 'symlink target must be a regular file');
     for (const path of seen) resolved.set(path, file);

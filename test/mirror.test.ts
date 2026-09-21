@@ -272,15 +272,15 @@ test('internal symlinks survive sync, validation, a second sync and target updat
   assert.equal(validate(root).accepted.size, 0);
 });
 
-test('symlinks resolve within the package, rejecting escapes, cycles, missing and directory targets', () => {
+test('symlinks resolve files and allow internal directory targets', () => {
   const files = [...pkg(), file('CLAUDE.md', '# Instructions'), file('AGENTS.md', './CLAUDE.md', '120000'),
-    file('nested/alias.md', '../AGENTS.md', '120000')];
+    file('nested/alias.md', '../AGENTS.md', '120000'), file('.claude/skills/example', '../../skills/example', '120000')];
   validatePackage(files, 'alpha', limits);
   assert.equal(resolveLinks(files).get('nested/alias.md').path, 'CLAUDE.md');
   const hash = contentHash(files);
   assert.notEqual(hash, contentHash(files.map(f => f.path === 'AGENTS.md' ? file(f.path, 'CLAUDE.md', '120000') : f)));
   for (const target of ['../CLAUDE.md', '../../outside', '/etc/passwd', 'C:/secret', '\\\\host\\share',
-    'missing', 'skills', '.', 'AGENTS.md', 'nested/alias.md', 'missing/../CLAUDE.md',
+    'missing', '.', 'AGENTS.md', 'nested/alias.md', 'missing/../CLAUDE.md',
     'CLAUDE.md/../CLAUDE.md', 'skills/../../CLAUDE.md', '.git/config', 'NUL', 'CLAUDE.md\0']) {
     assert.throws(() => validatePackage(files.map(f => f.path === 'AGENTS.md' ? file(f.path, target, '120000') : f), 'alpha', limits), undefined, target);
   }
