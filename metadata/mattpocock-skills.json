@@ -8,6 +8,9 @@
     "path": ".",
     "commit": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7"
   },
+  "marketplace": {
+    "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more)."
+  },
   "integrity": {
     "contentHash": "f3479d9ae2bb39ba4922f73078db96a811bfedf68a5e675da8cd3682c0d27d34"
   }
