@@ -48,11 +48,19 @@ export function write(root, path, data, mode = '100644') {
 export function localFiles(root, pluginName, limits) {
   const prefix = `plugins/${pluginName}`;
   const trackedFiles = new Map();
+  const committedFiles = new Map();
   const tracked = git(root, ['ls-files', '--stage', '-z', '--', prefix]).toString();
   for (const entry of tracked.split('\0').filter(Boolean)) {
     const match = /^(\d+) ([a-f0-9]+) (\d)\t([\s\S]+)$/.exec(entry);
     check(match && match[3] === '0', prefix, 'unmerged index');
     trackedFiles.set(match[4], { mode: match[1], oid: match[2] });
+  }
+  // Git for Windows may turn a checked-out symlink into a regular CRLF text file
+  // and report it as 100644 in the index. HEAD remains the authoritative record.
+  if (process.platform === 'win32') {
+    for (const entry of readTree(root, 'HEAD')) {
+      if (entry.path.startsWith(`${prefix}/`)) committedFiles.set(entry.path, entry);
+    }
   }
   const files = [];
   let total = 0;
@@ -63,18 +71,23 @@ export function localFiles(root, pluginName, limits) {
       for (const child of readdirSync(full).sort()) visit(`${path}/${child}`);
     } else {
       const indexed = trackedFiles.get(path);
+      const committed = committedFiles.get(path);
       const link = stat.isSymbolicLink();
+      const symlink = indexed?.mode === '120000' ? indexed : committed?.mode === '120000' ? committed : undefined;
       check(stat.isFile() || link && indexed?.mode === '120000', path, 'special or untracked link is unsupported');
-      const data = link ? readlinkSync(full, { encoding: 'buffer' })
-        : process.platform === 'win32' && indexed?.mode === '120000'
-          ? git(root, ['cat-file', 'blob', indexed.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 })
-          : readFileSync(full);
+      let data;
+      if (link) data = readlinkSync(full, { encoding: 'buffer' });
+      else if (process.platform === 'win32' && symlink) {
+        data = git(root, ['cat-file', 'blob', symlink.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 });
+        const placeholder = readFileSync(full);
+        check(placeholder.equals(data) || placeholder.equals(Buffer.concat([data, Buffer.from('\r\n')])), path, 'symlink placeholder differs from Git object');
+      } else data = readFileSync(full);
       total += data.length;
       check(data.length <= limits.maxFileSizeMb * 1048576, path, 'file size limit exceeded');
       check(total <= limits.maxPluginSizeMb * 1048576, prefix, 'package size limit exceeded');
       check(!indexed || ['100644', '100755', '120000'].includes(indexed.mode), path, 'unsupported index mode');
-      check(indexed?.mode !== '120000' || link || process.platform === 'win32', path, 'expected symlink');
-      const mode = link ? '120000' : process.platform === 'win32' ? indexed?.mode ?? '100644' : stat.mode & 0o111 ? '100755' : '100644';
+      check(!symlink || link || process.platform === 'win32', path, 'expected symlink');
+      const mode = link ? '120000' : process.platform === 'win32' ? symlink?.mode ?? indexed?.mode ?? '100644' : stat.mode & 0o111 ? '100755' : '100644';
       files.push({ path: path.slice(prefix.length + 1), mode, data });
     }
   }

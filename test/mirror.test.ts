@@ -261,7 +261,14 @@ test('internal symlinks survive sync, validation, a second sync and target updat
   assert.equal(staged.find(e => e.path === 'plugins/alpha/AGENTS.md').mode, '120000');
   assert.equal(validate(first.root).accepted.get('alpha').files.find(f => f.path === 'AGENTS.md').data.toString(), 'CLAUDE.md');
   commit(first.root);
-  if (process.platform === 'win32') writeFileSync(join(first.root, 'plugins/alpha/.claude/skills/sample'), '../../skills/sample\r\n');
+  if (process.platform === 'win32') {
+    const samplePath = join(first.root, 'plugins/alpha/.claude/skills/sample');
+    writeFileSync(samplePath, '../../skills/sample\r\n');
+    // Reproduce checkout with core.symlinks disabled: worktree and index report
+    // a regular CRLF file, while the committed tree remains a symlink.
+    indexFile(first.root, 'plugins/alpha/.claude/skills/sample', Buffer.from('../../skills/sample\r\n'));
+    assert.equal(validate(first.root).accepted.get('alpha').files.find(f => f.path === '.claude/skills/sample').mode, '120000');
+  }
   assert.deepEqual(sync(t, first.root, source).changed, []);
   save(source, 'alpha/CLAUDE.md', '# Changed instructions');
   commit(source);
