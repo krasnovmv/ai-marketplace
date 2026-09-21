@@ -8,6 +8,9 @@
     "path": ".",
     "commit": "e3ba2aa6f1e6f0bc4d69eb09c9f0d0a93af56156"
   },
+  "marketplace": {
+    "description": "Forces the laziest solution that works. YAGNI, stdlib first, one line over fifty."
+  },
   "integrity": {
     "contentHash": "007684db87284d6cd7010f985715b5fe5a3327ccb635ead4f04df827938b20ea"
   }
