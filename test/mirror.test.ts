@@ -4,10 +4,10 @@ import { existsSync, lstatSync, readFileSync, readlinkSync, writeFileSync, utime
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { validateConfig } from '../src/config.js';
-import { fetchSource, git, indexFile, readTree, temporary } from '../src/git.js';
-import { contentHash, metadataFor, resolveLinks, validatePackage } from '../src/packages.js';
-import { catalogs, generate, json, prepare, validate, write } from '../src/mirror.js';
+import { validateConfig } from '../src/config.ts';
+import { fetchSource, git, indexFile, readTree, temporary } from '../src/git.ts';
+import { contentHash, metadataFor, resolveLinks, validatePackage } from '../src/packages.ts';
+import { catalogs, generate, json, prepare, validate, write } from '../src/mirror.ts';
 
 const config = () => ({ marketplace: { name: 'test-market', owner: { name: 'Tester' } }, sources: [
   { id: 'upstream', type: 'marketplace', repository: 'test/source', branch: 'main', selection: 'all' },
@@ -214,8 +214,8 @@ test('hash includes all bytes, path and executable mode; metadata tracks explici
 test('unknown CLI arguments fail without changes; empty catalogs are deterministic', t => {
   const root = mirror(t);
   const before = git(root, ['status', '--porcelain']);
-  const cli = fileURLToPath(new URL('../src/cli.js', import.meta.url));
-  const result = spawnSync(process.execPath, [cli, 'sync', '--unknown'], { cwd: root, encoding: 'utf8' });
+  const cli = fileURLToPath(new URL('../src/cli.ts', import.meta.url));
+  const result = spawnSync(process.execPath, ['--experimental-strip-types', cli, 'sync', '--unknown'], { cwd: root, encoding: 'utf8' });
   assert.equal(result.status, 1);
   assert.match(result.stderr, /Usage/);
   assert.deepEqual(git(root, ['status', '--porcelain']), before);
@@ -291,8 +291,8 @@ test('catalog order is stable and metadata is read from the accepted packages', 
 
 test('CI checks generated catalogs including untracked files', t => {
   const root = mirror(t);
-  const script = fileURLToPath(new URL('../scripts/check-generated.js', import.meta.url));
-  const run = () => spawnSync(process.execPath, [script], { cwd: root, encoding: 'utf8' });
+  const script = fileURLToPath(new URL('../scripts/check-generated.ts', import.meta.url));
+  const run = () => spawnSync(process.execPath, ['--experimental-strip-types', script], { cwd: root, encoding: 'utf8' });
   assert.equal(run().status, 0);
   const path = '.agents/plugins/marketplace.json';
   write(root, path, '{}');

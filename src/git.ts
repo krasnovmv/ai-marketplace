@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { check, safePath } from './config.js';
+import { check, safePath } from './config.ts';
 
 export function git(cwd, args, { input, timeout = 120000, maxBuffer = 64 * 1048576, gitEnv = {} } = {}) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^GIT_/i.test(key)));

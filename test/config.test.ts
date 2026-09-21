@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
-import { readConfig, safePath, validateConfig } from '../src/config.js';
+import { readConfig, safePath, validateConfig } from '../src/config.ts';
 
 const base = () => ({ marketplace: { name: 'test', owner: { name: 'Test' } }, sources: [
   { id: 'one', type: 'marketplace', repository: 'owner/repo', branch: 'main', selection: 'all' },
@@ -9,8 +9,10 @@ const base = () => ({ marketplace: { name: 'test', owner: { name: 'Test' } }, so
 
 test('initial sources, defaults, all exclusions and empty selected', () => {
   const initial = readConfig(fileURLToPath(new URL('..', import.meta.url)));
-  assert.deepEqual(initial.sources.map(s => s.repository), ['DietrichGebert/ponytail', 'mattpocock/skills']);
-  assert(initial.sources.every(s => s.selection === 'all' && s.branch === 'main'));
+  assert.deepEqual(initial.sources.map(s => s.repository), [
+    'DietrichGebert/ponytail', 'mattpocock/skills', 'obra/superpowers', 'anthropics/claude-plugins-official',
+  ]);
+  assert(initial.sources.every(s => s.branch === 'main'));
   const config = base();
   assert.equal(validateConfig(config).limits.maxFileSizeMb, 5);
   config.sources[0].exclude = ['skip'];

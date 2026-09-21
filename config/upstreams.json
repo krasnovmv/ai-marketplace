@@ -17,6 +17,26 @@
       "repository": "mattpocock/skills",
       "branch": "main",
       "selection": "all"
+    },
+    {
+      "id": "superpowers",
+      "type": "repository",
+      "repository": "obra/superpowers",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "superpowers", "path": "." }
+      ]
+    },
+    {
+      "id": "anthropic-official",
+      "type": "marketplace",
+      "repository": "anthropics/claude-plugins-official",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "typescript-lsp" }
+      ]
     }
   ]
 }

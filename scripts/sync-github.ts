@@ -1,8 +1,8 @@
 import { appendFileSync } from 'node:fs';
-import { check, repository, branch } from '../src/config.js';
-import { git } from '../src/git.js';
-import { prepare } from '../src/mirror.js';
-import { botBranch, publishCandidate } from '../src/automation.js';
+import { check, repository, branch } from '../src/config.ts';
+import { git } from '../src/git.ts';
+import { prepare } from '../src/mirror.ts';
+import { botBranch, publishCandidate } from '../src/automation.ts';
 
 let result;
 try {

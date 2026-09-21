@@ -37,4 +37,4 @@ jobs:
       - run: npm run validate
       - run: npm run generate
       - name: Check generated catalogs including untracked files
-        run: node scripts/check-generated.js
+        run: node --experimental-strip-types scripts/check-generated.ts

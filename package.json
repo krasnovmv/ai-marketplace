@@ -2,12 +2,19 @@
   "name": "ai-marketplace",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "sync": "node src/cli.js sync",
-    "validate": "node src/cli.js validate",
-    "generate": "node src/cli.js generate",
-    "diff": "node src/cli.js diff",
-    "test": "node --test test/*.test.js"
+    "sync": "node --experimental-strip-types src/cli.ts sync",
+    "validate": "node --experimental-strip-types src/cli.ts validate",
+    "generate": "node --experimental-strip-types src/cli.ts generate",
+    "diff": "node --experimental-strip-types src/cli.ts diff",
+    "test": "node --experimental-strip-types --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
   }
 }

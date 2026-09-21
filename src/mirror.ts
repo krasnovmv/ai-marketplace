@@ -1,8 +1,8 @@
 import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { check, name, object, parseJson, readConfig, repository, branch, safePath } from './config.js';
-import { fetchSource, git, indexFile, readBlob, readTree, temporary } from './git.js';
-import { checkOrigin, contentHash, metadataFor, readPackage, resolveLinks, selectPlugins, stillWanted, validatePackage } from './packages.js';
+import { check, name, object, parseJson, readConfig, repository, branch, safePath } from './config.ts';
+import { fetchSource, git, indexFile, readBlob, readTree, temporary } from './git.ts';
+import { checkOrigin, contentHash, metadataFor, readPackage, resolveLinks, selectPlugins, stillWanted, validatePackage } from './packages.ts';
 
 export const catalogPaths = ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json'];
 export const json = value => `${JSON.stringify(value, null, 2)}\n`;

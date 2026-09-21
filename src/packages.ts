@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
-import { check, name, safePath, parseJson } from './config.js';
-import { readBlob } from './git.js';
+import { check, name, safePath, parseJson } from './config.ts';
+import { readBlob } from './git.ts';
 
 export function selectPlugins(source, snapshot, limits) {
   if (source.type === 'repository') return source.plugins.filter(p => p.enabled);

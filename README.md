@@ -29,7 +29,7 @@ npm test
 npm run validate
 ```
 
-Тесты используют встроенный Node test runner и временные локальные Git-репозитории, без upstream-сети. Запускается только папка `test/`: тесты зеркалируемых плагинов не исполняются. Если npm недоступен, эквиваленты команд: `node --test test/*.test.js` и `node src/cli.js <команда>`.
+Тесты используют встроенный Node test runner и временные локальные Git-репозитории, без upstream-сети. Запускается только папка `test/`: тесты зеркалируемых плагинов не исполняются. Если npm недоступен, эквиваленты команд: `node --experimental-strip-types --test test/*.test.ts` и `node --experimental-strip-types src/cli.ts <команда>`.
 
 ## Команды
 
@@ -47,7 +47,7 @@ Sync берёт базу из Git HEAD, а желаемый config — из р�
 
 ## Конфигурация
 
-Файл `config/upstreams.json` задаёт имя и владельца каталога, источники и необязательные лимиты. Стартовые источники — `DietrichGebert/ponytail` и `mattpocock/skills`, оба с веткой `main` и режимом `all`. Ветки и корневые `source: "./"` проверены 21 сентября 2026 года.
+Файл `config/upstreams.json` задаёт имя и владельца каталога, источники и необязательные лимиты. Источники — `DietrichGebert/ponytail`, `mattpocock/skills`, `obra/superpowers` и `anthropics/claude-plugins-official`, все с веткой `main`; первые два зеркалируются целиком, из последних выбраны соответственно `superpowers` и `typescript-lsp`. Ветки и корневые `source: "./"` проверены 21 сентября 2026 года.
 
 - `type: "marketplace", selection: "all"`: все записи `.claude-plugin/marketplace.json`; необязательный `exclude: ["plugin-name"]`.
 - `type: "marketplace", selection: "selected"`: только `plugins: [{ "name": "plugin-name" }]`; пустой список разрешён.

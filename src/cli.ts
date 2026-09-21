@@ -1,5 +1,5 @@
 import { resolve } from 'node:path';
-import { generate, prepare, validate } from './mirror.js';
+import { generate, prepare, validate } from './mirror.ts';
 
 const [command, ...args] = process.argv.slice(2);
 try {

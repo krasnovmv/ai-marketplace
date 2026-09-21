@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { publishCandidate, managedPath, reportBody } from '../src/automation.js';
+import { publishCandidate, managedPath, reportBody } from '../src/automation.ts';
 
 const base = 'a'.repeat(40);
 const bot = 'b'.repeat(40);

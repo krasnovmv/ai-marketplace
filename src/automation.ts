@@ -1,6 +1,6 @@
-import { check, branch, repository, safePath } from './config.js';
-import { git } from './git.js';
-import { catalogPaths } from './mirror.js';
+import { check, branch, repository, safePath } from './config.ts';
+import { git } from './git.ts';
+import { catalogPaths } from './mirror.ts';
 
 export const botBranch = 'bot/plugin-sync';
 const botEmail = '41898282+github-actions[bot]@users.noreply.github.com';
