@@ -76,12 +76,12 @@ export function localFiles(root, pluginName, limits) {
       const symlink = indexed?.mode === '120000' ? indexed : committed?.mode === '120000' ? committed : undefined;
       check(stat.isFile() || link && indexed?.mode === '120000', path, 'special or untracked link is unsupported');
       let data;
-      if (link) data = readlinkSync(full, { encoding: 'buffer' });
-      else if (process.platform === 'win32' && symlink) {
+      if (process.platform === 'win32' && symlink) {
         data = git(root, ['cat-file', 'blob', symlink.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 });
-        const placeholder = readFileSync(full);
-        check(placeholder.equals(data) || placeholder.equals(Buffer.concat([data, Buffer.from('\r\n')])), path, 'symlink placeholder differs from Git object');
-      } else data = readFileSync(full);
+        const placeholder = link ? readlinkSync(full, { encoding: 'buffer' }) : readFileSync(full);
+        check(placeholder.equals(data) || !link && placeholder.equals(Buffer.concat([data, Buffer.from('\r\n')])), path, 'symlink placeholder differs from Git object');
+      } else if (link) data = readlinkSync(full, { encoding: 'buffer' });
+      else data = readFileSync(full);
       total += data.length;
       check(data.length <= limits.maxFileSizeMb * 1048576, path, 'file size limit exceeded');
       check(total <= limits.maxPluginSizeMb * 1048576, prefix, 'package size limit exceeded');
