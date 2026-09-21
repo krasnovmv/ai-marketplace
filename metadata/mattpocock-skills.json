@@ -1,0 +1,14 @@
+{
+  "name": "mattpocock-skills",
+  "source": {
+    "id": "mattpocock",
+    "type": "marketplace",
+    "repository": "mattpocock/skills",
+    "branch": "main",
+    "path": ".",
+    "commit": "c55ee46073ed923f86ce59a5eb3b6d895095d1b7"
+  },
+  "integrity": {
+    "contentHash": "f3479d9ae2bb39ba4922f73078db96a811bfedf68a5e675da8cd3682c0d27d34"
+  }
+}

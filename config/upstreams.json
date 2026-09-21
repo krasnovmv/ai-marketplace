@@ -1,0 +1,22 @@
+{
+  "marketplace": {
+    "name": "ai-marketplace",
+    "owner": { "name": "krasnovmv" }
+  },
+  "sources": [
+    {
+      "id": "ponytail",
+      "type": "marketplace",
+      "repository": "DietrichGebert/ponytail",
+      "branch": "main",
+      "selection": "all"
+    },
+    {
+      "id": "mattpocock",
+      "type": "marketplace",
+      "repository": "mattpocock/skills",
+      "branch": "main",
+      "selection": "all"
+    }
+  ]
+}

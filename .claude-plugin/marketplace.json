@@ -1,0 +1,20 @@
+{
+  "name": "ai-marketplace",
+  "owner": {
+    "name": "krasnovmv"
+  },
+  "plugins": [
+    {
+      "name": "mattpocock-skills",
+      "source": "./plugins/mattpocock-skills",
+      "description": "Matt Pocock's agent skills for real engineering: grilling, spec/ticket flows, TDD, code review, domain modelling and more. Plug-and-play, not vibe coding.",
+      "version": "1.2.3"
+    },
+    {
+      "name": "ponytail",
+      "source": "./plugins/ponytail",
+      "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+      "version": "4.10.0"
+    }
+  ]
+}
