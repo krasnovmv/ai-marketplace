@@ -1,0 +1,13 @@
+{
+  "name": "ai-marketplace",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "sync": "node src/cli.js sync",
+    "validate": "node src/cli.js validate",
+    "generate": "node src/cli.js generate",
+    "diff": "node src/cli.js diff",
+    "test": "node --test test/*.test.js"
+  }
+}

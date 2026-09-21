@@ -14,3 +14,7 @@ CLAUDE.local.md
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Local package-manager state.
+node_modules/
+.pnpm-store/
