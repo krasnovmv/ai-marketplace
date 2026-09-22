@@ -17,6 +17,12 @@
       "version": "4.10.0"
     },
     {
+      "name": "ru-text",
+      "source": "./plugins/ru-text",
+      "description": "Russian text quality for AI agents — neuroslop cleanup, typography, information style, editorial standards, UX writing, business correspondence. Scores text 0–10. 2,000+ linguistic atoms.",
+      "version": "2.7.0"
+    },
+    {
       "name": "superpowers",
       "source": "./plugins/superpowers",
       "description": "An agentic skills framework & software development methodology that works: planning, TDD, debugging, and collaboration workflows.",
