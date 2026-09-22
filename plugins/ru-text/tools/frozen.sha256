@@ -1,0 +1,16 @@
+# Frozen values for the ru-text ↔ paid-MCP corpus contract. check-frozen.sh reads these;
+# it does not carry them. Changing a number here is the visible act of changing the
+# contract, and must be made on the MCP side in the same breath.
+#
+# Regenerate deliberately, never blindly. Look first, then write:
+#   tools/check-frozen.sh                     # what moved, and should it have?
+#   tools/check-frozen.sh --print > /tmp/f    # the new values, from the checker itself
+#   diff tools/frozen.sha256 /tmp/f           # read every line before accepting it
+# --print is the only supported regenerator: a hand-rolled one ate trailing newlines and
+# produced a hash that disagreed with the checker on identical bytes.
+#
+files=10
+section_b_sha256=6df126a3a1e0248d14ff5ff90cf74ca9d66bedf1a44ccc07b2bd2c8bd0535c94
+table_headers=8
+catalog_entries=92
+probe_row=является|тире / перестроить

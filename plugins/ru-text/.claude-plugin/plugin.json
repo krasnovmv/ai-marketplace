@@ -1,0 +1,26 @@
+{
+  "name": "ru-text",
+  "displayName": "ru-text",
+  "version": "2.7.0",
+  "description": "Russian text quality for AI agents — neuroslop cleanup, typography, information style, editorial standards, UX writing, business correspondence. Scores text 0–10. 2,000+ linguistic atoms.",
+  "author": {
+    "name": "Arseniy Kamyshev",
+    "email": "nafigator@gmail.com",
+    "url": "https://t.me/nafigator"
+  },
+  "homepage": "https://ru-text.org",
+  "repository": "https://github.com/talkstream/ru-text",
+  "license": "MIT",
+  "keywords": [
+    "russian",
+    "neuroslop",
+    "ai-text-detection",
+    "typography",
+    "proofreading",
+    "editorial",
+    "info-style",
+    "ux-writing",
+    "text-quality",
+    "text-scoring"
+  ]
+}
