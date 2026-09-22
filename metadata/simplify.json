@@ -1,0 +1,14 @@
+{
+  "name": "simplify",
+  "source": {
+    "id": "claude-codex-settings",
+    "type": "repository",
+    "repository": "fcakyon/claude-codex-settings",
+    "branch": "main",
+    "path": "plugins/simplify",
+    "commit": "38611a8e21b1f76a2c442d24dd5861cff3751209"
+  },
+  "integrity": {
+    "contentHash": "b7c7d817b03c141449c6a11b17dd46b39ffc85c06f190bb5d776536d71d0e9e9"
+  }
+}

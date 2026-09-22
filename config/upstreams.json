@@ -47,6 +47,16 @@
       "plugins": [
         { "name": "ru-text", "path": "." }
       ]
+    },
+    {
+      "id": "claude-codex-settings",
+      "type": "repository",
+      "repository": "fcakyon/claude-codex-settings",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "simplify", "path": "plugins/simplify" }
+      ]
     }
   ]
 }
