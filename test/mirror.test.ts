@@ -263,10 +263,10 @@ test('internal symlinks survive sync, validation, a second sync and target updat
   commit(first.root);
   if (process.platform === 'win32') {
     const samplePath = join(first.root, 'plugins/alpha/.claude/skills/sample');
-    writeFileSync(samplePath, '../../skills/sample\r\n');
-    // Reproduce checkout with core.symlinks disabled: worktree and index report
-    // a regular CRLF file, while the committed tree remains a symlink.
-    indexFile(first.root, 'plugins/alpha/.claude/skills/sample', Buffer.from('../../skills/sample\r\n'));
+    // Windows checkout representations are not part of the package contract.
+    // The committed Git blob remains the source of truth for a symlink.
+    writeFileSync(samplePath, 'Windows checkout placeholder');
+    indexFile(first.root, 'plugins/alpha/.claude/skills/sample', Buffer.from('Windows checkout placeholder'));
     assert.equal(validate(first.root).accepted.get('alpha').files.find(f => f.path === '.claude/skills/sample').mode, '120000');
   }
   assert.deepEqual(sync(t, first.root, source).changed, []);

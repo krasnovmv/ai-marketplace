@@ -78,8 +78,6 @@ export function localFiles(root, pluginName, limits) {
       let data;
       if (process.platform === 'win32' && symlink) {
         data = git(root, ['cat-file', 'blob', symlink.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 });
-        const placeholder = link ? readlinkSync(full, { encoding: 'buffer' }) : readFileSync(full);
-        check(placeholder.equals(data) || !link && placeholder.equals(Buffer.concat([data, Buffer.from('\r\n')])), path, 'symlink placeholder differs from Git object');
       } else if (link) data = readlinkSync(full, { encoding: 'buffer' });
       else data = readFileSync(full);
       total += data.length;
