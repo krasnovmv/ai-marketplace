@@ -164,6 +164,127 @@ d=$(fresh_copy)
 grep -v '^catalog_entries=' "$d/tools/frozen.sha256" > "$d/t" && mv "$d/t" "$d/tools/frozen.sha256"
 expect_fail "a baseline key gone missing is caught" "catalog_entries is not recorded" "$d"
 
+# ── 6b. §E.1, the pleonasm table (since 2.8.0) ────────────────────────────────
+# One case per check, each failing for its own stated reason.
+d=$(fresh_copy)
+perl -i -pe 's{^памятный сувенир\|сувенир\|.*$}{памятный сувенир|сувенир|souvenir}' "$d/skills/ru-text/references/editorial-grammar.md"
+expect_fail "a byte changed inside §E.1 is caught" "§E.1 changed" "$d"
+
+d=$(fresh_copy)
+grep -v '^прейскурант цен|' "$d/skills/ru-text/references/editorial-grammar.md" > "$d/t" && mv "$d/t" "$d/skills/ru-text/references/editorial-grammar.md"
+expect_fail "a deleted pleonasm row is caught" "53 pleonasm entries" "$d"
+
+# Carve-out prose that happens to carry two pipes passes the row predicate. The gap between
+# window rows and entries stays one — both grow — so only the absolute counts see it.
+d=$(fresh_copy)
+perl -i -pe 's{^wrong\|correct\|why$}{Проза: «дешевле|дороже» и «выше|ниже» правилом не ловятся.\n\nwrong|correct|why}' "$d/skills/ru-text/references/editorial-grammar.md"
+expect_fail "prose with two pipes inside §E.1 is caught" "56 rows of §E.1" "$d"
+
+d=$(fresh_copy)
+perl -i -pe 's{^свободная вакансия\|вакансия\|.*$}{свободная вакансия|вакансия|free position}' "$d/skills/ru-text/references/editorial-grammar.md"
+expect_fail "a reworded pleonasm probe row is caught" "pleonasm probe row is" "$d"
+
+d=$(fresh_copy)
+grep -v '^pleonasm_entries=' "$d/tools/frozen.sha256" > "$d/t" && mv "$d/t" "$d/tools/frozen.sha256"
+expect_fail "a missing §E.1 baseline key is caught" "pleonasm_entries is not recorded" "$d"
+
+# --print must refuse, not record an absence as the new truth.
+d=$(fresh_copy)
+grep -v '^свободная вакансия|' "$d/skills/ru-text/references/editorial-grammar.md" > "$d/t" && mv "$d/t" "$d/skills/ru-text/references/editorial-grammar.md"
+if "$d/tools/check-frozen.sh" --print "$d" >/dev/null 2>&1; then
+  bad "--print emitted a baseline from a §E.1 that lost its probe row"
+else
+  ok "--print refuses a §E.1 without its probe row"
+fi
+
+# ── 6c. the passive-voice table of anti-patterns.md ───────────────────────────
+d=$(fresh_copy)
+perl -i -pe 's{^Работа выполняется\|.*$}{Работа выполняется|Команда работает}' "$d/skills/ru-text/references/anti-patterns.md"
+expect_fail "a byte changed inside the passive table is caught" "passive table changed" "$d"
+
+d=$(fresh_copy)
+grep -v '^Совещание проведено|' "$d/skills/ru-text/references/anti-patterns.md" > "$d/t" && mv "$d/t" "$d/skills/ru-text/references/anti-patterns.md"
+expect_fail "a deleted passive row is caught" "9 passive entries" "$d"
+
+d=$(fresh_copy)
+perl -i -pe 's{^Passive\|Active$}{Проза: «было|стало» правилом не ловится.\n\nPassive|Active}' "$d/skills/ru-text/references/anti-patterns.md"
+expect_fail "prose with one pipe inside the passive table is caught" "12 rows of the passive table" "$d"
+
+d=$(fresh_copy)
+perl -i -pe 's{^Было принято решение\|.*$}{Было принято решение|Мы решили}' "$d/skills/ru-text/references/anti-patterns.md"
+expect_fail "a reworded passive probe row is caught" "passive probe row is" "$d"
+
+d=$(fresh_copy)
+grep -v '^passive_entries=' "$d/tools/frozen.sha256" > "$d/t" && mv "$d/t" "$d/tools/frozen.sha256"
+expect_fail "a missing passive baseline key is caught" "passive_entries is not recorded" "$d"
+
+d=$(fresh_copy)
+grep -v '^Было принято решение|' "$d/skills/ru-text/references/anti-patterns.md" > "$d/t" && mv "$d/t" "$d/skills/ru-text/references/anti-patterns.md"
+if "$d/tools/check-frozen.sh" --print "$d" >/dev/null 2>&1; then
+  bad "--print emitted a baseline from a passive table that lost its probe row"
+else
+  ok "--print refuses a passive table without its probe row"
+fi
+
+# ── 6d. the AD trigger blocks of addenda.md ───────────────────────────────────
+A=skills/ru-text/references/addenda.md
+d=$(fresh_copy)
+perl -i -pe 's{^- «различные факторы» / «ряд факторов»}{- «различные факторы» / «ряд причин»}' "$d/$A"
+expect_fail "a byte changed inside a trigger block is caught" "AD trigger blocks changed" "$d"
+
+# The heading travels with the block: renumbering a rule changes nothing inside its list, and
+# only the checksum over heading + block sees it.
+d=$(fresh_copy)
+perl -i -pe 's{^## AD-12\. }{## AD-19. }' "$d/$A"
+expect_fail "a trigger block moved to another rule number is caught" "AD trigger blocks changed" "$d"
+
+d=$(fresh_copy)
+grep -v '^- «исследования показывают»' "$d/$A" > "$d/t" && mv "$d/t" "$d/$A"
+expect_fail "a deleted trigger item is caught" "61 items in the trigger blocks" "$d"
+
+# A singular header turned plural drags its prose quotes into the window — only the plural
+# count moves, the total stays 14.
+d=$(fresh_copy)
+perl -i -pe 's{^\*\*Trigger construction:\*\* `U\+002C`}{**Trigger constructions:** `U+002C`}' "$d/$A"
+expect_fail "a singular trigger header turned plural is caught" "13 plural trigger blocks" "$d"
+
+# A new singular block — codepoint triggers the service does not read — moves only the total.
+d=$(fresh_copy)
+perl -i -pe 's{^(\*\*Trigger constructions:\*\*)$}{**Trigger construction:** a new codepoint trigger.\n\n$1} if $. == 263' "$d/$A"
+expect_fail "a new singular trigger block is caught" "15 trigger blocks of either number" "$d"
+
+# A top-level heading dropped between a rule and its block cuts the block off: the service no
+# longer reads it, and neither does the window — checksum, block count and items all move.
+d=$(fresh_copy)
+perl -i -pe 's{^(\*\*Trigger constructions:\*\*)$}{## Sources\n\n$1} if $. == 774' "$d/$A"
+expect_fail "a trigger block cut off from its rule by a heading is caught" "11 plural trigger blocks" "$d"
+
+d=$(fresh_copy)
+perl -i -pe 's{^- «Отличный вопрос!» / }{- «Отличный вопрос» / }' "$d/$A"
+expect_fail "a reworded trigger probe item is caught" "trigger probe item is" "$d"
+
+d=$(fresh_copy)
+grep -v '^trigger_items=' "$d/tools/frozen.sha256" > "$d/t" && mv "$d/t" "$d/tools/frozen.sha256"
+expect_fail "a missing trigger baseline key is caught" "trigger_items is not recorded" "$d"
+
+d=$(fresh_copy)
+grep -v '^- «Отличный вопрос!»' "$d/$A" > "$d/t" && mv "$d/t" "$d/$A"
+if "$d/tools/check-frozen.sh" --print "$d" >/dev/null 2>&1; then
+  bad "--print emitted a baseline from trigger blocks that lost their probe item"
+else
+  ok "--print refuses trigger blocks without their probe item"
+fi
+
+# The header names how many sections are frozen byte-for-byte; the baseline must carry one
+# checksum per extraction, or a section was added to one side only.
+sections=$(grep -c '^section_[a-z0-9]*() {' "$ROOT/tools/check-frozen.sh" | tr -d ' ')
+keys=$(grep -c '^section_[a-z0-9]*_sha256=' "$ROOT/tools/frozen.sha256" | tr -d ' ')
+if [ "$sections" -eq "$keys" ] && [ "$keys" -gt 0 ]; then
+  ok "one checksum per frozen section ($keys)"
+else
+  bad "frozen sections: $sections extractions, $keys checksums in frozen.sha256"
+fi
+
 # ── 7. the locale trap: a canary, reported per platform ───────────────────────
 # Why LC_ALL=C is exported everywhere. Under a UTF-8 locale the BSD awk on macOS reports
 # distinct Cyrillic strings as equal, and the catalog parser silently returns 84 of its 92
