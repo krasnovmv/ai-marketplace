@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.1] - 2026-09-28
+
+### Fixed
+
+- R49 now says what its own example shows: no space before the ellipsis, a space after it. The old wording, «без пробелов вокруг», contradicted the example.
+- The R49/R50 note under D.2 is rewritten: both rules now set the spaces the same way, so the conflict described under 2.7.0 no longer exists.
+- The last note under D.2 is replaced. It said a space before the ellipsis belongs where it marks an omission in a quotation; the new note says an omission is set the same way as a pause, in any position.
+
+## [2.9.0] - 2026-09-28
+
+### Fixed
+
+- AD-7 heading spelling: «непрошеная оговорка».
+- AD-8.3 now names the email-closing row it refers to by its content instead of a line number.
+
 ## [2.8.0] - 2026-09-26
 
 ### Changed
