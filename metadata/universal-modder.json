@@ -1,0 +1,14 @@
+{
+  "name": "universal-modder",
+  "source": {
+    "id": "universal-modder",
+    "type": "repository",
+    "repository": "rehan-remade/universal-modder",
+    "branch": "main",
+    "path": ".",
+    "commit": "8607693be42ce02442251f05e0495f58c2b77e5d"
+  },
+  "integrity": {
+    "contentHash": "13c462f3d14e61087eb279a37920d5304f2d2b23c5570dc6abf26561afaee98d"
+  }
+}

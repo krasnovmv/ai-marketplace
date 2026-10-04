@@ -57,6 +57,17 @@
       "plugins": [
         { "name": "simplify", "path": "plugins/simplify" }
       ]
+    },
+    {
+      "id": "universal-modder",
+      "type": "repository",
+      "repository": "rehan-remade/universal-modder",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "universal-modder", "path": "." }
+      ]
     }
-  ]
+  ],
+  "limits": { "maxFileSizeMb": 6, "maxPluginSizeMb": 25 }
 }
