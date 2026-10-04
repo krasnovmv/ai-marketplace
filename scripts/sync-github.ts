@@ -13,7 +13,8 @@ try {
   check(Boolean(token), 'GH_TOKEN', 'token is required');
   async function api(path, { method = 'GET', body, missing = false } = {}) {
     const response = await fetch(`https://api.github.com/repos/${repo}${path}`, {
-      method, headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+      // Synchronous Git work between calls outlives the server's keep-alive; a reused socket fails with "other side closed".
+      method, headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', Connection: 'close' },
       body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(120000),
     }).catch(error => { throw new Error(`GitHub API ${method} ${path}: ${error.cause?.code ?? error.name}: ${error.cause?.message ?? error.message}`); });
     if (missing && response.status === 404) return null;
