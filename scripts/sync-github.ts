@@ -15,7 +15,7 @@ try {
     const response = await fetch(`https://api.github.com/repos/${repo}${path}`, {
       method, headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
       body: body === undefined ? undefined : JSON.stringify(body), signal: AbortSignal.timeout(120000),
-    });
+    }).catch(error => { throw new Error(`GitHub API ${method} ${path}: ${error.cause?.code ?? error.name}: ${error.cause?.message ?? error.message}`); });
     if (missing && response.status === 404) return null;
     check(response.ok, 'GitHub API', `request failed (${response.status}); check repository Actions permissions`);
     return response.status === 204 ? null : response.json();
