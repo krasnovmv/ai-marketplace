@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.3] - 2026-10-04
+
+### Changed
+
+- `SKILL.md` now says that the typography of the instructions themselves is not a style request. A template or a set of instructions that writes `100 %` is a habit, not the user asking for that form; an explicit request still overrides the defaults. The Quality Checklist line on abbreviations is removed — it repeated the always-on table row.
+- R37 in `typography.md` gains the reason for the glued form: an ordinary space between the number and `%` is a line-break point, so the sign can end up alone at the start of the next line; `100%` never breaks. `/ru-text:ru-check` reports the percent sign with that reason, and the Notion template carries the same note.
+
+## [2.9.2] - 2026-10-03
+
+### Fixed
+
+- The always-on typography table in `SKILL.md` now carries R37: the percent sign is glued to the number (`100%`, not `100 %`). The rule lived only in `typography.md`, while the same table showed a non-breaking space before the ruble sign and said nothing about the percent sign.
+- `/ru-text:ru-check`: the full check told the reader to put a non-breaking space before units and did not name the R37 exception; it now does. The quick triage lists a space before `%` among its mechanical checks.
+- The Notion template's typography table has the same row.
+
 ## [2.9.1] - 2026-09-28
 
 ### Fixed
