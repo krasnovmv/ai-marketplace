@@ -18,7 +18,7 @@ import subprocess
 import time
 from pathlib import Path
 
-from um.common import die, is_mac, is_windows, is_wsl, to_posix
+from um.common import die, is_mac, is_windows, is_wsl, ps_exe, to_posix
 
 MAX_ENTRIES = 80_000
 MAX_DEPTH = 6
@@ -55,7 +55,7 @@ def win_folders() -> dict:
         ps = ("$f=[Environment]; "
               "@($f::GetFolderPath('UserProfile'),$f::GetFolderPath('MyDocuments'),$f::GetFolderPath('ApplicationData'),"
               "$f::GetFolderPath('LocalApplicationData')) -join '|'")
-        exe = "powershell.exe" if is_wsl() else "powershell"
+        exe = ps_exe()
         try:
             out = subprocess.run([exe, "-NoProfile", "-Command", ps], capture_output=True, text=True, timeout=30,
                                  cwd="/mnt/c" if is_wsl() else None).stdout.strip()
@@ -66,8 +66,34 @@ def win_folders() -> dict:
     return cache["v"]
 
 
+def steam_registry_root() -> Path | None:
+    """Where Steam says it lives (Windows registry); many installs aren't under Program Files (e.g. C:\\Steam)."""
+    if is_windows():
+        import winreg
+        for hive, key, value in ((winreg.HKEY_CURRENT_USER, r"Software\Valve\Steam", "SteamPath"),
+                                 (winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam", "InstallPath")):
+            try:
+                with winreg.OpenKey(hive, key) as k:
+                    return Path(winreg.QueryValueEx(k, value)[0])
+            except OSError:
+                continue
+    elif is_wsl():
+        try:
+            out = subprocess.run(["reg.exe", "query", r"HKCU\Software\Valve\Steam", "/v", "SteamPath"], capture_output=True,
+                                 text=True, timeout=15, cwd="/mnt/c").stdout
+        except (OSError, subprocess.TimeoutExpired):
+            return None
+        m = re.search(r"SteamPath\s+REG_SZ\s+(.+)", out)
+        if m:
+            return Path(to_posix(m.group(1).strip()))
+    return None
+
+
 def steam_roots() -> list[Path]:
     cands = []
+    reg = steam_registry_root()
+    if reg:
+        cands.append(reg)
     if is_windows():
         cands += [Path(os.environ.get("ProgramFiles(x86)", r"C:\Program Files (x86)")) / "Steam", Path(r"C:\Program Files\Steam")]
     elif is_wsl():
@@ -347,6 +373,7 @@ KNOWN = {
     "risk of rain 2": ("BepInEx 5 + R2API (Thunderstore)", "unity.md"),
     "hollow knight": ("Hollow Knight Modding API (Lumafly installer), C# mods", "unity.md"),
     "slay the spire": ("ModTheSpire + BaseMod (Java, SpirePatch)", "misc-engines.md"),
+    "slay the spire 2": ("the game's own mod loader: C# .dll + Godot .pck + .json manifest in mods/; BaseLib (NuGet Alchyr.Sts2.BaseLib) for cards, relics and characters", "godot.md"),
     "balatro": ("Steamodded + lovely (Lua injection into the LÖVE game)", "misc-engines.md"),
     "factorio": ("official Lua modding API (mods/ folder, data.lua + control.lua)", "misc-engines.md"),
     "counter-strike 2": ("Workshop maps / Source 2 tools; local -insecure only. VAC: never inject on official servers", "source.md"),
@@ -370,9 +397,25 @@ KNOWN_SAVES = {
     "counter-strike 2": [],
 }
 
-ONLINE_ONLY = ["valorant", "league of legends", "fortnite", "apex legends", "pubg", "rainbow six siege", "call of duty", "destiny 2",
-               "genshin impact", "escape from tarkov", "battlefield", "overwatch", "counter-strike 2", "dota 2", "marvel rivals",
-               "the finals", "rust", "dead by daylight", "naraka", "warframe", "deadlock"]
+# Live-service games, matched against the whole name (see online_only): a substring test flagged Rusty Lake ("rust"),
+# Battlefield 1942 and the 2009 Modern Warfare 2. Older entries in a series with an online-only sibling are left to the
+# anti-cheat scan, which still warns when a protected client is installed.
+ONLINE_ONLY = ["valorant", "league of legends", "fortnite", "apex legends", "pubg", "pubg battlegrounds", "rainbow six siege",
+               "rainbow six siege x", "tom clancy s rainbow six siege", "tom clancy s rainbow six siege x", "call of duty",
+               "call of duty hq", "call of duty warzone", "destiny 2", "genshin impact", "escape from tarkov", "battlefield 2042",
+               "battlefield 6", "overwatch", "overwatch 2", "counter strike 2", "dota 2", "marvel rivals", "the finals", "rust",
+               "dead by daylight", "naraka bladepoint", "warframe", "deadlock"]
+
+
+def _plain(name: str) -> str:
+    """'Tom Clancy's Rainbow Six® Siege' -> 'tom clancy s rainbow six siege'."""
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", name.lower().replace("®", "").replace("™", "")).split())
+
+
+def online_only(name: str) -> str | None:
+    """The ONLINE_ONLY entry this game's name is, if any. Whole names only, never substrings."""
+    n = _plain(name)
+    return n if n in ONLINE_ONLY else None
 
 ENGINES = {
     # key: (label, playbook, route)
@@ -627,8 +670,8 @@ def scan(query: str) -> dict:
     moddirs = [d for d in MOD_DIRS if d in ix.dirs]
     name = (game.get("name") or root.name)
     lname = name.lower()
-    known = next((v for k, v in KNOWN.items() if k == lname or (k in lname and len(k) > 5)), None)
-    online = next((g for g in ONLINE_ONLY if g in lname), None)
+    known = next((v for k, v in sorted(KNOWN.items(), key=lambda kv: -len(kv[0])) if k == lname or (k in lname and len(k) > 5)), None)
+    online = online_only(name)
     routes = []
     if known:
         routes.append(dict(route=known[0], playbook=known[1], why="known game"))
