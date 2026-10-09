@@ -43,6 +43,484 @@
   ]
  },
  {
+  "path": "games/assassin-s-creed/community-modding-toolkit-and-prior-art-across-the-assassin-.md",
+  "kind": "game",
+  "title": "Community modding toolkit and prior art across the Assassin's Creed family (Anvil / AnvilNext)",
+  "game": "Assassin's Creed",
+  "games_also": [
+   "Assassin's Creed Unity",
+   "Assassin's Creed IV Black Flag",
+   "Assassin's Creed Rogue",
+   "Assassin's Creed 1"
+  ],
+  "game_version": "family-wide survey (2026-10); per-title versions noted inline",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "ACUFixes (NameTaken3125)",
+   "ACExplorer (gentlegiantJGC)",
+   "AnvilToolkit (+ Kamzik123 resources)",
+   "ScriptEngine (LionAG)",
+   "Ghidra",
+   "gamedb"
+  ],
+  "anti_cheat": "none on the single-player titles; do not mod online/multiplayer clients",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/NameTaken3125/ACUFixes",
+   "https://github.com/gentlegiantJGC/ACExplorer",
+   "https://github.com/Kamzik123/AnvilToolkit-Resources",
+   "https://github.com/LionAG/ScriptEngine",
+   "https://github.com/bloxtbc/SubtitleSynchAC1"
+  ],
+  "tags": [
+   "assassins-creed",
+   "anvil",
+   "anvilnext",
+   "modding-tools",
+   "prior-art",
+   "survey",
+   "co-op"
+  ]
+ },
+ {
+  "path": "games/assassin-s-creed-iv-black-flag/coop-ghost-avatar.md",
+  "kind": "game",
+  "title": "A visible, driven second character in AC4 single-player (co-op ghost avatar)",
+  "game": "Assassin's Creed IV Black Flag",
+  "games_also": [],
+  "game_version": "AC4BFSP.exe (Steam), x86, MD5 2058342866688F780C8B34526A65BC35",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "AC.PatchFix ASI plugin framework (ported to x86)",
+   "Ghidra 12.1.4",
+   "Cheat Engine 7.5",
+   "Ultimate ASI Loader (x86)",
+   "custom PowerShell WOW64 debugger scripts"
+  ],
+  "anti_cheat": "none in single-player; the co-op link is the plugin's own peer-to-peer UDP, not Ubisoft's servers or online services; AC4BFMP.exe only studied statically, never run or injected",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/playday3008/PatchFix",
+   "https://github.com/ThirteenAG/Ultimate-ASI-Loader"
+  ],
+  "tags": [
+   "anvilnext",
+   "coop",
+   "avatar",
+   "transform",
+   "wow64-debugging",
+   "hardware-breakpoints",
+   "puppet",
+   "ghost"
+  ]
+ },
+ {
+  "path": "games/assassin-s-creed-iv-black-flag/reading-the-player-s-world-transform-and-body-position-in-ac.md",
+  "kind": "game",
+  "title": "Reading the player's world transform and body position in AC4 Black Flag (native x86 ASI)",
+  "game": "Assassin's Creed IV Black Flag",
+  "games_also": [],
+  "game_version": "Steam, AC4BFSP.exe MD5 2058342866688F780C8B34526A65BC35 (45,056,040 B, x86)",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "Ultimate ASI Loader v9.7.4 (x86)",
+   "Ghidra 12.1.4 (headless, 20 GB heap)",
+   "gamedb",
+   "AC.PatchFix framework (ported to x86)",
+   "CMake + MSVC 2022"
+  ],
+  "anti_cheat": "none (single-player campaign; offline only)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "anvilnext",
+   "black-flag",
+   "native-hook",
+   "x86",
+   "transform",
+   "camera",
+   "reverse-engineering"
+  ]
+ },
+ {
+  "path": "games/assassin-s-creed-rogue/anvilnext-internals-for-ac-rogue-co-op-player-transform-the-.md",
+  "kind": "game",
+  "title": "AnvilNext internals for AC Rogue co-op: player transform, the debug-cheat system, and the set-transform path",
+  "game": "Assassin's Creed Rogue",
+  "games_also": [],
+  "game_version": "Steam, ACC.exe MD5 a323729f3799a808c8148b695e1e23b8 (67,873,496 B), 2026-10",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "Ghidra 12.1.4 (headless)",
+   "gamedb",
+   "AC.PatchFix (playday3008) + SafetyHook",
+   "Ultimate ASI Loader (dinput8)",
+   "CMake + MSVC 2022",
+   "AnvilToolkit"
+  ],
+  "anti_cheat": "none (single-player campaign; offline/LAN only)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "anvilnext",
+   "black-flag",
+   "coop",
+   "netcode",
+   "transform",
+   "reverse-engineering",
+   "crash-isolation"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/act-2-load-hang-one-bad-level-layer.md",
+  "kind": "game",
+  "title": "Act 2 never loads (hang at 50% or crash): one modded NPC on a bad level layer, found by bisecting a pak",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 8 hotfix, Steam, bg3_dx11.exe file version 4.73.98.727 (DX11); ~520 mods",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "LSLib Divine 1.20.4",
+   "Script Extender v32 (logs only)",
+   "Python minidump parser",
+   "capstone",
+   "EasyCheat (teleport for tests)"
+  ],
+  "anti_cheat": "none; single-player save, offline",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "load-hang",
+   "crash-dump",
+   "minidump",
+   "bisect",
+   "level-layers",
+   "many-more-monsters",
+   "act-2",
+   "null-deref",
+   "debugging-method"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/clothing-sorter-generated-wardrobe-by-body-type.md",
+  "kind": "game",
+  "title": "A generated wardrobe mod: 260 clothing mods sorted by race and body type into containers summoned by reusable scrolls",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 8 / Patch 8 hotfix (Jun-Sep 2026), Steam, Windows; Script Extender v32",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "LSLib Divine 1.20.4",
+   "PowerShell + bash generator pipeline",
+   "AV Item Shipment Framework (ISF)",
+   "Script Extender (Lua handler)",
+   "Nexus Mods GraphQL API (mod descriptions)"
+  ],
+  "anti_cheat": "none; single-player",
+  "status": "working",
+  "agents": [
+   "Claude Code (Fable 5)",
+   "Claude Code (Opus 4.8)",
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "containers",
+   "treasure-tables",
+   "body-types",
+   "equipment-race",
+   "soft-dependency",
+   "item-shipment-framework",
+   "script-extender",
+   "generator",
+   "deterministic-uuids",
+   "self-check-gates",
+   "classifier"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/custom-outfits-visuals-materials-cloth-icons.md",
+  "kind": "game",
+  "title": "Custom outfits from cloned mod and vanilla meshes: visuals, materials, body masks, cloth, LODs, icons and the Blender GR2 round trip",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 7 era (Apr 2026) to Patch 8 hotfix (Sep 2026), Steam, Windows",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "asset-only",
+  "tools": [
+   "LSLib Divine 1.18.7 / 1.20.4",
+   "Blender 4.0.2",
+   "Norbyte dos2de_collada_exporter (io_scene_dos2de, later v3.0.0)",
+   "texconv (DirectXTex)",
+   "BG3 Modders Multitool (vanilla unpack)",
+   "Python (lsx edits, gates)"
+  ],
+  "anti_cheat": "none; single-player",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 4.7)",
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "clothing",
+   "armour",
+   "root-templates",
+   "visual-bank",
+   "material-bank",
+   "vertex-color-masks",
+   "underwear",
+   "cloth-physics",
+   "lod",
+   "icons",
+   "gr2",
+   "blender",
+   "dos2de",
+   "soft-dependency",
+   "equip-sound"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/gameplay-and-compatibility-patches-stats-osiris.md",
+  "kind": "game",
+  "title": "Gameplay and compatibility patches in stats and Osiris: level-gated armour tiers, Extra Attack on a modded cantrip, crit immunity, stacking damage reduction, feats from items, removing equipment glow, a class vs starting-equipment fix",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 7 era (Apr 2026) to Patch 8 hotfix (Aug 2026), Steam, Windows",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "LSLib Divine 1.20.4",
+   "vanilla stats dump (BG3 Modders Multitool)",
+   "Python (stats parsing, override generators, level simulators)"
+  ],
+  "anti_cheat": "none; single-player",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 4.7)",
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "stats",
+   "passives",
+   "statuses",
+   "boosts",
+   "armour-class",
+   "damage-reduction",
+   "critical-hits",
+   "extra-attack",
+   "osiris",
+   "override",
+   "patch-mod",
+   "starting-equipment",
+   "vfx",
+   "amp-ultra",
+   "dialogue"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/managing-a-500-mod-load-order-by-hand.md",
+  "kind": "game",
+  "title": "Running a 500+ mod load order by hand: modsettings.lsx rules, recovering a wiped order from a save, mod.io re-subscribes, game-folder files and conflict diagnosis",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 8 / Patch 8 hotfix (Jun-Sep 2026), Steam, Windows; Script Extender v32; ~530 paks",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "other",
+  "tools": [
+   "LSLib Divine 1.20.4",
+   "Python (XML edits, save meta reader, backup/restore)",
+   "Script Extender",
+   "Native Mod Loader (bink2w64 proxy)"
+  ],
+  "anti_cheat": "none; single-player",
+  "status": "working",
+  "agents": [
+   "Claude Code (Fable 5)",
+   "Claude Code (Opus 4.8)",
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "load-order",
+   "modsettings",
+   "meta-lsx",
+   "mod-io",
+   "saves",
+   "native-mod-loader",
+   "steam-verify",
+   "loose-files",
+   "kavt",
+   "photo-mode",
+   "animation-sets",
+   "ui-mods",
+   "troubleshooting"
+  ]
+ },
+ {
+  "path": "games/baldur-s-gate-3/weapons-skyrim-dagger-port-sheath-bone-visible-shields.md",
+  "kind": "game",
+  "title": "Weapons: porting a Skyrim dagger and scabbard, fixing a modded sword's sheath height with a Dummy_Sheath bone, and visible stowed shields for modded shields",
+  "game": "Baldur's Gate 3",
+  "games_also": [],
+  "game_version": "Patch 7 era (Apr 2026) and Patch 8 hotfix (Aug 2026), Steam, Windows",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "asset-only",
+  "tools": [
+   "Blender 3.6 LTS + niftools addon 0.1.1 (NIF import)",
+   "Blender 4.0.2 + Norbyte dos2de_collada_exporter",
+   "LSLib Divine 1.20.4 (convert-model, glTF and DAE)",
+   "Blender Weapon Templates (Nexus 11600)",
+   "texconv",
+   "Python (glTF and lsx edits)"
+  ],
+  "anti_cheat": "none; single-player",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 4.7)",
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://www.nexusmods.com/skyrimspecialedition/mods/107829",
+   "https://www.nexusmods.com/baldursgate3/mods/23732",
+   "https://www.nexusmods.com/baldursgate3/mods/443"
+  ],
+  "tags": [
+   "weapons",
+   "gr2",
+   "sheath",
+   "dummy-sheath",
+   "equipment-types",
+   "skyrim-port",
+   "nif",
+   "gltf",
+   "conform",
+   "shields",
+   "patch-8",
+   "scabbard"
+  ]
+ },
+ {
+  "path": "games/battlefield-4/frostbite-3-archive-and-ebx-formats.md",
+  "kind": "game",
+  "title": "Reading Frostbite 3 data: .toc/.sb/.cas archives, .cat catalog and .ebx binary XML (Battlefield 4)",
+  "game": "Battlefield 4",
+  "games_also": [
+   "Battlefield 3 (same tooling, BF3 bundle magic)",
+   "other Frostbite 3 titles"
+  ],
+  "game_version": "retail PC (Python 2 tooling written against 2013-era BF4 data)",
+  "platform": "linux",
+  "engine": "frostbite",
+  "route": "data",
+  "tools": [
+   "Frankelstner's Frostbite-Scripts (community Python 2 tooling)",
+   "bf4dumper (community Python 2 tool, from a forum attachment)",
+   "fb3decoder",
+   "python2.7",
+   "Zench ealayer3.exe (for EALayer3 audio) \u2014 Windows/Wine"
+  ],
+  "anti_cheat": "FairFight + PunkBuster \u2014 offline extraction of shipped data only; nothing is injected into a running game",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/NicknineTheEagle/Frostbite-Scripts"
+  ],
+  "tags": [
+   "frostbite",
+   "battlefield",
+   "bf4",
+   "ebx",
+   "toc",
+   "superbundle",
+   "cas",
+   "cat",
+   "lz77",
+   "delta-patch",
+   "audio",
+   "xas",
+   "ealayer3",
+   "speex",
+   "python2"
+  ]
+ },
+ {
   "path": "games/black-myth-wukong/reshade-depth-dead-end.md",
   "kind": "game",
   "title": "Black Myth: Wukong, Unreal 5.0: injection works, ReShade render depth does not",
@@ -106,7 +584,7 @@
   "humans": [
    "@Pherdee-boi"
   ],
-  "date": "2026-10-03",
+  "date": "2026-10-04",
   "links": [],
   "tags": [
    "borderlands",
@@ -120,7 +598,58 @@
    "mantle",
    "ground-slam",
    "projectiles",
-   "hooks"
+   "hooks",
+   "item-cards",
+   "loot-beams",
+   "hud",
+   "camera",
+   "materials",
+   "underbarrels",
+   "fire-modes",
+   "sound"
+  ]
+ },
+ {
+  "path": "games/cities-skylines/cities-skylines-modding-api-and-container-formats.md",
+  "kind": "game",
+  "title": "Cities: Skylines 1 and 2 modding: official APIs, editors, and the .crp/.locale containers",
+  "game": "Cities: Skylines",
+  "games_also": [
+   "Cities: Skylines II"
+  ],
+  "game_version": "CS1 (Steam app 255710), CS2 (1.x, modding docs still flagged beta)",
+  "platform": "windows",
+  "engine": "unity-mono",
+  "route": "loader-api",
+  "tools": [
+   "in-game Asset/Map Editor",
+   "CS1 Modding API (C#)",
+   "CS2 Modding Toolchain (C#/.NET)"
+  ],
+  "anti_cheat": "none \u2014 both games ship supported mod APIs (CS1 Modding API; CS2 Modding Toolchain + Paradox Mods)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://skylines.paradoxwikis.com/Modding",
+   "https://cs2.paradoxwikis.com/Modding",
+   "https://skylines.paradoxwikis.com/CRAP_File_Format",
+   "https://skylines.paradoxwikis.com/Modding_API"
+  ],
+  "tags": [
+   "unity",
+   "modding-api",
+   "crp",
+   "locale",
+   "asset-pipeline",
+   "ecs",
+   "prefab",
+   "paradox"
   ]
  },
  {
@@ -161,6 +690,46 @@
   ]
  },
  {
+  "path": "games/detroit-become-human/segs-data-container-mesh-animation-and-cloth-in-blender.md",
+  "kind": "game",
+  "title": "Detroit: Become Human: SEGS/DATA_CONTAINER editing (mesh, animation, cloth) in Blender",
+  "game": "Detroit: Become Human",
+  "games_also": [],
+  "game_version": "Detroit: Become Human PC (Epic/Steam) retail install; build not pinned",
+  "platform": "windows",
+  "engine": "native",
+  "route": "data",
+  "tools": [
+   "Blender 4.0+",
+   "Detroit Blender Addon by TheLeonX (Nexus Mods)"
+  ],
+  "anti_cheat": "none; single-player, data packages only, executables and DRM untouched",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-07",
+  "links": [
+   "https://www.nexusmods.com/detroitbecomehuman/mods/139"
+  ],
+  "tags": [
+   "quantic-dream",
+   "segs",
+   "data-container",
+   "meshdata",
+   "havok",
+   "cloth",
+   "animdata",
+   "filetext",
+   "blender",
+   "bigfile",
+   "native-container"
+  ]
+ },
+ {
   "path": "games/dragon-s-dogma-2/blink-strike-teleports-behind-the-target-reframework-lua-ski.md",
   "kind": "game",
   "title": "Blink Strike teleports behind the target (REFramework Lua skill rework)",
@@ -191,6 +760,44 @@
    "effects",
    "sounds",
    "raycast"
+  ]
+ },
+ {
+  "path": "games/dragon-s-dogma-2/dimension-door-aimed-teleport-spell-with-a-scripted-arrival-.md",
+  "kind": "game",
+  "title": "Dimension Door: aimed teleport spell with a scripted arrival camera (REFramework Lua)",
+  "game": "Dragon's Dogma 2",
+  "games_also": [],
+  "game_version": "dd2.exe 3.2.0.0, Steam 2054970 build 24831693; REFramework rev 0a07faae (v1.5.9.1+505)",
+  "platform": "windows",
+  "engine": "re-engine",
+  "route": "loader-api",
+  "tools": [
+   "REFramework (Lua)",
+   "_ScriptCore (SilverEzredes and alphaZomega, raycast helper)",
+   "il2cpp_dump.json (REFramework SDK dump) for symbol lookup"
+  ],
+  "anti_cheat": "none found by um scan; single-player only",
+  "status": "released",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/ntgoten/dimension-door",
+   "knowledge/games/dragon-s-dogma-2/blink-strike-teleports-behind-the-target-reframework-lua-ski.md"
+  ],
+  "tags": [
+   "teleport",
+   "camera",
+   "cutscene",
+   "animation",
+   "input-hooks",
+   "gamepad",
+   "effects",
+   "raycast",
+   "fall-damage"
   ]
  },
  {
@@ -238,6 +845,170 @@
   ]
  },
  {
+  "path": "games/far-cry-6/dunia-engine-modding-and-swf-format.md",
+  "kind": "game",
+  "title": "Far Cry 6 \u2014 Dunia engine modding and the SWF/FEU UI format",
+  "game": "Far Cry 6",
+  "games_also": [
+   "Far Cry 5",
+   "Far Cry New Dawn",
+   "Far Cry 4",
+   "Watch Dogs (Disrupt, shared formats)"
+  ],
+  "game_version": "see note",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "FCBConverter",
+   "Gibbed.Dunia",
+   "FC6Model.exe",
+   "FC6.Hook",
+   "FCModInstaller",
+   "Sandbox2Package.exe",
+   "blender-io-dunia",
+   "JPEXS FFDec",
+   "base64 SWF Texture Tool",
+   "wwiser",
+   "DuniaTools"
+  ],
+  "anti_cheat": "No kernel-level anti-cheat is reported. All work is offline against local archive and UI data; mods ship as .a3 packages installed by FCModInstaller. Ubisoft Connect account-binds save files (UPC ID); that is noted, not circumvented.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/JakubMarecek/FCBConverter",
+   "https://github.com/jindrapetrik/jpexs-decompiler",
+   "https://open-flash.github.io/mirrors/swf-spec-19.pdf"
+  ],
+  "tags": [
+   "far-cry-6",
+   "dunia",
+   "swf",
+   "feu",
+   "weapon-wheel",
+   "vehicles",
+   "archive",
+   "asset-modding"
+  ]
+ },
+ {
+  "path": "games/forza-horizon-5/forzatech-carbin-modelbin-and-gamedb.md",
+  "kind": "game",
+  "title": "ForzaTech car assets: .carbin/.modelbin/.vfont, .ca2 archives and the GameDB.slt crypto",
+  "game": "Forza Horizon 5",
+  "games_also": [
+   "Forza Horizon 4",
+   "Forza Horizon 3",
+   "Forza Motorsport 7",
+   "Forza Motorsport (2023)",
+   "Forza Motorsport 6: Apex"
+  ],
+  "game_version": "FH5 v1.405.2.0 (Steam) tooling target; crypto supports FH5 v1.614.70.0 and earlier",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "Blender 4.2 (carbin_importer.py, modelbin_importer.py, vfont_importer.py)",
+   "ImHex v1.30.1 (patterns/)",
+   "Node.js 18 (carbin_converter.mjs, string_extractor.mjs)",
+   "ca2_extractor.py (python zlib)",
+   "ForzaTech-crypto-tool (CryptoTool.exe, boost 1.82.0)",
+   "3DSimED 3.2c"
+  ],
+  "anti_cheat": "FH5 is online with anti-cheat. This note only reads an offline copy of the user's own game rip; nothing is injected into a running game and no protection is defeated.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://web.archive.org/web/20231023061958/https://forum.xentax.com/viewtopic.php?t=4256",
+   "https://github.com/Nenkai/010GameTemplates/blob/main/Forza/TFIT.bt"
+  ],
+  "tags": [
+   "forzatech",
+   "carbin",
+   "modelbin",
+   "vfont",
+   "gamedb",
+   "tfit",
+   "arxan",
+   "transformatit",
+   "archive",
+   "blender",
+   "imhex"
+  ]
+ },
+ {
+  "path": "games/fpv-logic/fpv-logic-drones-flight-model-rc-radio-and-3d-models-in-minecraft.md",
+  "kind": "game",
+  "title": "FPV LOGIC drones (flight model, RC radio and 3D models) ported into Minecraft 26.3 (Fabric)",
+  "game": "FPV LOGIC",
+  "games_also": [
+   "Minecraft Java Edition"
+  ],
+  "game_version": "FPV LOGIC (Steam 2398030), UE 5.3.2 (++UE5+Release-5.3, CL 29314046), 18 legacy paks v11, Oodle; Minecraft Java 26.3 + Fabric Loader 0.19.5 + Fabric API 0.162.0+26.3",
+  "platform": "windows",
+  "engine": "unreal",
+  "route": "reimplementation",
+  "tools": [
+   "own Python pak v11 reader (Oodle via ctypes)",
+   "own cooked-UE5.3 uasset/FField/unversioned-property reader",
+   "own Kismet bytecode disassembler",
+   "own GVAS SaveGame reader",
+   "own cooked StaticMesh / Texture2D (DXT1/DXT5) / MaterialInstanceConstant readers",
+   "own meshoptimizer-style edge-collapse simplifier (pure Python)",
+   "Fabric Loom 1.18 (JDK 26 as Gradle JVM)",
+   "um scan / um publish check"
+  ],
+  "anti_cheat": "none; FPV LOGIC is only read from disk (paks + SaveGames), never launched or hooked",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "content-port",
+   "mashup",
+   "unreal",
+   "blueprint",
+   "kismet",
+   "gvas",
+   "unversioned-properties",
+   "oodle",
+   "simple-construction-script",
+   "static-mesh",
+   "texture2d",
+   "dxt",
+   "material-instance",
+   "lod",
+   "mesh-simplification",
+   "fabric",
+   "sdl3",
+   "joystick",
+   "rc-transmitter",
+   "camera-mixin",
+   "spectator",
+   "mannequin",
+   "post-effect",
+   "custom-geometry",
+   "performance-mods",
+   "distant-horizons",
+   "chunky"
+  ]
+ },
+ {
   "path": "games/gta-v/minecraft-passthrough.md",
   "kind": "game",
   "title": "Minecraft inside GTA V (passthrough mod)",
@@ -282,6 +1053,76 @@
    "reprojection",
    "camera-sync",
    "director"
+  ]
+ },
+ {
+  "path": "games/half-life/half-life-1-weapons-and-monsters-in-minecraft.md",
+  "kind": "game",
+  "title": "Half-Life 1's weapons and monsters as a Minecraft Fabric mod, from a GoldSrc model converter",
+  "game": "Half-Life",
+  "games_also": [
+   "Minecraft Java Edition"
+  ],
+  "game_version": "Half-Life 1 (Steam, GoldSrc, Studio model version 10), Minecraft Java 1.21.1 with Fabric Loader 0.19.5, Fabric API 0.116.17+1.21.1",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "loader-api",
+  "tools": [
+   "Fabric (Loom 1.11-SNAPSHOT, Gradle 8.14.3, JDK 23)",
+   "Python 3.12",
+   "ffmpeg (wav to ogg)"
+  ],
+  "anti_cheat": "none involved: single-player Minecraft; Half-Life is never launched or modified, only its files are read",
+  "status": "working",
+  "agents": [
+   "Claude Code (Sonnet 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "half-life",
+   "goldsrc",
+   "minecraft",
+   "fabric",
+   "weapons",
+   "hitscan",
+   "projectiles",
+   "mobs",
+   "content-port"
+  ]
+ },
+ {
+  "path": "games/half-life/minecraft-steve-player-weapons-and-hotbar-hud-in-goldsrc-hal.md",
+  "kind": "game",
+  "title": "Minecraft Steve player, weapons and hotbar HUD in GoldSrc (Halflife Updated)",
+  "game": "half life",
+  "games_also": [],
+  "game_version": "Halflife Updated master @ c400297, Half-Life V1.1.0",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "other",
+  "tools": [
+   "uv",
+   "cmake",
+   "MSVC 2022"
+  ],
+  "anti_cheat": "none",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "goldsrc",
+   "hl1",
+   "steve",
+   "minecraft",
+   "hud",
+   "hotbar",
+   "weapons"
   ]
  },
  {
@@ -371,6 +1212,43 @@
   ]
  },
  {
+  "path": "games/left-4-dead/left-4-dead-infected-and-tank-in-minecraft.md",
+  "kind": "game",
+  "title": "Left 4 Dead's common infected (19 looks) and Tank as animated Minecraft mobs",
+  "game": "Left 4 Dead",
+  "games_also": [
+   "Minecraft Java Edition"
+  ],
+  "game_version": "Left 4 Dead 1 (Steam app 500, MDL version 49 models), Minecraft Java 1.21.1 with Fabric Loader 0.19.5, Fabric API 0.116.17+1.21.1",
+  "platform": "windows",
+  "engine": "source",
+  "route": "loader-api",
+  "tools": [
+   "Fabric (Loom 1.11-SNAPSHOT, Gradle 8.14.3, JDK 23)",
+   "Python 3.12",
+   "ffmpeg (wav to ogg)"
+  ],
+  "anti_cheat": "none involved: single-player Minecraft; Left 4 Dead is never launched, hooked or patched, its files are only read from disk",
+  "status": "working",
+  "agents": [
+   "Claude Code (Sonnet 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "left4dead",
+   "minecraft",
+   "fabric",
+   "content-port",
+   "source-engine",
+   "skeletal-animation",
+   "mobs",
+   "tank",
+   "boss"
+  ]
+ },
+ {
   "path": "games/mewgenics/combat-roster-panel.md",
   "kind": "game",
   "title": "Combat Roster Panel: a native ImGui party panel for Mewgenics, drawn with the game's own art, fonts and text",
@@ -389,16 +1267,17 @@
    "ReadProcessMemory (read-only live inspection)"
   ],
   "anti_cheat": "none (single player)",
-  "status": "working",
+  "status": "released",
   "agents": [
    "Claude Code (Opus 5.5)"
   ],
   "humans": [
    "@TotSamiyMorzh"
   ],
-  "date": "2026-10-02",
+  "date": "2026-10-05",
   "links": [
-   "https://github.com/TotSamiyMorzh/mewgenics-combat-roster"
+   "https://github.com/TotSamiyMorzh/mewgenics-combat-roster",
+   "https://www.nexusmods.com/mewgenics/mods/539"
   ],
   "tags": [
    "native-dll",
@@ -409,9 +1288,134 @@
    "swf",
    "flash-rasteriser",
    "fonts",
+   "cjk",
    "localisation",
    "portraits",
    "ui"
+  ]
+ },
+ {
+  "path": "games/minecraft/bloons-td-6-in-minecraft.md",
+  "kind": "game",
+  "title": "Bloons TD 6 inside Minecraft: the guest's rules as a headless 2D sim, Minecraft as the view",
+  "game": "Minecraft",
+  "games_also": [
+   "Bloons TD 6"
+  ],
+  "game_version": "Minecraft Java 1.20.1 + Forge 47.2.0 (dev and benches; also runs on Forge 47.4.10 in the user's modded instance), Java 17, official mappings. Guest: Bloons TD 6 v56.3, Epic Games Store build, Unity 6000.0.58f2, IL2CPP, Addressables 2.9.1",
+  "platform": "windows",
+  "engine": "java",
+  "route": "reimplementation",
+  "tools": [
+   "Forge MDK 1.20.1-47.2.0 (Gradle, official mappings, JDK 17)",
+   "javac + a plain-Java bench (engine tested without Minecraft or Gradle)",
+   "Python 3.14 + UnityPy 1.25.4 + Pillow + numpy",
+   "fmod_toolkit (FMOD decoding of AudioClips)",
+   "ffmpeg (OGG Vorbis, mono)"
+  ],
+  "anti_cheat": "none on the host side. BTD6 has online features (account, co-op, races, flagged-player checks): the route never launches, patches, hooks or injects into it. Only its asset files were read offline, read-only, from the user's own install",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "Ratman258"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "mashup",
+   "reimplementation",
+   "headless-sim",
+   "tower-defense",
+   "forge",
+   "unity6",
+   "unitypy",
+   "addressables",
+   "local-resource-pack",
+   "skinning",
+   "mirror-entities",
+   "client-side-projectiles",
+   "config-toml",
+   "benches"
+  ]
+ },
+ {
+  "path": "games/minecraft/half-life-2-guns-in-minecraft-passthrough-hl2-demo-under-win.md",
+  "kind": "game",
+  "title": "Half-Life 2 guns in Minecraft (passthrough, HL2 Demo under Wine on macOS)",
+  "game": "Minecraft",
+  "games_also": [
+   "Half-Life 2 Demo"
+  ],
+  "game_version": "Minecraft Java 26.3 (demo account), Fabric Loader 0.19.5, Fabric API 0.161.0+26.3; Half-Life 2 Demo (Steam app 219) on the HL2 depot build 19307283, 32-bit hl2.exe with DXVK d3d9",
+  "platform": "macos",
+  "engine": "java",
+  "route": "passthrough",
+  "tools": [
+   "Fabric (Loom 1.18)",
+   "Wine 10.0 (Sikarugir wrapper)",
+   "ScreenCaptureKit (Swift helpers)",
+   "imageio-ffmpeg via uv"
+  ],
+  "anti_cheat": "none in single-player (VAC only applies to HL2 multiplayer; nothing online was touched)",
+  "status": "working",
+  "agents": [
+   "Claude Code (Claude Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "source-engine",
+   "wine",
+   "macos",
+   "screencapturekit",
+   "chroma-key",
+   "console-bridge"
+  ]
+ },
+ {
+  "path": "games/minecraft/kindred-local-llm-ai-companion-fabric.md",
+  "kind": "game",
+  "title": "Kindred: Local LLM AI companion with Ollama, bounded inference, autonomy, and memory",
+  "game": "Minecraft",
+  "games_also": [],
+  "game_version": "Minecraft Java 1.20.1, Fabric Loader 0.15.11, Fabric API 0.92.2+1.20.1",
+  "platform": "windows",
+  "engine": "java",
+  "route": "loader-api",
+  "tools": [
+   "Fabric Loader 0.15.11",
+   "Fabric Loom 1.6.12",
+   "Yarn mappings 1.20.1+build.10:v2",
+   "Gradle 8.7",
+   "Java 17",
+   "Ollama (local LLM inference)"
+  ],
+  "anti_cheat": "none (single-player and private servers only; never tested against or designed for online anti-cheat environments)",
+  "status": "working",
+  "agents": [
+   "Claude Code (Sonnet 5)"
+  ],
+  "humans": [],
+  "date": "2026-10-07",
+  "links": [],
+  "tags": [
+   "fabric",
+   "ai-companion",
+   "npc",
+   "local-llm",
+   "ollama",
+   "autonomy",
+   "bounded-inference",
+   "navigation",
+   "raycasting",
+   "atlas",
+   "memory",
+   "reflexes",
+   "utf8-journal",
+   "gametest"
   ]
  },
  {
@@ -455,33 +1459,608 @@
   ]
  },
  {
-  "path": "games/stick-it-to-the-stickman/instant-fail-choice-prompts-patching-a-unity-level-s-death-p.md",
+  "path": "games/minecraft/resident-evil-2-s-live-picture-composited-into-minecraft-wit.md",
   "kind": "game",
-  "title": "Instant-fail choice prompts: patching a Unity level's death path with Harmony",
-  "game": "Stick It To The Stickman",
-  "games_also": [],
-  "game_version": "steam 2085540, Unity 2022.3.4.3502396",
-  "platform": "windows",
-  "engine": "unity-mono",
-  "route": "managed-patch",
-  "tools": [
-   "BepInEx",
-   "Harmony"
+  "title": "Resident Evil 2's live picture composited into Minecraft with depth",
+  "game": "Minecraft",
+  "games_also": [
+   "Resident Evil 2"
   ],
-  "anti_cheat": "none found by um scan",
+  "game_version": "Minecraft Java 26.3 + Fabric Loader 0.19.5 / Fabric API 0.161.0+26.3 (Loom 1.18.2, JDK 25); Resident Evil 2 (Steam app 883710, RE Engine, D3D12) + REFramework 1.5.9.1",
+  "platform": "windows",
+  "engine": "java",
+  "route": "passthrough",
+  "tools": [
+   "REFramework 1.5.9.1 (native plugin + Lua probe)",
+   "Fabric Loader 0.19.5 + Fabric API 0.161.0+26.3 (Loom 1.18.2, JDK 25)",
+   "MSVC 14.44 (VS 2022 Build Tools)",
+   "sheet preflight, fake_frame_producer.py, dump_live_frame.py",
+   "um win (shot/drive)"
+  ],
+  "anti_cheat": "none detected on re2.exe; both games single-player and offline only, never launched online",
   "status": "working",
   "agents": [
-   "opencode (big-pickle)"
+   "OpenCode (mimo-v2.6-flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/praydog/REFramework",
+   "https://github.com/rehan-remade/universal-modder/tree/main/examples/minecraft-gta5-passthrough"
+  ],
+  "tags": [
+   "mashup",
+   "passthrough",
+   "shared-memory",
+   "seqlock",
+   "depth-compositing",
+   "d3d12",
+   "frame-capture",
+   "reframework",
+   "fabric",
+   "mixin",
+   "reversed-z",
+   "camera-mirror"
+  ]
+ },
+ {
+  "path": "games/minecraft/ruby-rush-220-talent-forge-1-20-1-mod-gui-vein-miner-bytecod.md",
+  "kind": "game",
+  "title": "Ruby Rush: 220-talent Forge 1.20.1 mod - GUI, vein miner, bytecode-derived icon UVs",
+  "game": "Minecraft",
+  "games_also": [],
+  "game_version": "1.20.1 (Forge 47.4.10)",
+  "platform": "windows",
+  "engine": "java",
+  "route": "loader-api",
+  "tools": [
+   "javap",
+   "gradle",
+   "pillow",
+   "python"
+  ],
+  "anti_cheat": "none",
+  "status": "working",
+  "agents": [
+   "OpenCode (mimo-v2.6-flash-free)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "forge",
+   "gui",
+   "talents",
+   "vein-mining",
+   "icons",
+   "bytecode"
+  ]
+ },
+ {
+  "path": "games/naruto-shippuden-ultimate-ninja-storm-4/free-for-all-4-6-teams-native-ui.md",
+  "kind": "game",
+  "title": "Naruto Storm 4: free-for-all for 4-6 teams with native UI, by controlling the duel's side/role lookups",
+  "game": "Naruto Shippuden: Ultimate Ninja Storm 4",
+  "games_also": [],
+  "game_version": "NSUNS4.exe 1.09 (Road to Boruto)",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "UltimateStormAPI proxy (d3dcompiler_47.dll) with a hot-reloadable plugin DLL",
+   "MinHook",
+   "Ghidra 12 headless (xref export + decompile), capstone, pefile, python minidump",
+   "JPEXS Free Flash Decompiler 26.3 (Scaleform GFx / AS3 edits)",
+   "um win (launch, drive, shot), um backup"
+  ],
+  "anti_cheat": "none touched: offline Free Battle only, never used in online modes",
+  "status": "working",
+  "agents": [
+   "Claude Code (claude-fable-5-1)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "cyberconnect2",
+   "fighting-game",
+   "free-for-all",
+   "call-site-audit",
+   "hot-reload",
+   "game-thread",
+   "scaleform",
+   "native-ui",
+   "memory-arena"
+  ]
+ },
+ {
+  "path": "games/naruto-shippuden-ultimate-ninja-storm-4/porting-asbr-characters-into-storm-4-both-games-cpk-payloads.md",
+  "kind": "game",
+  "title": "Porting ASBR characters into Storm 4: both games' CPK payloads are encrypted",
+  "game": "Naruto Shippuden: Ultimate Ninja Storm 4",
+  "games_also": [
+   "JoJo's Bizarre Adventure: All-Star Battle R"
+  ],
+  "game_version": "Steam build 5376895 (steam 349040); ASBR Steam build 13123765 (steam 1372110)",
+  "platform": "windows",
+  "engine": "native",
+  "route": "other",
+  "tools": [
+   "own read-only CRI CPK reader (Python, about 170 lines)"
+  ],
+  "anti_cheat": "none in Storm 4; EasyAntiCheat in ASBR (ASBR was never launched, only its files read)",
+  "status": "abandoned",
+  "agents": [
+   "Claude Code (Opus 5.5)"
   ],
   "humans": [],
   "date": "2026-10-04",
   "links": [],
   "tags": [
-   "unity-mono",
-   "harmony",
-   "bepinex",
-   "death-hooks",
-   "ui-overlay"
+   "cyberconnect2",
+   "cri-cpk",
+   "xfbin",
+   "crossover",
+   "encrypted-archives"
+  ]
+ },
+ {
+  "path": "games/need-for-speed-most-wanted-2005/aems-abk-bnk-audio-banks.md",
+  "kind": "game",
+  "title": "EA Black Box AEMS sound banks: the .abk container and .bnk sample banks (ABKTool + SX.EXE)",
+  "game": "Need for Speed: Most Wanted (2005)",
+  "games_also": [
+   "Need for Speed: Carbon",
+   "Need for Speed: ProStreet",
+   "Need for Speed: Undercover"
+  ],
+  "game_version": "Black Box-era AEMS audio (ABK header reports Aimex 1.1.1; sample is CAR_66_M3GTR)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "ABKTool.exe (xan1242's EA Black Box AEMS Bank tool)",
+   "SX.EXE (EA wave extractor, shipped alongside ABKTool; not linked here)",
+   "Wine (wine-staging) for the Windows binaries"
+  ],
+  "anti_cheat": "none \u2014 offline audio extraction",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "nfs",
+   "most-wanted",
+   "aems",
+   "abk",
+   "bnk",
+   "audio",
+   "soundbank",
+   "ea-black-box",
+   "x86",
+   "wine",
+   "reverse-engineering"
+  ]
+ },
+ {
+  "path": "games/need-for-speed-shift-2/chameleon-mesh-formats-meb-vhf.md",
+  "kind": "game",
+  "title": "Reading Chameleon engine meshes: .meb/.imb and .vhf (.bml/.sgb/.sgx) from NFS Shift 2",
+  "game": "Need for Speed: Shift 2 Unleashed",
+  "games_also": [
+   "Need for Speed: Shift",
+   "Project CARS 1/2",
+   "Test Drive: Ferrari Racing Legends"
+  ],
+  "game_version": "retail PC (BFF archives), no specific build pinned",
+  "platform": "linux",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "Blender 5.x",
+   "meb_import (Blender addon)",
+   "vhf_import (Blender addon)",
+   "QuickBMS + nfsshift.bms",
+   "SMS Importer 3.1c (3ds Max)"
+  ],
+  "anti_cheat": "none \u2014 offline asset extraction, nothing run in-game",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/auvy/nfs-shift-to-blender",
+   "https://www.tapatalk.com/groups/kottons_chop_shop/ti-scp-ti-sms-model-importer-t3217.html",
+   "https://aluigi.altervista.org/bms/nfsshift.bms"
+  ],
+  "tags": [
+   "chameleon",
+   "madness-engine",
+   "meb",
+   "imb",
+   "vhf",
+   "bml",
+   "sgb",
+   "sgx",
+   "mesh",
+   "big-endian",
+   "little-endian",
+   "vprop",
+   "import"
+  ]
+ },
+ {
+  "path": "games/no-mans-sky/hello-games-psar-pak-mbin-formats.md",
+  "kind": "game",
+  "title": "No Man's Sky: PSAR/HGPAK archives, the MBIN binary format, and loose-file modding",
+  "game": "No Man's Sky",
+  "games_also": [],
+  "game_version": "PC (GOG/Steam), 2016\u20132023 RE window; PS4 and Switch variants noted",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "brink.bms (QuickBMS)",
+   "MBINCompiler (monkeyman192)",
+   "NMS-Tools (HugoPeters)",
+   "HGPAKtool (monkeyman192)",
+   "Switch-Toolbox (KillzXGaming)",
+   "010 Editor templates"
+  ],
+  "anti_cheat": "none known",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/monkeyman192/MBINCompiler"
+  ],
+  "tags": [
+   "hello-games",
+   "psar",
+   "hgpak",
+   "mbin",
+   "exml",
+   "mbincompiler",
+   "loose-files",
+   "glsl",
+   "skeleton",
+   "archive"
+  ]
+ },
+ {
+  "path": "games/portal-2/portalcraft-minecraft-inside-portal-2.md",
+  "kind": "game",
+  "title": "Portalcraft: real Minecraft inside Portal 2 (passthrough mod)",
+  "game": "Portal 2",
+  "games_also": [
+   "Minecraft Java Edition"
+  ],
+  "game_version": "Portal 2 (Steam, build 10090, D3D9, 32-bit) + ReShade 6.8.0 add-on build; Minecraft Java 26.3 + Fabric Loader 0.19.5 + Fabric API 0.161.0+26.3, JDK 25 (Temurin 25.0.4.1+1), Windows 11",
+  "platform": "windows",
+  "engine": "source",
+  "route": "passthrough",
+  "tools": [
+   "ReShade 6.8 add-on API (32-bit add-on)",
+   "Fabric Loader + Fabric API (Loom 1.18, JDK 25)",
+   "MSVC x86 (portable)",
+   "hl2sdk-portal2 headers",
+   "SourceAutoRecord offset tables",
+   "um win (WinDrive) for test input"
+  ],
+  "anti_cheat": "VAC on online co-op only: Portal 2 is launched with -insecure (VAC off) and ReShade's d3d9.dll is placed in the game folder only for the session, then removed",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "@griffdog21"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "games/gta-v/minecraft-passthrough.md"
+  ],
+  "tags": [
+   "mashup",
+   "passthrough",
+   "shared-memory",
+   "depth-compositing",
+   "reprojection",
+   "camera-prediction",
+   "reshade-addon",
+   "vscript",
+   "netvars",
+   "fabric",
+   "mixin",
+   "advancements",
+   "installer",
+   "minecraft-launcher"
+  ]
+ },
+ {
+  "path": "games/project-zomboid/b41-modpack-fix-mods-and-linux-dedicated-server.md",
+  "kind": "game",
+  "title": "A Build 41 Project Russia modpack: three small fix mods and a modded Linux dedicated server",
+  "game": "Project Zomboid",
+  "games_also": [],
+  "game_version": "Build 41.78.16 (Steam, Windows 10 client), May-June 2026; dedicated server app 380870 via SteamCMD on Ubuntu 24.04; about 140 Workshop mods with the Project Russia map. The legacy branch is now 41.78.21 (not re-tested)",
+  "platform": "windows",
+  "engine": "java",
+  "route": "loader-api",
+  "tools": [
+   "Python 3.12 (catalog and Lua generator scripts)",
+   "SteamCMD",
+   "systemd",
+   "mcrcon",
+   "the in-game Workshop uploader"
+  ],
+  "anti_cheat": "none; a private server the player hosts for friends, every player runs the same mod list",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 4.7)",
+   "Claude Code (Opus 4.8)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://pzwiki.net/wiki/Mod.info",
+   "https://pzwiki.net/wiki/Procedural_distributions",
+   "https://github.com/FWolfe/Zomboid-Modding-Guide"
+  ],
+  "tags": [
+   "b41",
+   "mod-info",
+   "textures",
+   "loot",
+   "distributions",
+   "onpredistributionmerge",
+   "radio",
+   "item-scripts",
+   "dedicated-server",
+   "workshop-upload",
+   "spawn-regions"
+  ]
+ },
+ {
+  "path": "games/project-zomboid/b42-20-modlist-preset-and-world-load-errors.md",
+  "kind": "game",
+  "title": "A 130-mod Build 42.20 modlist: the preset file, version folders and \"World loading could not proceed\"",
+  "game": "Project Zomboid",
+  "games_also": [],
+  "game_version": "Build 42.20.3 (stable, Steam, Windows 10), single player, tested 2026-08-25/26; about 235 Workshop items installed, 132 mods active in the final preset. Not re-tested on 42.20.4 or 42.21",
+  "platform": "windows",
+  "engine": "java",
+  "route": "loader-api",
+  "tools": [
+   "Python 3.12 (own scripts for mod.info scanning",
+   "preset writing and log triage)",
+   "Steam Web API",
+   "grep"
+  ],
+  "anti_cheat": "none (single player)",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://pzwiki.net/wiki/Mod.info",
+   "https://pzwiki.net/wiki/Mod_structure"
+  ],
+  "tags": [
+   "modlist",
+   "load-order",
+   "presets",
+   "mod-info",
+   "version-folders",
+   "workshop",
+   "crash-triage",
+   "world-dictionary",
+   "vehicles",
+   "b42"
+  ]
+ },
+ {
+  "path": "games/risk-of-rain-2/arkham-knight-batman-survivor.md",
+  "kind": "game",
+  "title": "Arkham Knight Batman as a Risk of Rain 2 survivor: UE3 model and animations ported with umodel, Blender and a Unity AssetBundle",
+  "game": "Risk of Rain 2",
+  "games_also": [
+   "Batman: Arkham Knight"
+  ],
+  "game_version": "RoR2 1.4.1#912 (Unity 2021.3.33f1, Mono), Steam build 21587608; Batman: Arkham Knight Steam build 13250859 (UE3 863/32995); Windows 11",
+  "platform": "windows",
+  "engine": "unity-mono",
+  "route": "loader-api",
+  "tools": [
+   "BepInExPack 5.4.2122 (Doorstop 4)",
+   "RoR2BepInExPack 1.43.0",
+   "R2API Core 5.3.0 + split modules (Prefab 1.1.1, Language 1.1.0, Sound 1.0.3, RecalculateStats 1.6.6, ContentManagement 1.0.11, Networking 1.0.4, DamageType 1.1.7, Orb 1.0.1)",
+   "HenryTutorial @ 42797355 (AC update)",
+   ".NET SDK 5.0.104 (dotnet build, netstandard2.1, C# 7.3)",
+   "RiskOfRain2.GameLibs 1.4.1-r.0",
+   "ilspycmd 11.1.0.9782",
+   "UE Viewer (umodel) build 1590, 64-bit, 2023-07-07",
+   "Blender 5.2.2 LTS portable + io_scene_psk_psa 9.1.3",
+   "Unity 2021.3.33f1 (Personal, batchmode)",
+   "Thunderstore Mod Manager 1.25 (Overwolf)"
+  ],
+  "anti_cheat": "none (RoR2 co-op PvE has no anti-cheat; Arkham Knight was only read offline, never launched or modified)",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [
+   "games/risk-of-rain-2/helldiver-survivor.md"
+  ],
+  "tags": [
+   "survivor",
+   "port",
+   "ue3",
+   "umodel",
+   "psk",
+   "psa",
+   "blender",
+   "unity-assetbundle",
+   "animation-retarget",
+   "cape",
+   "root-motion",
+   "henry-template",
+   "loader-hooks",
+   "melee"
+  ]
+ },
+ {
+  "path": "games/risk-of-rain-2/helldiver-survivor.md",
+  "kind": "game",
+  "title": "Helldiver survivor: custom skills, stratagems, Helldivers 2 models on the Commando rig, config, lab bridge and benchmark",
+  "game": "Risk of Rain 2",
+  "games_also": [
+   "Helldivers 2"
+  ],
+  "game_version": "1.4.1#912 (Unity 2021.3.33f1, Mono), Steam, Windows 11; separate lab copy of the install",
+  "platform": "windows",
+  "engine": "unity-mono",
+  "route": "loader-api",
+  "tools": [
+   "BepInExPack 5.4.2122",
+   "RoR2BepInExPack 1.43.0",
+   "R2API ContentManagement 1.0.11 / Language 1.1.0 / Prefab 1.1.1",
+   "HookGenPatcher 1.2.9 (lab only)",
+   ".NET SDK 8 (netstandard2.1)",
+   "ilspycmd 8.2",
+   "filediver 0.7.55",
+   "Blender 4.0 (headless)",
+   "uv + numpy/pillow"
+  ],
+  "anti_cheat": "none (co-op PvE, no anti-cheat); all testing in a separate lab copy of the game",
+  "status": "working",
+  "agents": [
+   "Claude Code (Claude Opus 4.x, Sonnet and Opus 5.5 across sessions)"
+  ],
+  "humans": [
+   "Terr4"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "survivor",
+   "skills",
+   "entity-states",
+   "stratagems",
+   "skinned-mesh",
+   "model-swap",
+   "ik",
+   "cloth",
+   "normal-maps",
+   "decimation",
+   "texture-compression",
+   "config",
+   "benchmark",
+   "test-bridge"
+  ]
+ },
+ {
+  "path": "games/schedule-i/qol-suite-and-stack-limits-on-the-schedule-i-0-4-7-il2cpp-be.md",
+  "kind": "game",
+  "title": "QoL suite and stack limits on the Schedule I 0.4.7 IL2CPP beta with MelonLoader",
+  "game": "Schedule I",
+  "games_also": [],
+  "game_version": "0.4.7f9 IL2CPP (Steam 3164500, beta branch, buildid 25698382); also read the Mono alternate-beta 0.4.7f6",
+  "platform": "proton",
+  "engine": "unity-il2cpp",
+  "route": "managed-patch",
+  "tools": [
+   "MelonLoader 0.7.3",
+   "HarmonyX",
+   "ilspycmd 11.1",
+   "umu-run + GE-Proton11-6",
+   "rsvg-convert + Pillow (icons)"
+  ],
+  "anti_cheat": "none found; co-op is FishNet over Steam P2P. Built and tested single-player only",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "Malekabokhatwa"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/Malekabokhatwa/PocketPlug",
+   "https://github.com/Malekabokhatwa/IncreasedStackLimit-Latest"
+  ],
+  "tags": [
+   "il2cpp",
+   "melonloader",
+   "phone-app",
+   "compass",
+   "stack-size",
+   "ui",
+   "linux",
+   "proton"
+  ]
+ },
+ {
+  "path": "games/starfield/starfield-animation-af-rig-and-havok-physics.md",
+  "kind": "game",
+  "title": "Starfield animation (.af/.rig) and physics (Havok 2019.02)",
+  "game": "Starfield",
+  "games_also": [],
+  "game_version": "Bethesda Game Studios, 2023, Creation Engine 2 (PC)",
+  "platform": "windows",
+  "engine": "creation",
+  "route": "asset-only",
+  "tools": [
+   "CALUMI.Animation (Calaverah, LGPLv3)",
+   "sf_animation_io Blender addon (Deveris256)",
+   "StarfieldMeshConverter",
+   "Blender 4.3"
+  ],
+  "anti_cheat": "none relevant to asset conversion (offline files)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/Calaverah/CALUMI.Animation"
+  ],
+  "tags": [
+   "starfield",
+   "creation-engine",
+   "animation",
+   "af",
+   "rig",
+   "havok",
+   "physics",
+   "blender"
   ]
  },
  {
@@ -565,6 +2144,536 @@
   ]
  },
  {
+  "path": "games/test-drive-unlimited/opentdu-source-port-and-tdu1-file-formats.md",
+  "kind": "game",
+  "title": "OpenTDU \u2014 decompilation-based source port of Test Drive Unlimited (MC 1.66A)",
+  "game": "Test Drive Unlimited",
+  "games_also": [],
+  "game_version": "MC 1.66A",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "reimplementation",
+  "tools": [
+   "opentdu_assetExtractor",
+   "opentdu_savedecryptor",
+   "opentdu_zcuncompressor",
+   "vmf_to_swf.py",
+   "CMake >= 3.15",
+   "C++17 compiler (clang / gcc / MSVC)",
+   "Vulkan SDK >= 1.3.204"
+  ],
+  "anti_cheat": "none relevant to this offline source-port work",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/opentestdriveunlimited/OpenTestDriveUnlimited",
+   "https://github.com/opentestdriveunlimited/opentestdriveunlimited/releases",
+   "https://github.com/orgs/opentestdriveunlimited/projects/1",
+   "https://github.com/orgs/opentestdriveunlimited/projects/6"
+  ],
+  "tags": [
+   "test-drive-unlimited",
+   "tdu",
+   "source-port",
+   "decompilation",
+   "reverse-engineering",
+   "ghidra",
+   "vulkan",
+   "x86",
+   "flash",
+   "swf",
+   "tea",
+   "zlib"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited/savegame-and-config-formats.md",
+  "kind": "game",
+  "title": "TDU savegame encryption (tdudec XTEA) and the CarVST/XMBF audio-config container",
+  "game": "Test Drive Unlimited",
+  "games_also": [
+   "Test Drive Unlimited 2"
+  ],
+  "game_version": "TDU1 PC 1.66a (hash addresses referenced); TDU2 PC release",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "tdudec (Luigi Auriemma)",
+   "tdu_savegame_account_editor (Rust/iced)",
+   "xmbf_convert.py (local, unpublished)",
+   "XmbfEditor.java (local, unpublished)",
+   "Ghidra"
+  ],
+  "anti_cheat": "None relevant. All work is on files the player owns; analysis is read-only and edits are made on copies. No online-service spoofing.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "http://aluigi.altervista.org/papers.htm#others-file",
+   "https://github.com/Kethen/TDU_savegame_account_editor"
+  ],
+  "tags": [
+   "savegame",
+   "file-format",
+   "xtea",
+   "encryption",
+   "xmb",
+   "audio",
+   "config",
+   "tdu1",
+   "tdu2"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/playing-tdu2-online-with-project-paradise-2.md",
+  "kind": "game",
+  "title": "Playing Test Drive Unlimited 2 online with Project Paradise 2 (server, NAT, migration, driver regressions)",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "retail; community server current as of 2026-03",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "passthrough",
+  "tools": [
+   "Project Paradise 2 server + launcher (project-paradise2.de)",
+   "dgVoodoo2",
+   "DXVK",
+   "TDU2 Unpacker GUI"
+  ],
+  "anti_cheat": "Community-run. Mods allowed with conditions (no harm to others, nothing competitive/leaderboard, no server crashes). No anti-cheat bypass documented.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://project-paradise2.de/",
+   "https://turboduck.net/forums/topic/28390-test-drive-unlimited-2-modding-wiki/",
+   "https://github.com/djey47/tdumt2"
+  ],
+  "tags": [
+   "tdu2",
+   "project-paradise",
+   "multiplayer",
+   "p2p",
+   "nat",
+   "upnp",
+   "port-forwarding",
+   "amd",
+   "nvidia",
+   "drivers",
+   "revival-server",
+   "savegame-migration"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/reading-tdu2-vehicle-physics-havok-packfiles.md",
+  "kind": "game",
+  "title": "TDU2 vehicle physics: the Havok 5.5.0 packfile format inside .bnk containers",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "retail PC (TestDrive2.exe; bigfile_EU_1..5.big ~18 GB)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "grep",
+   "dd",
+   "parse_hkx.py (unpublished local script)"
+  ],
+  "anti_cheat": "SecuROM; static read-only analysis only, no bypass or modification attempted",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/blueskythlikesclouds/HavokAnimationExporter"
+  ],
+  "tags": [
+   "havok",
+   "hkx",
+   "physics",
+   "packfile",
+   "bnk",
+   "knab",
+   "file-format",
+   "reverse-engineering",
+   "tdu2"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/running-tdu2-on-modern-linux.md",
+  "kind": "game",
+  "title": "Running Test Drive Unlimited 2 on modern Linux: NULL-pointer crash fix + D3D9\u2192D3D11 rendering",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "see note",
+  "platform": "linux",
+  "engine": "unknown",
+  "route": "native-hook",
+  "tools": [
+   "MinGW-w64 (i686-w64-mingw32-gcc)",
+   "dgVoodoo2",
+   "GE-Proton",
+   "umu-run",
+   "gamemoderun",
+   "Wine DLL overrides"
+  ],
+  "anti_cheat": "None encountered for this offline compatibility work. The retail executable is protected; it is not modified on disk. Only a compatibility version.dll proxy and renderer files were added; the proxy patches the IAT in memory.",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://project-paradise2.de/",
+   "https://turboduck.net/forums/topic/28390-test-drive-unlimited-2-modding-wiki/",
+   "https://github.com/djey47/tdumt2"
+  ],
+  "tags": [
+   "wine",
+   "proton",
+   "d3d9",
+   "dgvoodoo2",
+   "null-pointer",
+   "iat-hook",
+   "compatibility"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/tdu2-archive-and-container-formats.md",
+  "kind": "game",
+  "title": "TDU2 archives and containers: .BIG bigfiles, KNAB .bnk banks, XMBF indexes",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "retail PC (bigfile_EU_1..5.big + matching .map indexes; Eden engine)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "TDU2.Unpacker (TDU2.BIG.Tool)",
+   "ModdingLibrary_2 (tdumt2/Bnk.cs, Xmb.cs)",
+   "xmbf_convert.py (local, unpublished)",
+   "bnk_packcdb.py (local, unpublished)",
+   "bnk_extract.py (local, unpublished)",
+   "vmf_extract.py (local, unpublished)"
+  ],
+  "anti_cheat": "SecuROM; read-only static format analysis, no bypass or modification attempted",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/djey47/tdu-cp/wiki/Tools-reference"
+  ],
+  "tags": [
+   "big",
+   "bnk",
+   "knab",
+   "bndl",
+   "xmb",
+   "xmbf",
+   "file-format",
+   "archive",
+   "containers",
+   "reverse-engineering",
+   "tdu2"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/tdu2-model-and-texture-formats.md",
+  "kind": "game",
+  "title": "TDU2 model and texture formats: .3DG/.3DD geometry, .2DM materials, .2DB textures",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "retail (any; formats are version-independent between TDU1 and TDU2 for .2DM/.2DB)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "custom Python parsers (blender-io-tdu-series)",
+   "Blender 4.0 LTS addon",
+   "3ds Max MaxScript importers (vagos21)",
+   "Krom bnk extractor"
+  ],
+  "anti_cheat": "none",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "tdu2",
+   "3dg",
+   "3dd",
+   "2dm",
+   "2db",
+   "mesh",
+   "texture",
+   "dxt",
+   "half-float",
+   "triangle-strip",
+   "little-endian",
+   "maxscript"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/tdu2-savegame-and-gauge-formats.md",
+  "kind": "game",
+  "title": "TDU2 savegame layout and gauge bank (.bnk / HudGaugeBank) format",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "see note",
+  "platform": "linux",
+  "engine": "unknown",
+  "route": "native-hook",
+  "tools": [
+   "Ghidra",
+   "xxd / hex editor",
+   "HxD",
+   ".NET decompiler (dnSpy-class)",
+   "MiniBnkManager"
+  ],
+  "anti_cheat": "None encountered for this offline file-format work. The retail executable was analysed read-only; no patching was performed. Save edits are done on copies.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "savegame",
+   "file-format",
+   "crc",
+   "stfs",
+   "gauge",
+   "bnk",
+   "ghidra"
+  ]
+ },
+ {
+  "path": "games/test-drive-unlimited-2/tdu2-vmf-flash-ui-format.md",
+  "kind": "game",
+  "title": "TDU2's .vmf Flash UI format: header, tag records and AVM1 bytecode",
+  "game": "Test Drive Unlimited 2",
+  "games_also": [],
+  "game_version": "retail PC (Eden engine; .vmf version 6)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "vmf_extract.py (local, unpublished)",
+   "bnk_extract.py (local, unpublished)"
+  ],
+  "anti_cheat": "SecuROM; read-only format analysis on extracted assets, no bypass attempted",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "tdu2",
+   "vmf",
+   "swf",
+   "flash",
+   "avm1",
+   "actionscript",
+   "ui",
+   "eden",
+   "file-format",
+   "reverse-engineering"
+  ]
+ },
+ {
+  "path": "games/the-witcher-3/the-witcher-3-remastered-bundle-container-and-cr2w-decoded.md",
+  "kind": "game",
+  "title": "The Witcher 3 Remastered: .bundle container and CR2W, decoded",
+  "game": "The Witcher 3",
+  "games_also": [],
+  "game_version": "The Witcher 3: Wild Hunt \u2014 Remastered, Steam buildid 25646871 (2026-09-29 update); bin/x64_dx12/witcher3.exe reports v 5.00c, DX12-only. REDkit 5.0.1044630, Steam app 2684660, buildid 25651183.",
+  "platform": "proton",
+  "engine": "redengine",
+  "route": "data",
+  "tools": [
+   "python3 + zlib",
+   "strings",
+   "REDkit bundlebuilder.exe",
+   "REDkit wcc_lite.exe"
+  ],
+  "anti_cheat": "none; single player. The official mod channel is the in-game mod.io Mods menu, and -disablemods is a real command-line flag.",
+  "status": "in-progress",
+  "agents": [
+   "Commander (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/WolvenKit/WolvenKit-7"
+  ],
+  "tags": [
+   "bundle",
+   "cr2w",
+   "redengine",
+   "file-format",
+   "redkit",
+   "redscripts"
+  ]
+ },
+ {
+  "path": "games/trackmania-2/maniaplanet-content-locations-and-custom-pack-layout.md",
+  "kind": "game",
+  "title": "TrackMania 2 custom content: where it lives, and how a skin/model pack is assembled",
+  "game": "TrackMania 2 Canyon",
+  "games_also": [
+   "TrackMania 2 Stadium",
+   "ShootMania Storm",
+   "ManiaPlanet"
+  ],
+  "game_version": "ManiaPlanet client (2011-era install layout; the same tree is still used by later ManiaPlanet builds)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "7-Zip",
+   "any DDS viewer",
+   "hex editor"
+  ],
+  "anti_cheat": "none relevant \u2014 installing skins, models and packs is a supported client feature (launcher \u2192 Help \u2192 custom data)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://www.mania-creative.com/ (tutorials archive, Wayback)"
+  ],
+  "tags": [
+   "file-locations",
+   "maniaplanet",
+   "gbx",
+   "dds",
+   "skins",
+   "personal-files",
+   "custom-content"
+  ]
+ },
+ {
+  "path": "games/underrail/bg3-style-controller-support.md",
+  "kind": "game",
+  "title": "BG3-style controller support for Underrail: stick movement, context interaction, menus, bars and combat via a Cecil-patched input layer",
+  "game": "Underrail",
+  "games_also": [],
+  "game_version": "1.3.1.2, Steam build 21973456 (underrail.exe sha256 c76248ff...daa8a7c)",
+  "platform": "proton",
+  "engine": "xna-fna",
+  "route": "managed-patch",
+  "tools": [
+   "ilspycmd 8.2",
+   "Mono.Cecil 0.11.6",
+   ".NET 8 SDK",
+   "Pillow"
+  ],
+  "anti_cheat": "none (single-player, no integrity checks; Dotfuscator rename-only)",
+  "status": "working",
+  "agents": [
+   "Claude Code (claude-opus-5-5)"
+  ],
+  "humans": [],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "controller",
+   "gamepad",
+   "xinput",
+   "steam-deck",
+   "xna",
+   "dotfuscator",
+   "cecil",
+   "input-redirection",
+   "pathfinding",
+   "obfuscated-names"
+  ]
+ },
+ {
+  "path": "games/valheim/mjolnir-frostner-rework.md",
+  "kind": "game",
+  "title": "Frostner into Mjolnir: the vanilla Frostner reworked into a returning thunder hammer",
+  "game": "Valheim",
+  "games_also": [],
+  "game_version": "steam 892970, build 25527674, l-1.0.16, Unity 6000.0.75f1 (Unity 6, Mono)",
+  "platform": "linux",
+  "engine": "unity-mono",
+  "route": "managed-patch",
+  "tools": [
+   "BepInEx",
+   "Jotunn",
+   "HarmonyX"
+  ],
+  "anti_cheat": "none found by um scan",
+  "status": "working",
+  "agents": [
+   "opencode (deepseek)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/nullagent07/valheim-mjolnir"
+  ],
+  "tags": [
+   "valheim",
+   "frostner",
+   "macesilver",
+   "bepinex",
+   "jotunn",
+   "harmony",
+   "projectile",
+   "throwable",
+   "lightning",
+   "splitner",
+   "returning-weapon"
+  ]
+ },
+ {
   "path": "games/victoria-2/south-central-gang-total-conversion.md",
   "kind": "game",
   "title": "South Central 1985: a Victoria 2 total conversion into an LA gang-territory game",
@@ -600,6 +2709,545 @@
    "dds",
    "procedural-art",
    "crash-debugging"
+  ]
+ },
+ {
+  "path": "games/watch-dogs/editing-feu-gfx-ui-and-entitylibrary-fcb.md",
+  "kind": "game",
+  "title": "Watch Dogs 1: editing .feu/.gfx UI components and rebuilding entitylibrary_rt.fcb",
+  "game": "Watch Dogs",
+  "games_also": [],
+  "game_version": "Watch Dogs 1 retail (PC)",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "asset-only",
+  "tools": [
+   "hV WD Modding Kit (hV_WD1ModdingKit.exe, FCBastard.exe)",
+   "JPEXS Free Flash Decompiler",
+   "Gibbed.Disrupt (unpack/pack)",
+   "Astrogrep"
+  ],
+  "anti_cheat": "none on WD1; all edits go into a packed patch archive \u2014 play offline with edited entity libraries, since online invasions connect you to other players",
+  "status": "in-progress",
+  "date": "2026-10-06",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [],
+  "tags": [
+   "watch-dogs",
+   "disrupt",
+   "ui",
+   "flash",
+   "fcb",
+   "entity-library"
+  ]
+ },
+ {
+  "path": "games/watch-dogs/engine-fundamentals-and-native-patching.md",
+  "kind": "game",
+  "title": "Watch Dogs (Disrupt/Shadow engine): structure, build identity and native patching",
+  "game": "Watch Dogs",
+  "games_also": [],
+  "game_version": "see note \u2014 five executable profiles; Global/04DF base image 0x7FFC39BF0000, timestamp 0x5CD045B4",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "native-hook",
+  "tools": [
+   "Ghidra",
+   "TinyCC 0.9.27 (win64)",
+   "build.ps1",
+   "validate_release.py",
+   "Python (offline harnesses)",
+   "NexusTools host/loader",
+   "ETW/DXGI presentation capture"
+  ],
+  "anti_cheat": "No anti-cheat interaction is documented in this knowledge base. Watch Dogs 1 has online PvP, but the mod was only ever run offline, as a native patch loaded through the NexusTools host on the user's own copy. Nothing here describes defeating protection.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/temdah/Shadow-Engine",
+   "https://github.com/temdah/Watch_Dogs_OKF"
+  ],
+  "tags": [
+   "disrupt",
+   "shadow-engine",
+   "native-patching",
+   "build-identity",
+   "rva",
+   "runtime-profiles",
+   "transactions"
+  ]
+ },
+ {
+  "path": "games/watch-dogs/shader-pack-compilation-and-delivery.md",
+  "kind": "game",
+  "title": "Watch Dogs 1: compiling and delivering the shader pack (shadersobj)",
+  "game": "Watch Dogs",
+  "games_also": [],
+  "game_version": "Watch Dogs 1 retail (Steam/uPlay) + NexusTools 1.1.12/1.1.13",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "passthrough",
+  "tools": [
+   "Gibbed.Disrupt",
+   "NexusTools",
+   "fxc (d3dcompiler_43/46/47)",
+   "dxc"
+  ],
+  "anti_cheat": "none on WD1; delivering files through NexusTools is first-class, no bypass involved",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "@Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/gibbed/Gibbed.Disrupt"
+  ],
+  "tags": [
+   "shaders",
+   "dxbc",
+   "fxc",
+   "dxc",
+   "hlsl",
+   "shadersobj",
+   "nexus-tools",
+   "signatures",
+   "semantics",
+   "black-screen",
+   "disrupt",
+   "dunia"
+  ]
+ },
+ {
+  "path": "games/watch-dogs/shadow-engine-modding-findings.md",
+  "kind": "game",
+  "title": "Watch Dogs Shadow Engine: practical modding findings (shadows, vehicles, world, Lua)",
+  "game": "Watch Dogs",
+  "games_also": [],
+  "game_version": "see note \u2014 findings are per RuntimeProfile (Global/04DF, Shev/A4EE, VMPless, Complete Edition, Asia/Miru; VMPless is a shipped build without VMProtect packing, not a cracked dump); policy controls are Global .12\u2013.15",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "native-hook",
+  "tools": [
+   "NexusTools host/loader",
+   "Ghidra",
+   "Python (offline harnesses)",
+   "TinyCC 0.9.27 (win64)",
+   "custom population/workload capture",
+   "ETW/DXGI presentation capture"
+  ],
+  "anti_cheat": "No anti-cheat interaction is documented. Watch Dogs 1 has online PvP, but the mod was only ever run offline, as a native patch loaded through the NexusTools host on the user's own copy; no protection is described or bypassed.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://github.com/temdah/Shadow-Engine",
+   "https://github.com/temdah/Watch_Dogs_OKF"
+  ],
+  "tags": [
+   "disrupt",
+   "shadow-engine",
+   "shadows",
+   "vehicle-lights",
+   "world-streaming",
+   "lua",
+   "nexustools",
+   "measurement"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/addon-development-335a.md",
+  "kind": "game",
+  "title": "Writing and fixing 3.3.5a addons: Lua 5.1 gaps, protected calls, the guild bank, macros and a test harness",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "Wrath of the Lich King client 3.3.5a (build 12340, interface 30300); AdiBags, DialogUI, WeakAuras 5.22 backport, GearScoreLite",
+  "platform": "windows",
+  "engine": "native",
+  "route": "loader-api",
+  "tools": [
+   "Lua 5.1 / luac5.1 (in WSL)",
+   "a stubbed WoW API harness",
+   "BugSack"
+  ],
+  "anti_cheat": "none: the client's own addon API",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-02",
+  "links": [
+   "https://wowpedia.fandom.com/wiki/World_of_Warcraft_API",
+   "https://www.lua.org/manual/5.1/"
+  ],
+  "tags": [
+   "addons",
+   "lua",
+   "ui",
+   "guild-bank",
+   "adibags",
+   "macros",
+   "testing",
+   "interface-30300"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/azerothcore-custom-modules.md",
+  "kind": "game",
+  "title": "Custom AzerothCore modules for a solo-with-bots WotLK server: offline gathering, auction payout and restock, mail and progression fixes",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "AzerothCore WotLK (3.3.5a) Playerbot fork, 2026-09 source; mod-individual-progression; client 3.3.5a build 12340",
+  "platform": "linux",
+  "engine": "native",
+  "route": "loader-api",
+  "tools": [
+   "AzerothCore module API (C++)",
+   "MySQL 8.4",
+   "TradeSkillMaster price data"
+  ],
+  "anti_cheat": "not applicable: the user's own server",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://github.com/azerothcore/azerothcore-wotlk",
+   "https://github.com/ZhengPeiRu21/mod-individual-progression"
+  ],
+  "tags": [
+   "azerothcore",
+   "modules",
+   "loot",
+   "mail",
+   "auction-house",
+   "progression",
+   "aq-war",
+   "pets",
+   "dbc-overrides",
+   "private-server"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/azerothcore-playerbots-server-ops.md",
+  "kind": "game",
+  "title": "Running a self-hosted AzerothCore WotLK server with 1,500 playerbots: setup, performance and the traps",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "AzerothCore WotLK (3.3.5a) Playerbot fork with mod-playerbots, mod-individual-progression and other modules; client 3.3.5a build 12340",
+  "platform": "linux",
+  "engine": "native",
+  "route": "other",
+  "tools": [
+   "AzerothCore",
+   "mod-playerbots",
+   "MySQL 8.4",
+   "Debian 13",
+   "WSL2",
+   "tmux",
+   "gdb",
+   "systemd"
+  ],
+  "anti_cheat": "not applicable: the user's own server",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://github.com/azerothcore/azerothcore-wotlk",
+   "https://github.com/mod-playerbots/mod-playerbots",
+   "https://github.com/ZhengPeiRu21/mod-individual-progression"
+  ],
+  "tags": [
+   "private-server",
+   "azerothcore",
+   "playerbots",
+   "performance",
+   "mysql",
+   "wsl2",
+   "vps",
+   "build",
+   "operations"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/bwl-pulled-through-the-floor-hit-sphere-los.md",
+  "kind": "game",
+  "title": "Blackwing Lair trash pulled through the floor: a Searing Totem and the hit-sphere line-of-sight leak in AzerothCore",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "AzerothCore WotLK (3.3.5a) Playerbot fork, 2026-10 source; vmaps and mmaps extracted from the 3.3.5a client (build 12340); a 40-player mod-playerbots raid",
+  "platform": "linux",
+  "engine": "native",
+  "route": "other",
+  "tools": [
+   "AzerothCore source",
+   "a small C++ tool linked against the core's collision library (StaticMapTree)",
+   "Python 3",
+   "MySQL 8.4"
+  ],
+  "anti_cheat": "not applicable: the user's own server",
+  "status": "in-progress",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://github.com/azerothcore/azerothcore-wotlk",
+   "https://github.com/mod-playerbots/mod-playerbots"
+  ],
+  "tags": [
+   "azerothcore",
+   "line-of-sight",
+   "vmaps",
+   "hit-sphere",
+   "totems",
+   "aggro",
+   "formations",
+   "playerbots",
+   "blackwing-lair",
+   "debugging",
+   "private-server"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/client-texture-crashes-and-mpq.md",
+  "kind": "game",
+  "title": "Hunting 3.3.5a client crashes in texture packs: BLP size and format limits, MPQ priority and safe patch building",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "Wrath of the Lich King client 3.3.5a (build 12340, Direct3D 9 / d3d9ex, also under DXVK 3.1) with several third-party HD packs",
+  "platform": "windows",
+  "engine": "native",
+  "route": "data",
+  "tools": [
+   "StormLib / smpq (in WSL)",
+   "Python 3.12 (BLP scanner",
+   "repair and encoder)",
+   "a minidump parser",
+   "capstone"
+  ],
+  "anti_cheat": "none touched: client data files on a private server",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-02",
+  "links": [
+   "https://wowdev.wiki/BLP",
+   "https://wowdev.wiki/MPQ"
+  ],
+  "tags": [
+   "blp",
+   "textures",
+   "crash",
+   "minidump",
+   "mpq",
+   "load-order",
+   "hd-pack",
+   "dxt",
+   "palettised"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/hd-character-customization.md",
+  "kind": "game",
+  "title": "Retail faces, hairstyles and hair colours on the 3.3.5a HD human: CharSections, skin-section and compositor rules",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "Wrath of the Lich King client 3.3.5a (build 12340) with an HD character model pack; source data from the retail 12.x client; AzerothCore server",
+  "platform": "windows",
+  "engine": "native",
+  "route": "data",
+  "tools": [
+   "Python 3.12 (CASC/DB2 readers",
+   "BLP writer",
+   "M2/skin editor)",
+   "numpy",
+   "scipy",
+   "Pillow",
+   "wow.export (reference for the makeup blend)"
+  ],
+  "anti_cheat": "none touched: client data files on a private server",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-02",
+  "links": [
+   "https://wowdev.wiki/DB/CharSections",
+   "https://wowdev.wiki/M2/.skin",
+   "https://github.com/Kruithne/wow.export"
+  ],
+  "tags": [
+   "character-customization",
+   "charsections",
+   "barbershop",
+   "hair",
+   "faces",
+   "skin",
+   "compositor",
+   "blp",
+   "retail-port"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/item-physics-and-capes.md",
+  "kind": "game",
+  "title": "Retail item physics and cape motion on the 3.3.5a client: a Box2D-style solver driven by retail PHYS data",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "Wrath of the Lich King client 3.3.5a (build 12340); physics data from the retail 12.x client",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "MinGW-w64 i686 gcc (in WSL)",
+   "Python 3.12 (PHYS exporter)",
+   "wowdev.wiki PHYS documentation"
+  ],
+  "anti_cheat": "none touched: a private server the user runs; purely cosmetic motion of worn items",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-02",
+  "links": [
+   "https://wowdev.wiki/PHYS",
+   "https://box2d.org/"
+  ],
+  "tags": [
+   "physics",
+   "box2d",
+   "soft-constraints",
+   "capes",
+   "cloth",
+   "tassels",
+   "plumes",
+   "retail-port",
+   "solver"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/per-item-skinned-addons-dll.md",
+  "kind": "game",
+  "title": "Per-item skinned armour on the 3.3.5a client: a proxy-DLL engine extension (add-on models, body texture layers, tabards)",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "Wrath of the Lich King client 3.3.5a (build 12340, enUS, 32-bit, Direct3D 9) on a self-hosted AzerothCore server",
+  "platform": "windows",
+  "engine": "native",
+  "route": "native-hook",
+  "tools": [
+   "MinGW-w64 i686 gcc (in WSL)",
+   "capstone",
+   "Ghidra 12.1",
+   "Python 3.12",
+   "Blender"
+  ],
+  "anti_cheat": "none touched: a private server the user runs; Warden is configured server-side; the DLL only changes how worn items are drawn",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://wowdev.wiki/M2",
+   "https://github.com/Deamon87/WebWowViewerCpp"
+  ],
+  "tags": [
+   "m2",
+   "skinned-attachments",
+   "proxy-dll",
+   "inline-hooks",
+   "bone-matrices",
+   "character-component",
+   "body-texture",
+   "tabard",
+   "geosets"
+  ]
+ },
+ {
+  "path": "games/world-of-warcraft/playerbots-raid-tactics.md",
+  "kind": "game",
+  "title": "Teaching AzerothCore playerbots to raid: kill order from raid marks, boss positioning, lockouts and the strategy-reset traps",
+  "game": "World of Warcraft",
+  "games_also": [],
+  "game_version": "AzerothCore WotLK (3.3.5a) Playerbot fork + mod-playerbots (2026-09 source); client 3.3.5a build 12340",
+  "platform": "linux",
+  "engine": "native",
+  "route": "other",
+  "tools": [
+   "mod-playerbots (C++)",
+   "a small group-control addon (Lua 5.1)",
+   "lua5.1 test harness"
+  ],
+  "anti_cheat": "not applicable: the user's own server; bots are server-side",
+  "status": "working",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "RedSuper"
+  ],
+  "date": "2026-10-04",
+  "links": [
+   "https://github.com/mod-playerbots/mod-playerbots"
+  ],
+  "tags": [
+   "playerbots",
+   "raid",
+   "ai",
+   "kill-order",
+   "raid-marks",
+   "positioning",
+   "instances",
+   "addon",
+   "private-server"
   ]
  },
  {
@@ -651,6 +3299,433 @@
   ]
  },
  {
+  "path": "techniques/a-force-quit-pc-game-relaunch-wedges-as-an-unkillable-zombie.md",
+  "kind": "technique",
+  "title": "A force-quit PC game relaunch wedges as an unkillable zombie (Steam/Ubisoft)",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "windows",
+   "steam",
+   "ubisoft",
+   "launch",
+   "wedge",
+   "d3d11",
+   "relaunch",
+   "agent-workflow"
+  ]
+ },
+ {
+  "path": "techniques/asus-aura-usb-protocol.md",
+  "kind": "technique",
+  "title": "ASUS AURA USB protocol: opcodes, zone table and the unresolved TUF X570 4-pin header",
+  "tags": [
+   "asus",
+   "aura",
+   "openrgb",
+   "usb-hid",
+   "rgb",
+   "tuf-x570",
+   "reverse-engineering",
+   "opcodes"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://openrgb-wiki.readthedocs.io/en/latest/asus/ASUS-Aura-USB/",
+   "https://blog.inlart.com/post/openrgb-asus-x570/",
+   "https://github.com/liquidctl/liquidctl/blob/main/docs/asus-aura-led-guide.md"
+  ]
+ },
+ {
+  "path": "techniques/bethesda-esl-light-masters-and-plugin-archive-pairing.md",
+  "kind": "technique",
+  "title": "Bethesda ESL light masters and plugin\u2194archive load pairing (the CC-merge route)",
+  "tags": [
+   "bethesda",
+   "fallout4",
+   "starfield",
+   "skyrim",
+   "esl",
+   "light-master",
+   "ba2",
+   "plugins-txt",
+   "load-order",
+   "creation-club",
+   "cc-packer",
+   "creation-engine"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/TES5Edit/TES5Edit",
+   "https://github.com/jturnley/CC-Packer",
+   "https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format/TES4"
+  ]
+ },
+ {
+  "path": "techniques/bethesda-plugin-record-format-esm-esp-esl.md",
+  "kind": "technique",
+  "title": "Bethesda ESM/ESP/ESL plugin record format: header, GRUP, record header, FormID slots, STRINGS",
+  "tags": [
+   "bethesda",
+   "plugin",
+   "esm",
+   "esp",
+   "esl",
+   "creation-engine",
+   "gamebryo",
+   "formid",
+   "records",
+   "xedit",
+   "strings",
+   "localization"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/TES5Edit/TES5Edit",
+   "https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format",
+   "https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format/TES4",
+   "https://tes5edit.github.io/fopdoc/Fallout4/Records.html"
+  ]
+ },
+ {
+  "path": "techniques/bridge-contracts-ownership-units-and-lifecycle.md",
+  "kind": "technique",
+  "title": "Bridge contracts for two-game mods: ownership, units, transport and lifecycle",
+  "tags": [
+   "mashup",
+   "passthrough",
+   "shared-memory",
+   "seqlock",
+   "ring-buffer",
+   "endianness",
+   "coordinate-mapping",
+   "authority",
+   "lifecycle",
+   "restart",
+   "protocol-versioning"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/chasmlol/SkyCraft",
+   "https://github.com/mrborghini/libertycraft"
+  ]
+ },
+ {
+  "path": "techniques/checking-steam-workshop-mods-against-a-game-version.md",
+  "kind": "technique",
+  "title": "Checking Steam Workshop mods against a game version: the public API, page scraping limits, and what evidence to trust",
+  "tags": [
+   "steam-workshop",
+   "modlist",
+   "compatibility",
+   "steam-web-api",
+   "scraping",
+   "rate-limits",
+   "triage"
+  ],
+  "agents": [
+   "Claude Code (Opus 5)",
+   "Claude Code (Opus 5.5)",
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "RedSuper",
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://partner.steamgames.com/doc/webapi/ISteamRemoteStorage",
+   "https://partner.steamgames.com/doc/webapi/ISteamNews"
+  ]
+ },
+ {
+  "path": "techniques/choosing-a-mashup-route.md",
+  "kind": "technique",
+  "title": "Choosing a mashup route: seven ways to put a game inside a game",
+  "tags": [
+   "mashup",
+   "passthrough",
+   "route-selection",
+   "frame-compositing",
+   "geometry-transfer",
+   "shared-simulation",
+   "reimplementation",
+   "asset-conversion",
+   "subsystem-transplant",
+   "ownership"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/chasmlol/SkyCraft",
+   "https://github.com/mrborghini/libertycraft",
+   "https://github.com/vladtrc/iw4L",
+   "https://github.com/samwhosung/benilla"
+  ]
+ },
+ {
+  "path": "techniques/collision-and-combat-bridging.md",
+  "kind": "technique",
+  "title": "Collision and combat across two games: representations, directions and proxies",
+  "tags": [
+   "mashup",
+   "passthrough",
+   "collision",
+   "havok",
+   "bsp",
+   "voxel-proxy",
+   "streaming",
+   "combat",
+   "damage-mapping",
+   "proxies",
+   "vehicles",
+   "recovery"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/chasmlol/SkyCraft",
+   "https://github.com/mrborghini/libertycraft"
+  ]
+ },
+ {
+  "path": "techniques/d3d12-frame-readback-buffers-only.md",
+  "kind": "technique",
+  "title": "D3D12 frame readback: buffers only",
+  "status": "working",
+  "agents": [
+   "OpenCode (mimo-v2.6-flash)"
+  ],
+  "humans": [],
+  "date": "2026-10-06",
+  "links": [
+   "https://learn.microsoft.com/en-us/windows/win32/api/d3d12/ns-d3d12-d3d12_resource_desc"
+  ],
+  "tags": [
+   "d3d12",
+   "capture",
+   "readback",
+   "frame-grab",
+   "warp",
+   "seqlock"
+  ]
+ },
+ {
+  "path": "techniques/disrupt-archives-and-fcb-resource-containers.md",
+  "kind": "technique",
+  "title": "Disrupt archives and FCB/Nomad resource containers (Watch Dogs 1/2/Legion)",
+  "game": "Watch Dogs: Legion",
+  "games_also": [
+   "Watch Dogs",
+   "Watch Dogs 2"
+  ],
+  "game_version": "WD1 (BigFileV3) / WD2 / Legion",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "Gibbed.Disrupt",
+   "DisruptEd",
+   "encryptedsfbc",
+   "fcb_tool.py"
+  ],
+  "anti_cheat": "unknown",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "disrupt",
+   "watch-dogs",
+   "archive",
+   "fat",
+   "bigfile",
+   "fcb",
+   "nomad",
+   "entity-library",
+   "lz4lw",
+   "hashing",
+   "compression"
+  ]
+ },
+ {
+  "path": "techniques/disrupt-engine-cross-game-toolchain-picking-tools-for-wd1-wd.md",
+  "kind": "technique",
+  "title": "Disrupt engine cross-game toolchain: picking tools for WD1, WD2 and Legion",
+  "status": "working",
+  "agents": [
+   "OpenCode (MiMo-V2.6-Flash)",
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "@Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "disrupt",
+   "dunia",
+   "watch-dogs",
+   "far-cry",
+   "archives",
+   "reverse-engineering",
+   "toolchain",
+   "ubisoft"
+  ]
+ },
+ {
+  "path": "techniques/disrupt-engine-shader-and-model-modding.md",
+  "kind": "technique",
+  "title": "Disrupt engine shader and model modding (Watch Dogs 1/2/Legion)",
+  "tags": [
+   "disrupt",
+   "ubisoft",
+   "watch-dogs",
+   "shaders",
+   "dx11",
+   "d3d12",
+   "raytracing",
+   "models",
+   "xbg",
+   "material"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/disrupt-material-bin-and-xbt-textures.md",
+  "kind": "technique",
+  "title": "Disrupt material (.material.bin) and texture (.xbt) formats",
+  "game": "Watch Dogs",
+  "games_also": [
+   "Watch Dogs 2",
+   "Watch Dogs: Legion"
+  ],
+  "game_version": "WD1 v7 / 2013 beta v5 / Legion v15",
+  "platform": "windows",
+  "engine": "Disrupt (Dunia 2 fork)",
+  "route": "asset-only",
+  "tools": [
+   "WatchDogsMaterialEditor",
+   "XbgLab",
+   "Gibbed.Disrupt",
+   "Blender"
+  ],
+  "anti_cheat": "unknown",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "disrupt",
+   "watch-dogs",
+   "material",
+   "shader",
+   "texture",
+   "xbt",
+   "dds",
+   "crc32",
+   "hashing"
+  ]
+ },
+ {
+  "path": "techniques/disrupt-xbg-glm-mesh-format.md",
+  "kind": "technique",
+  "title": "Disrupt XBG/GLM mesh format (Watch Dogs 1/2/Legion)",
+  "game": "Watch Dogs 2",
+  "games_also": [
+   "Watch Dogs",
+   "Watch Dogs: Legion"
+  ],
+  "game_version": "WD2 (mesh header version 70.137 = 0x00460089)",
+  "platform": "windows",
+  "engine": "Disrupt (Dunia 2 fork)",
+  "route": "asset-only",
+  "tools": [
+   "XbgLab",
+   "GlmCompilerToXBG",
+   "io_scene_WD2",
+   "Blender",
+   "Ghidra"
+  ],
+  "anti_cheat": "unknown",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "disrupt",
+   "watch-dogs",
+   "mesh",
+   "xbg",
+   "glm",
+   "geometry",
+   "vertex-format",
+   "hashing",
+   "dunia2"
+  ]
+ },
+ {
   "path": "techniques/driving-real-games-safely.md",
   "kind": "technique",
   "title": "Driving real games safely: input, focus and the human at the keyboard",
@@ -675,6 +3750,489 @@
   "links": []
  },
  {
+  "path": "techniques/dunia-swf-file-format.md",
+  "kind": "technique",
+  "title": "Adobe SWF and Ubisoft FEU (Flash Export Unit) format",
+  "game": "Far Cry 6",
+  "games_also": [
+   "Far Cry 5",
+   "Far Cry 4",
+   "Watch Dogs (Disrupt)",
+   "Far Cry New Dawn"
+  ],
+  "game_version": "see note",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "JPEXS FFDec",
+   "FCBConverter",
+   "base64 SWF Texture Tool"
+  ],
+  "anti_cheat": "Format reference only; no anti-cheat interaction.",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "date": "2026-10-05",
+  "links": [
+   "https://open-flash.github.io/mirrors/swf-spec-19.pdf"
+  ],
+  "tags": [
+   "swf",
+   "feu",
+   "flash",
+   "dunia",
+   "disrupt",
+   "ui",
+   "file-format"
+  ]
+ },
+ {
+  "path": "techniques/dxbc-dx9bc-shader-decompilation-with-3dmigoto.md",
+  "kind": "technique",
+  "title": "Decompiling DXBC / DX9BC shader bytecode to HLSL with 3Dmigoto's HLSLDecompiler",
+  "tags": [
+   "shader",
+   "dxbc",
+   "hlsl",
+   "decompilation",
+   "3dmigoto",
+   "renderdoc",
+   "graphics-re"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/etnlgd/HLSLDecompiler",
+   "https://github.com/bo3b/3Dmigoto",
+   "https://renderdoc.org/"
+  ]
+ },
+ {
+  "path": "techniques/editor-free-bannerlord-assets.md",
+  "kind": "technique",
+  "title": "Editor-free assets for Mount & Blade II: Bannerlord: writing .tpac packages, skeletons and animation clips offline",
+  "status": "in-progress",
+  "game": "Mount & Blade II: Bannerlord",
+  "games_also": [
+   "Borderlands 2"
+  ],
+  "game_version": "v1.4.8.119303 (Steam, Windows); client TaleWorlds.Native.dll 14,185,944 bytes, PE timestamp 0x6a732505",
+  "platform": "windows",
+  "engine": "unknown",
+  "route": "data",
+  "tools": [
+   "Python 3.10 + numpy (own LZ4 and xxHash64)",
+   "Ghidra 12.1.4 headless + JDK 21",
+   "Blender 4.2 headless",
+   "ilspycmd",
+   "dotnet 8 SDK",
+   "python minidump package",
+   "dbghelp MiniDumpWriteDump"
+  ],
+  "agents": [
+   "Claude Code (Opus 5.5)",
+   "Claude Code subagents (Sonnet 5.5)"
+  ],
+  "humans": [
+   "@theartur2000"
+  ],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "bannerlord",
+   "tpac",
+   "rdc",
+   "runtimedatacache",
+   "packing",
+   "load-time",
+   "hang",
+   "ik",
+   "skeleton",
+   "ragdoll",
+   "animation",
+   "clip",
+   "action-set",
+   "project-mbproj",
+   "bone-limit",
+   "hit-capsule",
+   "minidump",
+   "asset-pipeline",
+   "total-conversion",
+   "custom-race",
+   "quadruped"
+  ]
+ },
+ {
+  "path": "techniques/engine-recreation-measures-and-fidelity.md",
+  "kind": "technique",
+  "title": "Engine recreation for mashups: what each rebuild measures, and what fidelity includes",
+  "tags": [
+   "mashup",
+   "engine-recreation",
+   "reimplementation",
+   "static-recompilation",
+   "decompilation",
+   "fidelity",
+   "parity",
+   "scripts",
+   "benchmarks",
+   "sdk"
+  ],
+  "date": "2026-10-07",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/vladtrc/iw4L",
+   "https://github.com/SK8-ENGINE/skate-3-rust-engine",
+   "https://github.com/chasmlol/2010-rust-rewrite-mashup",
+   "https://github.com/patchzyy/Wiicompiled"
+  ]
+ },
+ {
+  "path": "techniques/evidence-levels-for-mashup-claims.md",
+  "kind": "technique",
+  "title": "Evidence levels: reports, source reading, proposals and real runs",
+  "tags": [
+   "verification",
+   "evidence",
+   "field-notes",
+   "honesty",
+   "attribution",
+   "lineage",
+   "tests",
+   "mashup"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/forzatech-burg-modelbin-containers-and-makeh2o.md",
+  "kind": "technique",
+  "title": "Reading old ForzaTech .modelbin containers (burG), and the MakeH2O tool lineage",
+  "tags": [
+   "forzatech",
+   "modelbin",
+   "carbin",
+   "burg",
+   "mesh",
+   "vertex-buffer",
+   "makeh2o",
+   "ghidra",
+   "reverse-engineering",
+   "forza-horizon-3"
+  ],
+  "date": "2026-10-06",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://web.archive.org/web/20231023061958/https://forum.xentax.com/viewtopic.php?t=4256",
+   "https://github.com/noidex0/fh6-model-tools",
+   "https://github.com/Nenkai/ForzaTools/tree/master/ForzaTools.Bundles"
+  ]
+ },
+ {
+  "path": "techniques/frame-compositing-depth-and-pose-sync.md",
+  "kind": "technique",
+  "title": "Frame compositing: depth, pose sync, lighting and stale frames",
+  "tags": [
+   "mashup",
+   "passthrough",
+   "frame-compositing",
+   "depth-compositing",
+   "reshade-addon",
+   "reprojection",
+   "camera-sync",
+   "msaa",
+   "readback",
+   "seqlock",
+   "diagnostics"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/rehan-remade/universal-modder/tree/main/examples/minecraft-gta5-passthrough"
+  ]
+ },
+ {
+  "path": "techniques/frostbite-bundle-chunk-ebx-and-ealayer3.md",
+  "kind": "technique",
+  "title": "Frostbite bundle/chunk/EBX asset pipeline and the EALayer3 audio codec",
+  "tools": [
+   "bf4dumper.py",
+   "sw_dumper.py",
+   "swbf_me-c_edit",
+   "fb3decoder.py",
+   "ealayer3 (Zench / daemon1)",
+   "Ninja Ripper",
+   "Texmod"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/NicknineTheEagle/Frostbite-Scripts",
+   "https://github.com/vgmstream/vgmstream"
+  ],
+  "tags": [
+   "frostbite",
+   "bundle",
+   "chunk",
+   "ebx",
+   "ealayer3",
+   "mirrors-edge",
+   "battlefield",
+   "star-wars-battlefront",
+   "nfs",
+   "audio",
+   "asset-pipeline",
+   "file-format"
+  ]
+ },
+ {
+  "path": "techniques/gamemaker-yyc-vs-vm-check-the-code-chunks-before-trusting-th.md",
+  "kind": "technique",
+  "title": "GameMaker YYC vs VM: check the code chunks before trusting the UndertaleModTool route",
+  "status": "working",
+  "agents": [
+   "Claude Code (deepseek-flash[1m])"
+  ],
+  "humans": [
+   "@genericcooper"
+  ],
+  "date": "2026-10-06",
+  "links": [],
+  "tags": [
+   "gamemaker",
+   "yyc",
+   "data.win",
+   "undertalemodtool",
+   "scan",
+   "detection",
+   "chunk-table"
+  ]
+ },
+ {
+  "path": "techniques/geometry-transfer-host-draws-guest-meshes.md",
+  "kind": "technique",
+  "title": "Geometry transfer: the host draws the guest's meshes",
+  "tags": [
+   "mashup",
+   "passthrough",
+   "geometry-transfer",
+   "mesh-export",
+   "texture-atlas",
+   "render-state",
+   "depth",
+   "lighting",
+   "digging",
+   "emulator"
+  ],
+  "date": "2026-10-07",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/chasmlol/SkyCraft",
+   "https://github.com/mrborghini/libertycraft",
+   "https://github.com/SawyerTheNerd/Minecraft-X-HalfLife",
+   "https://github.com/M0uidev/GalaxyCraft"
+  ]
+ },
+ {
+  "path": "techniques/havok-hkx-chunked-packfile-family.md",
+  "kind": "technique",
+  "title": "Havok HKX: the chunked packfile family across game generations (and when you need the SDK)",
+  "tags": [
+   "havok",
+   "hkx",
+   "packfile",
+   "chunked",
+   "watch-dogs",
+   "starfield",
+   "fallout4",
+   "skyrim",
+   "tdu2",
+   "serialization",
+   "hkCompatFormats"
+  ],
+  "date": "2026-10-06",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/Monitor221hz/HKX2-Enhanced-Library",
+   "https://github.com/Dexesttp/hkxpack",
+   "https://github.com/blueskythlikesclouds/HavokAnimationExporter"
+  ]
+ },
+ {
+  "path": "techniques/installers-load-order-and-loaded-code-checks.md",
+  "kind": "technique",
+  "title": "Installers, load order and loaded-code checks for multi-part mods",
+  "tags": [
+   "installer",
+   "uninstall",
+   "backup",
+   "load-order",
+   "asi-loader",
+   "dll-proxy",
+   "steam-drm",
+   "fingerprint",
+   "hash-pinning",
+   "dependencies",
+   "mod-coexistence"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/loading-pre-sequel-assets-in-borderlands-2.md",
+  "kind": "technique",
+  "title": "Loading Pre-Sequel assets in Borderlands 2: header-only package surgery, mesh conversion and what still fails",
+  "status": "in-progress",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "@Pherdee-boi"
+  ],
+  "date": "2026-10-04",
+  "links": [],
+  "tags": [
+   "ue3",
+   "unreal3",
+   "gearbox",
+   "borderlands",
+   "borderlands-tps",
+   "upk",
+   "package",
+   "staticmesh",
+   "shaders",
+   "tfc",
+   "porting",
+   "pyunrealsdk"
+  ]
+ },
+ {
+  "path": "techniques/madness-chameleon-binary-containers-bml-sgb.md",
+  "kind": "technique",
+  "title": "Madness/Chameleon binary containers: .bml (binary XML) and .sgb/.sgx (track scenes)",
+  "tags": [
+   "madness-engine",
+   "chameleon",
+   "nfs-shift",
+   "project-cars",
+   "bml",
+   "sgb",
+   "sgx",
+   "binary-xml",
+   "reflection",
+   "scene-graph",
+   "3ds-max"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://www.tapatalk.com/groups/kottons_chop_shop/ti-scp-ti-sms-model-importer-t3217.html"
+  ]
+ },
+ {
+  "path": "techniques/nintendo-wiiu-3ds-switch-archive-texture-model-formats.md",
+  "kind": "technique",
+  "title": "Nintendo Wii U / 3DS / Switch archive, texture and model formats (Yaz0, SARC, GTX, CMB/CSAB, BWAV/BAR)",
+  "tools": [
+   "Syroot.NintenTools.Yaz0",
+   "Switch-Toolbox (KillzXGaming)",
+   "JayK SARC unpacker",
+   "texconv2",
+   "QuickBMS",
+   "OoT3D-Importer (MeltyPlayer)",
+   "GAR/ZAR unpack",
+   "vgmstream",
+   "HKXConverter-2012"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://zeldamods.org/wiki/Yaz0",
+   "https://zeldamods.org/wiki/SARC",
+   "https://github.com/zeldamods/oead"
+  ],
+  "tags": [
+   "zelda",
+   "nintendo",
+   "yaz0",
+   "sarc",
+   "gtx",
+   "cmb",
+   "csab",
+   "bwav",
+   "bars",
+   "wiiu",
+   "3ds",
+   "switch",
+   "big-endian",
+   "archive",
+   "texture",
+   "file-format"
+  ]
+ },
+ {
   "path": "techniques/oracles-how-agents-know-a-mod-works.md",
   "kind": "technique",
   "title": "Oracles: how an agent knows a mod actually works",
@@ -696,6 +4254,143 @@
    "@rehan_shei"
   ],
   "links": []
+ },
+ {
+  "path": "techniques/ps3-elf-analysis-in-ghidra.md",
+  "kind": "technique",
+  "title": "Analysing PS3 ELF/PRX binaries in Ghidra: TOC/r2, NID and syscall resolution",
+  "tags": [
+   "ps3",
+   "ps3elf",
+   "prx",
+   "ghidra",
+   "powerpc",
+   "big-endian",
+   "cell",
+   "fNID",
+   "syscall",
+   "relocations",
+   "decompilation",
+   "console"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/Clienthax/Ps3GhidraScripts",
+   "https://github.com/kakaroto/ps3ida",
+   "https://github.com/NationalSecurityAgency/ghidra",
+   "https://www.psdevwiki.com/ps3/"
+  ]
+ },
+ {
+  "path": "techniques/publishing-reverse-engineering-research-what-to-scrub-what-t.md",
+  "kind": "technique",
+  "title": "Publishing reverse-engineering research: what to scrub, what to keep, and how to know you are clean",
+  "status": "working",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "@Selene0623"
+  ],
+  "date": "2026-10-06",
+  "links": [
+   "https://github.com/rehan-remade/universal-modder/pull/65"
+  ],
+  "tags": [
+   "publishing",
+   "sanitization",
+   "secrets",
+   "license-keys",
+   "local-paths",
+   "documentation",
+   "attribution",
+   "docusaurus",
+   "grep"
+  ]
+ },
+ {
+  "path": "techniques/quickbms-linux-xmemdecompress-lzx-fork.md",
+  "kind": "technique",
+  "title": "QuickBMS on Linux: the XMemDecompress/LZX buffer-reuse bug and three local patches",
+  "tags": [
+   "quickbms",
+   "lzx",
+   "xmemdecompress",
+   "xbox360",
+   "myalloc",
+   "buffer-reuse",
+   "openssl3",
+   "mingw",
+   "nfs-shift",
+   "bff",
+   "linux",
+   "patches"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://aluigi.altervista.org/quickbms.htm"
+  ]
+ },
+ {
+  "path": "techniques/reading-and-injecting-disrupt-engine-hkx-collision.md",
+  "kind": "technique",
+  "title": "Disrupt-engine HKX collision: old packfile vs TAG0, and how a community Blender add-on reads and injects it",
+  "tags": [
+   "havok",
+   "hkx",
+   "disrupt",
+   "watch-dogs",
+   "tag0",
+   "packfile",
+   "collision",
+   "blender",
+   "injection"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/reading-source-engine-models-and-animations.md",
+  "kind": "technique",
+  "title": "Reading Source engine (MDL v49) models, textures and animations in plain Python, no SDK",
+  "status": "working",
+  "agents": [
+   "Claude Code (Sonnet 5.5)"
+  ],
+  "humans": [],
+  "date": "2026-10-05",
+  "links": [],
+  "tags": [
+   "source-engine",
+   "mdl",
+   "vvd",
+   "vtx",
+   "vtf",
+   "vpk",
+   "ani",
+   "skeletal-animation",
+   "skinning",
+   "left4dead",
+   "model-conversion"
+  ]
  },
  {
   "path": "techniques/reading-ue3-gearbox-games-offline.md",
@@ -723,6 +4418,36 @@
   ]
  },
  {
+  "path": "techniques/rebuilt-guest-engine-inside-a-host.md",
+  "kind": "technique",
+  "title": "A rebuilt guest engine inside a real host: in-process DLL, worker processes, transplants and oracles",
+  "tags": [
+   "mashup",
+   "reimplementation",
+   "skate",
+   "worker-process",
+   "ffi",
+   "c-api",
+   "shared-memory",
+   "coordinate-mapping",
+   "input-normalization",
+   "oracle",
+   "transplant",
+   "recovery"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "Claude Code (Opus 5.5)"
+  ],
+  "humans": [
+   "LeiiLo"
+  ],
+  "links": [
+   "https://github.com/chasmlol/2010-rust-rewrite-mashup",
+   "https://github.com/samwhosung/benilla"
+  ]
+ },
+ {
   "path": "techniques/recording-game-footage.md",
   "kind": "technique",
   "title": "Recording real game footage with only the game's audio",
@@ -743,5 +4468,325 @@
    "@rehan_shei"
   ],
   "links": []
+ },
+ {
+  "path": "techniques/redengine-container-and-asset-format-lineage.md",
+  "kind": "technique",
+  "title": "REDengine container and asset formats across Witcher 2/3 and Cyberpunk 2077 (CR2W, .bundle/.cache, RDAR/KARK)",
+  "tools": [
+   "Gibbed RED Tool",
+   "QuickBMS (w2_dzip_unpack.bms, witcher3.bms, cyberpunk_2077.bms)",
+   "Lua-utils-for-Witcher-3",
+   "witcher2_texture_converter",
+   "CP77Tools (rfuzzo)",
+   "Wolven-kit / WolvenKit (Traderain)",
+   "W3SavegameEditor (Atvaark)",
+   "Noesis fmt_CP77mesh.py (alphaZ)",
+   "OodleSharp (Crauzer)"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/gibbed/Gibbed.RED",
+   "https://github.com/WolvenKit/WolvenKit",
+   "https://wiki.redmodding.org/"
+  ],
+  "tags": [
+   "redengine",
+   "cr2w",
+   "witcher2",
+   "witcher3",
+   "cyberpunk2077",
+   "rdar",
+   "kark",
+   "oodle",
+   "xbm",
+   "w3strings",
+   "save",
+   "archive",
+   "file-format"
+  ]
+ },
+ {
+  "path": "techniques/reshade-rtgi-concepts-and-native-port.md",
+  "kind": "technique",
+  "title": "ReShade RTGI concepts and porting to a native engine pipeline",
+  "tags": [
+   "rtgi",
+   "global-illumination",
+   "reshade",
+   "screen-space",
+   "denoising",
+   "temporal-accumulation",
+   "brdf",
+   "blue-noise",
+   "dx11"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://martysmods.com",
+   "https://reshade.me",
+   "https://github.com/GameTechDev/XeGTAO",
+   "https://github.com/dtrail/ZN_FX-Updated",
+   "https://github.com/BlueSkyDefender/AstrayFX",
+   "https://github.com/kiselgra/rtgi",
+   "https://github.com/NVIDIAGameWorks/RTXGI-DDGI",
+   "https://github.com/NVIDIA-RTX/RTXGI"
+  ]
+ },
+ {
+  "path": "techniques/running-xedit-and-windows-modding-tools-on-linux.md",
+  "kind": "technique",
+  "title": "Running xEdit (and other Delphi/Windows modding tools) on Linux: Wine/Proton patches",
+  "tags": [
+   "wine",
+   "proton",
+   "xedit",
+   "sf1edit",
+   "delphi",
+   "riched20",
+   "win32u",
+   "syscall",
+   "starfield",
+   "bethesda",
+   "linux",
+   "tooling",
+   "patching"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://gitlab.winehq.org/wine/wine",
+   "https://github.com/TES5Edit/TES5Edit",
+   "https://github.com/j00ru/windows-syscalls"
+  ]
+ },
+ {
+  "path": "techniques/static-address-native-hooks-ini-dll.md",
+  "kind": "technique",
+  "title": "Static-address native hooks from an INI-driven DLL (LINK/2012 injector pattern)",
+  "tags": [
+   "native-hook",
+   "x86",
+   "injector",
+   "link2012",
+   "code-cave",
+   "game-mod",
+   "no-source",
+   "static-addresses",
+   "ini"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/thelink2012/injector",
+   "https://github.com/ThirteenAG/Ultimate-ASI-Loader"
+  ]
+ },
+ {
+  "path": "techniques/synthetic-pdb-reconstruction-for-stripped-dlls.md",
+  "kind": "technique",
+  "title": "Synthetic PDB reconstruction for stripped Disrupt DLLs",
+  "tags": [
+   "disrupt",
+   "ubisoft",
+   "watch-dogs",
+   "pdb",
+   "symbols",
+   "reverse-engineering",
+   "rtti",
+   "vftables",
+   "llvm-pdbutil",
+   "ghidra",
+   "ida"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/tdu-tdu2-community-data-tooling.md",
+  "kind": "technique",
+  "title": "TDU/TDU2 community data tooling: filename hashing, .bnk inspection, 2DB textures, terrain heightmap editor",
+  "tags": [
+   "test-drive-unlimited",
+   "test-drive-unlimited-2",
+   "tooling",
+   "file-hash",
+   "bnk",
+   "texture",
+   "heightmap",
+   "modding"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/tdu2-runtime-patching-version-dll-proxy.md",
+  "kind": "technique",
+  "title": "Runtime-patching TDU2 in memory via a version.dll proxy (tdu2-runtime-patch)",
+  "tags": [
+   "test-drive-unlimited-2",
+   "runtime-patching",
+   "dll-proxy",
+   "code-cave",
+   "imgui",
+   "rust",
+   "fov",
+   "camera"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": []
+ },
+ {
+  "path": "techniques/trackmania-forever-3ds-model-export-in-blender.md",
+  "kind": "technique",
+  "title": "Exporting models to TrackMania Forever (TMF) with the Blender .3ds exporter",
+  "tags": [
+   "3ds",
+   "blender",
+   "trackmania",
+   "trackmania-forever",
+   "tmf",
+   "model-export",
+   "uv",
+   "vertex-colors"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/GreffMASTER/blender_export_tmf",
+   "https://github.com/raandoom/blender_export_tmf",
+   "https://docs.blender.org/manual/en/latest/addons/import_export/scene_3ds.html",
+   "https://en.wikipedia.org/wiki/TrackMania"
+  ]
+ },
+ {
+  "path": "techniques/trackmania-gbx-containers-and-mesh-extraction.md",
+  "kind": "technique",
+  "title": "Reading TrackMania GBX containers and getting meshes out without Nadeo tooling",
+  "tags": [
+   "trackmania",
+   "maniaplanet",
+   "gbx",
+   "nadeopak",
+   "mesh-extraction",
+   "noesis",
+   "file-formats"
+  ],
+  "date": "2026-10-06",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ]
+ },
+ {
+  "path": "techniques/wwise-soundbank-hirc-and-wschema.md",
+  "kind": "technique",
+  "title": "Wwise SoundBank (BNK): chunk layout, HIRC objects, and the per-version .wschema",
+  "tags": [
+   "wwise",
+   "bnk",
+   "hirc",
+   "wem",
+   "wschema",
+   "soundbank",
+   "watch-dogs",
+   "wd3",
+   "fusiontools",
+   "kaitai",
+   "varint"
+  ],
+  "date": "2026-10-05",
+  "status": "in-progress",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/WolvenKit/wwise-audio-tools",
+   "https://github.com/hpxro7/wwiseutil",
+   "https://github.com/audiokinetic/WwiseIncludes"
+  ]
+ },
+ {
+  "path": "techniques/wwise-soundbank-versions-and-open-toolchain.md",
+  "kind": "technique",
+  "title": "Wwise BNK versions: authoring-version \u2192 bank-version mapping and the open toolchain",
+  "tags": [
+   "wwise",
+   "bnk",
+   "soundbank",
+   "bank-version",
+   "wwise-version",
+   "toolchain",
+   "wwise-audio-tools",
+   "wwiseutil",
+   "ww2ogg",
+   "revorb",
+   "watch-dogs",
+   "wdl"
+  ],
+  "date": "2026-10-05",
+  "agents": [
+   "OpenCode (DeepSeek V4.1 Flash)"
+  ],
+  "humans": [
+   "Selene0623"
+  ],
+  "links": [
+   "https://github.com/WolvenKit/wwise-audio-tools",
+   "https://github.com/hpxro7/wwiseutil",
+   "https://github.com/audiokinetic/WwiseIncludes",
+   "https://www.audiokinetic.com/en/download",
+   "https://kaitai.io/"
+  ]
  }
 ]

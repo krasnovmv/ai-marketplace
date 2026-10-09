@@ -74,6 +74,32 @@ test("readDefaultMode and writeDefaultMode use XDG config path", () => {
   }
 });
 
+test("readDefaultMode trims and normalizes whitespace in env and config values", () => {
+  const tempDir = mkdtempSync(join(tmpdir(), "ponytail-default-normalize-"));
+  const previousXdg = process.env.XDG_CONFIG_HOME;
+  const previousDefault = process.env.PONYTAIL_DEFAULT_MODE;
+  const configDir = join(tempDir, "ponytail");
+  const configPath = join(configDir, "config.json");
+  mkdirSync(configDir, { recursive: true });
+  process.env.XDG_CONFIG_HOME = tempDir;
+  process.env.PONYTAIL_DEFAULT_MODE = "  FULL  ";
+  writeFileSync(configPath, JSON.stringify({ defaultMode: "\tultra\n" }), "utf8");
+
+  try {
+    assert.equal(readDefaultMode(), "full");
+    process.env.PONYTAIL_DEFAULT_MODE = "\n lite \r\n";
+    assert.equal(readDefaultMode(), "lite");
+    delete process.env.PONYTAIL_DEFAULT_MODE;
+    assert.equal(readDefaultMode(), "ultra");
+  } finally {
+    if (previousXdg === undefined) delete process.env.XDG_CONFIG_HOME;
+    else process.env.XDG_CONFIG_HOME = previousXdg;
+    if (previousDefault === undefined) delete process.env.PONYTAIL_DEFAULT_MODE;
+    else process.env.PONYTAIL_DEFAULT_MODE = previousDefault;
+    rmSync(tempDir, { recursive: true, force: true });
+  }
+});
+
 test("readQuietStartup resolves env var, config file, and default in that order", () => {
   const tempDir = mkdtempSync(join(tmpdir(), "ponytail-quiet-"));
   const previousXdg = process.env.XDG_CONFIG_HOME;
@@ -137,18 +163,17 @@ test("filterSkillBodyForMode does not drop a rule bullet whose label matches a m
 
 test("filterSkillBodyForMode keeps rule bullets that contain a colon", () => {
   // Regression: rule bullets outside the Intensity section (e.g. the
-  // "No unrequested abstractions:" rule or the `ponytail:` comment convention)
+  // "No unrequested abstractions:" rule or the `shortcut:` comment convention)
   // contain a colon and must not be mistaken for mode-example lines.
   const skillPath = new URL("../../skills/ponytail/SKILL.md", import.meta.url);
   const body = readFileSync(skillPath, "utf8");
 
   const filtered = filterSkillBodyForMode(body, "full");
 
-  assert.ok(filtered.includes("No unrequested abstractions"));
-  assert.ok(filtered.includes("Mark deliberate simplifications that cut a real corner"));
-  assert.ok(filtered.includes("`ponytail:` comment naming the ceiling and upgrade path"));
-  // The Intensity examples are still filtered down to the active mode.
-  assert.ok(filtered.includes('full: "`@lru_cache'));
-  assert.ok(!filtered.includes('lite: "Done'));
-  assert.ok(!filtered.includes('ultra: "No cache'));
+  assert.ok(filtered.includes("Bug fix: before you edit, grep every caller"));
+  assert.ok(filtered.includes("Never cut: validation at trust boundaries"));
+  assert.ok(filtered.includes("code comment in this form: `shortcut: <the limit>, <when to upgrade>`"));
+  // The level rows are still filtered down to the active mode.
+  assert.ok(filtered.includes("| **full** |"));
+  assert.ok(!filtered.includes("| **lite** |"));
 });

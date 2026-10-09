@@ -121,6 +121,103 @@ def test_steam_games_utf8(tmp_path, monkeypatch, library_name, install_name, gam
     }]
 
 
+def test_steam_root_from_registry(tmp_path, monkeypatch):
+    # Steam installed outside Program Files (e.g. C:\Steam): its libraryfolders.vdf, and every library in it, was never read
+    root = tmp_path / "Steam"
+    (root / "steamapps").mkdir(parents=True)
+    monkeypatch.setattr(scan, "steam_registry_root", lambda: root)
+    assert root.resolve() in scan.steam_roots()
+
+def test_known_game_longest_key_wins(tmp_path):
+    # "grand theft auto v" is a substring of "grand theft auto v enhanced";
+    # the more specific entry must win, not whichever lands first in the dict
+    d = tmp_path / "Grand Theft Auto V Enhanced"
+    d.mkdir()
+    for i in range(6):
+        (d / f"f{i}.txt").write_text("x")
+    r = scan.scan(str(d))
+    assert r["routes"][0]["route"] == scan.KNOWN["grand theft auto v enhanced"][0]
+
+
+def test_record_encodes_and_tags_bt709(tmp_path, monkeypatch):
+    # RGB frames -> yuv420p used the BT.601 matrix untagged; browsers read HD video as BT.709 and shift colours
+    from um import win
+    seen = {}
+    monkeypatch.setattr(win, "is_wsl", lambda: False)   # under WSL, Recorder calls wslpath through the patched Popen
+
+    class FakePopen:
+        def __init__(self, cmd, **kw):
+            seen["cmd"] = cmd
+    monkeypatch.setattr(win, "ffmpeg_win", lambda *a, **k: "ffmpeg")
+    monkeypatch.setattr(win, "encoder", lambda: "libx264")
+    monkeypatch.setattr(win.subprocess, "Popen", FakePopen)
+    win.Recorder(exe="Game.exe", out=str(tmp_path / "take"), audio=False).start()
+    cmd = seen["cmd"]
+    assert "out_color_matrix=bt709" in cmd[cmd.index("-vf") + 1]
+    assert cmd[cmd.index("-colorspace") + 1] == "bt709" and cmd[cmd.index("-color_range") + 1] == "tv"
+
+
+def test_auto_hdr_detection(monkeypatch):
+    # Auto HDR on an HDR display washes out captures of SDR games; um warns from the registry setting
+    from um import win
+    prefs = {"DirectXUserGlobalSettings": "AutoHDREnable=0;SwapEffectUpgradeEnable=1;",
+             r"E:\Games\Foo\Foo.exe": "AppStatus=1;AutoHDREnable=2097;",
+             r"E:\Games\Bar\Bar.exe": "AppStatus=1;AutoHDREnable=2096;"}
+    monkeypatch.setattr(win, "_gpu_prefs", lambda: prefs)
+    assert win.auto_hdr_on("Foo.exe") and win.auto_hdr_on("foo")
+    assert not win.auto_hdr_on("Bar.exe") and not win.auto_hdr_on("Other.exe") and not win.auto_hdr_on()
+    prefs["DirectXUserGlobalSettings"] = "AutoHDREnable=1;"
+    assert win.auto_hdr_on("Other.exe") and not win.auto_hdr_on("Bar.exe")
+
+
+def test_slay_the_spire_2_is_not_sts1(tmp_path):
+    # StS2 is Godot + C#; the StS1 entry (ModTheSpire, Java) must not match it
+    d = tmp_path / "Slay the Spire 2"
+    d.mkdir()
+    for i in range(6):
+        (d / f"f{i}.txt").write_text("x")
+    route = scan.scan(str(d))["routes"][0]["route"]
+    assert route == scan.KNOWN["slay the spire 2"][0] and "ModTheSpire" not in route
+
+
+def test_online_only_matches_whole_names():
+    # a substring test told agents to stop on single-player games: Rusty Lake ("rust"), Battlefield 1942, MW2 (2009)
+    for offline in ["Rusty Lake Paradise", "Rusted Warfare", "Battlefield 1942", "Call of Duty: Modern Warfare 2 (2009)",
+                    "Deadlock: Planetary Conquest", "The Final Station", "Trusty Rusty"]:
+        assert scan.online_only(offline) is None, offline
+    for online in ["Rust", "Counter-Strike 2", "Call of Duty®", "Tom Clancy's Rainbow Six® Siege", "PUBG: BATTLEGROUNDS",
+                   "Overwatch® 2", "Deadlock", "NARAKA: BLADEPOINT"]:
+        assert scan.online_only(online), online
+
+
+def test_scan_warns_only_for_online_games(tmp_path):
+    for name, warned in [("Rust", True), ("Rusty Lake Paradise", False)]:
+        d = tmp_path / name
+        d.mkdir()
+        for i in range(6):
+            (d / f"f{i}.txt").write_text("x")
+        assert any("online competitive" in w for w in scan.scan(str(d))["warnings"]) == warned, name
+
+
+def test_ffmpeg_download_is_checksummed(tmp_path, monkeypatch):
+    import hashlib, io
+    from um import win
+    payload = b"PK fake ffmpeg zip"
+    good = hashlib.sha256(payload).hexdigest()
+    sums = f"{'0' * 64}  ffmpeg-other.zip\n{good}  ffmpeg-master-latest-win64-gpl.zip\n".encode()
+    monkeypatch.delenv("UM_FFMPEG_SHA256", raising=False)
+    monkeypatch.setattr(win.urllib.request, "urlopen", lambda url, timeout=None: io.BytesIO(sums))
+    assert win.ffmpeg_sha256() == good
+    monkeypatch.setattr(win.urllib.request, "urlretrieve", lambda url, dst: Path(dst).write_bytes(payload))
+    z = tmp_path / "ffmpeg.zip"
+    win.download_ffmpeg(z)
+    assert z.read_bytes() == payload
+    monkeypatch.setenv("UM_FFMPEG_SHA256", "ab" * 32)        # a pin wins over the published sum
+    with pytest.raises(SystemExit):
+        win.download_ffmpeg(z)
+    assert not z.exists()                                      # a bad download is deleted, never extracted
+
+
 # --------------------------------------------------------------------------- sprite
 
 def sprite_on_white(w=64, h=48):
@@ -152,6 +249,20 @@ def test_sheet_slice_roundtrip():
     assert len(sprite.slice_sheet(sh, 8, 8)) == 5
 
 
+@pytest.mark.parametrize("alpha", [1, 64, 128, 192, 254, 255])
+@pytest.mark.parametrize("operation", ["fit", "sheet", "squash"])
+def test_sprite_placement_preserves_rgba(alpha, operation):
+    # Placing a frame on a transparent canvas must not apply its alpha twice.
+    im = Image.new("RGBA", (8, 8), (200, 100, 50, alpha))
+    if operation == "fit":
+        out = sprite.fit(im, 8, 8)
+    elif operation == "sheet":
+        out = sprite.slice_sheet(sprite.sheet([im]), 8, 8)[0]
+    else:
+        out = sprite.simple_frames(im, n=1, kind="squash")[0]
+    assert out.tobytes() == im.tobytes()
+
+
 def test_team_mask():
     im = Image.new("RGBA", (4, 1), (0, 0, 0, 255))
     im.putpixel((0, 0), (20, 60, 240, 255))            # saturated blue -> player colour
@@ -179,6 +290,68 @@ def test_kv_and_urls(tmp_path):
     assert [u for _, u, _ in fal._urls_in(res)] == ["https://v3.fal.media/a.png", "https://v3.fal.media/b.png", "https://v3.fal.media/m.png"]
 
 
+def test_upload_uses_cdn_token_and_explains_big_failures(tmp_path, monkeypatch, capsys):
+    # storage/upload/initiate?storage_type=gcs now answers 400 "Invalid storage type"; files over 8 MiB then failed silently
+    calls = []
+    monkeypatch.setattr(fal, "_req", lambda method, url, body=None, **k: calls.append(url) or {"token": "t", "token_type": "Bearer"})
+
+    class Resp:
+        def __init__(self, req):
+            self.req = req
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return json.dumps({"access_url": "https://v3.fal.media/files/x/a.png"}).encode()
+    sent = []
+    monkeypatch.setattr(fal.urllib.request, "urlopen", lambda req, timeout=None: sent.append(req) or Resp(req))
+    f = tmp_path / "a.png"
+    f.write_bytes(b"\x89PNG")
+    assert fal.upload(f) == "https://v3.fal.media/files/x/a.png"
+    assert "storage_type=fal-cdn-v3" in calls[0] and sent[0].full_url == fal.CDN + "/files/upload"
+    assert sent[0].get_header("Authorization") == "Bearer t" and sent[0].get_header("X-fal-file-name") == "a.png"
+
+    def fail(req, timeout=None):
+        raise fal.urllib.error.URLError("boom")
+    monkeypatch.setattr(fal.urllib.request, "urlopen", fail)
+    assert fal.upload(f).startswith("data:image/png;base64,")              # small: inline fallback
+    big = tmp_path / "big.mp4"
+    big.write_bytes(b"\0" * ((8 << 20) + 1))
+    with pytest.raises(SystemExit):
+        fal.upload(big)
+    assert "only covers files under 8 MiB" in capsys.readouterr().err  # big: says why instead of a bare exit 1
+
+
+def test_failed_download_keeps_the_request_id(tmp_path, monkeypatch, capsys):
+    # a finished (paid) job whose output URL 404s must not vanish: say which request to fetch again
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self):
+            return b"ok"
+
+    def urlopen(req, timeout=None):
+        if req.full_url.endswith("big.mov"):
+            raise fal.urllib.error.HTTPError(req.full_url, 404, "Not Found", {}, None)
+        return Resp()
+    monkeypatch.setattr(fal.urllib.request, "urlopen", urlopen)
+    res = {"video": {"url": "https://v3b.fal.media/files/x/big.mov"}, "thumb": {"url": "https://v3b.fal.media/files/x/t.png"},
+           "_request_id": "req-123", "_endpoint": "fal-ai/some-model"}
+    with pytest.raises(SystemExit):
+        fal.download_outputs(res, tmp_path, "clip")
+    err = capsys.readouterr().err
+    assert "big.mov" in err and "um fal result fal-ai/some-model req-123" in err
+    assert (tmp_path / "clip_thumb.png").read_bytes() == b"ok"   # the other outputs still saved
+
+
 # --------------------------------------------------------------------------- publish
 
 def test_publish_check(tmp_path, capsys):
@@ -194,6 +367,24 @@ def test_publish_check(tmp_path, capsys):
     assert "game file copied verbatim" in out and "FAL_KEY assignment" in out and "Ghidra auto-name" in out
     normalized = out.replace("\\", "/")
     assert "decompiler header x1 in src/Mod.cs" in normalized and "README.md" not in normalized.split("decompiler header")[-1].split("\n")[0]
+
+
+@pytest.mark.parametrize("label,key", [
+    # assembled at runtime so this file doesn't trip the toolkit's own publish check
+    ("OpenAI key", "sk-" + "proj-" + "Ab3_dE-f" + "Gh1jK2lM3nO4pQ5rS6tU7vW8xY9z0" * 4),
+    ("OpenAI key", "sk-" + "svcacct-" + "Ab3_dE-f" + "Gh1jK2lM3nO4pQ5rS6tU7vW8xY9z0" * 4),
+    ("OpenAI key", "sk-" + "Gh1jK2lM3nO4pQ5rS6tU7vW8xY9z0" * 2),
+    ("GitHub token", "github" + "_pat_" + "11ABCDEFG0123456789abc" + "_" + "aB3dE5fG7hJ9kL1mN3pQ5rS7tU9vW1xY3zA5bC7dE9fG1hJ3kL5mN7pQ9rS1t"),
+    ("GitHub token", "gh" + "p_" + "aB3dE5fG7hJ9kL1mN3pQ5rS7tU9vW1xY3z"),
+])
+def test_secret_patterns_catch_current_key_formats(label, key):
+    rx = dict(publish.SECRET_PATTERNS)[label]
+    assert rx.search(f"key = {key}\n"), key
+
+
+def test_secret_patterns_ignore_ordinary_text():
+    text = "sk-learn-style-kebab-case-identifiers-are-not-keys and github_pat_ alone"
+    assert not [label for label, rx in publish.SECRET_PATTERNS if rx.search(text)]
 
 
 # --------------------------------------------------------------------------- video
@@ -252,6 +443,17 @@ def test_kb_new_check_search(tmp_path):
     assert kb.search(root, ["boon"], route="native-hook") == []
 
 
+def test_kb_search_matches_word_starts(tmp_path):
+    root = tmp_path / "knowledge" / "games" / "x"
+    root.mkdir(parents=True)
+    for name, title in [("a.md", "Trust and frustum culling"), ("b.md", "A Rust server plugin"), ("c.md", "Rusty Lake puzzles"),
+                        ("d.md", "Patching plugin.esp")]:
+        (root / name).write_text(f"---\nkind: game\ntitle: {title}\ngame: X\n---\n# {title}\n", encoding="utf-8")
+    found = {r["title"] for r in kb.search(tmp_path / "knowledge", ["rust"])}
+    assert found == {"A Rust server plugin", "Rusty Lake puzzles"}
+    assert [r["title"] for r in kb.search(tmp_path / "knowledge", [".esp"])] == ["Patching plugin.esp"]   # punctuation-led terms match anywhere
+
+
 def test_kb_check_rejects_secrets_and_dumps(tmp_path):
     note = tmp_path / "n.md"
     code = "\n".join(f"int x{i} = {i};" for i in range(160))
@@ -259,6 +461,18 @@ def test_kb_check_rejects_secrets_and_dumps(tmp_path):
                     f"```c\n{code}\n```\n" + "FAL" + "_KEY=abcdefghijklmnopqrstuvwxyz0123\n")
     fails, _ = kb.check_note(note)
     assert any("code block" in f for f in fails) and any("FAL_KEY" in f for f in fails)
+
+
+def test_kb_impossible_date_is_reported_not_raised(tmp_path):
+    # YAML turns an unquoted YYYY-MM-DD into a date; a day that doesn't exist raises ValueError, not YAMLError
+    root = tmp_path / "knowledge"
+    (root / "techniques").mkdir(parents=True)
+    note = root / "techniques" / "t.md"
+    note.write_text("---\nkind: technique\ntitle: t\ntags: [x]\ndate: 2026-09-31\nagents: [a]\n---\n# t\n", encoding="utf-8")
+    fails, _ = kb.check_note(note, root)
+    assert any("front matter is not valid YAML" in f for f in fails), fails   # the date error's wording varies by Python
+    kb.search(root, ["t"])                                             # one bad note must not break search or index
+    kb.build_index(root)
 
 
 @pytest.mark.parametrize("url", ["https://github.com/alice/universal-modder.git", "https://github.com/alice/universal-modder",
@@ -272,7 +486,112 @@ def test_pr_head_same_repo():
     assert kb.pr_head("kb/a-b", None) == "kb/a-b"
 
 
+# --------------------------------------------------------------------------- powershell
+
+def test_ps_exe_falls_back_to_full_path(tmp_path, monkeypatch):
+    # an agent's PATH often lacks System32\WindowsPowerShell\v1.0; bare "powershell" then raises WinError 2
+    from um import common
+    exe = tmp_path / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe"
+    exe.parent.mkdir(parents=True)
+    exe.write_bytes(b"MZ")
+    monkeypatch.setattr(common, "is_wsl", lambda: False)
+    monkeypatch.setattr(common.shutil, "which", lambda name: None)
+    monkeypatch.setenv("SystemRoot", str(tmp_path))
+    assert common.ps_exe() == str(exe)
+    monkeypatch.setattr(common.shutil, "which", lambda name: "/on/path/" + name)
+    assert common.ps_exe() == "/on/path/powershell"
+
+
 # --------------------------------------------------------------------------- backup
+
+@pytest.fixture
+def backup_same_second(tmp_path, monkeypatch):
+    monkeypatch.setattr(backup, "data_dir", lambda: tmp_path / "data")
+    monkeypatch.setattr(backup.time, "strftime", lambda *args: "20261006-120000")
+
+
+def test_backup_same_second_keeps_every_snapshot(tmp_path, backup_same_second):
+    src = tmp_path / "src"
+    paths = []
+    for i in range(12):
+        make(src, {"save.dat": f"version {i}"})
+        paths.append(backup.create(str(src), name="t", note=f"take {i}"))
+
+    assert len(set(paths)) == 12
+    assert paths[0].name == "20261006-120000.zip"  # keep the existing filename format when available
+    assert backup.snapshots("t") == paths         # latest selection still works after ten collisions
+    for i, path in enumerate(paths):
+        with backup.zipfile.ZipFile(path) as z:
+            assert z.read("save.dat") == f"version {i}".encode()
+        assert backup._manifest(path)["note"] == f"take {i}"
+    assert backup.diff("t")["changed"] == []
+    make(src, {"save.dat": "modified"})
+    backup.restore("t", yes=True)
+    assert (src / "save.dat").read_text() == "version 11"
+
+
+@pytest.mark.parametrize("removed", [0, 1])
+def test_backup_after_deleted_snapshot_is_still_latest(tmp_path, backup_same_second, removed):
+    src = tmp_path / "src"
+    make(src, {"save.dat": "old"})
+    paths = [backup.create(str(src), name="t") for _ in range(3)]
+    paths[removed].unlink()
+    make(src, {"save.dat": "new"})
+    newest = backup.create(str(src), name="t")
+
+    assert newest > paths[-1]
+    assert backup.snapshots("t")[-1] == newest
+    assert backup.diff("t")["changed"] == []
+
+
+def test_backup_concurrent_creates_keep_every_snapshot(tmp_path, backup_same_second):
+    from concurrent.futures import ThreadPoolExecutor
+
+    src = tmp_path / "src"
+    make(src, {"save.dat": "world"})
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        paths = list(pool.map(lambda i: backup.create(str(src), name="t", note=str(i)), range(8)))
+
+    assert len(set(paths)) == 8
+    assert backup.snapshots("t") == sorted(paths)
+    for i, path in enumerate(paths):
+        with backup.zipfile.ZipFile(path) as z:
+            assert z.read("save.dat") == b"world"
+        assert backup._manifest(path)["note"] == str(i)
+
+
+@pytest.mark.parametrize("error", [OSError, KeyboardInterrupt])
+def test_backup_failed_create_keeps_previous_snapshot(tmp_path, backup_same_second, monkeypatch, error):
+    src = tmp_path / "src"
+    make(src, {"save.dat": "pristine"})
+    first = backup.create(str(src), name="t")
+    original = first.read_bytes()
+
+    def fail_write(*args, **kwargs):
+        raise error("interrupted backup")
+
+    monkeypatch.setattr(backup.zipfile.ZipFile, "write", fail_write)
+    with pytest.raises(error, match="interrupted backup"):
+        backup.create(str(src), name="t")
+    assert backup.snapshots("t") == [first]
+    assert first.read_bytes() == original
+
+
+def test_backup_repeated_restores_keep_undo_snapshots(tmp_path, backup_same_second):
+    src = tmp_path / "src"
+    make(src, {"save.dat": "pristine"})
+    backup.create(str(src), name="t")
+    for state in ("first take", "second take"):
+        make(src, {"save.dat": state})
+        backup.restore("t", yes=True)
+        assert (src / "save.dat").read_text() == "pristine"
+
+    undo = backup.snapshots("t-pre-restore")
+    assert len(undo) == 2
+    for path, state in zip(undo, ("first take", "second take")):
+        with backup.zipfile.ZipFile(path) as z:
+            assert z.read("save.dat") == state.encode()
+
 
 def test_backup_handles_pre_1980_timestamps(tmp_path, monkeypatch):
     import os
@@ -283,3 +602,157 @@ def test_backup_handles_pre_1980_timestamps(tmp_path, monkeypatch):
     os.utime(src / "old.txt", (0, 0))
     zp = backup.create(str(src), name="t")
     assert set(backup._manifest(zp)["files"]) == {"old.txt", "new.txt"}
+
+
+def test_backup_diff_and_restore_round_trip(tmp_path, monkeypatch):
+    monkeypatch.setattr(backup, "_root", lambda name: (tmp_path / "snaps" / name).mkdir(parents=True, exist_ok=True)
+                        or tmp_path / "snaps" / name)
+    src = tmp_path / "src"
+    make(src, {"save.dat": "v1", "sub/cfg.ini": "a=1"})
+    backup.create(str(src), name="t")
+    (src / "save.dat").write_text("v2")
+    (src / "sub" / "cfg.ini").unlink()
+    make(src, {"extra.log": "new"})
+    d = backup.diff("t", str(src))
+    assert (d["changed"], d["removed"], d["added"]) == (["save.dat"], ["sub/cfg.ini"], ["extra.log"])
+    with pytest.raises(SystemExit):  # no --yes: report only, touch nothing
+        backup.restore("t", str(src))
+    assert (src / "save.dat").read_text() == "v2"
+    backup.restore("t", str(src), clean=True, yes=True)
+    assert (src / "save.dat").read_text() == "v1"
+    assert (src / "sub" / "cfg.ini").read_text() == "a=1"
+    assert not (src / "extra.log").exists()
+    assert backup.snapshots("t-pre-restore")  # the state before the restore was kept
+
+
+# --------------------------------------------------------------------------- comfy
+
+from um import comfy  # noqa: E402
+
+
+@pytest.fixture
+def fake_comfy():
+    """A stand-in for ComfyUI's HTTP API: /system_stats, /models, /object_info, /prompt, /history, /view."""
+    import io
+    import threading
+    from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+    from urllib.parse import parse_qs, urlparse
+
+    state = {"prompts": [], "polls": 0, "models_route": True}
+    png = io.BytesIO()
+    im = Image.new("RGBA", (16, 16), (255, 255, 255, 255))      # a red square on a white background
+    im.paste((200, 30, 30, 255), (4, 4, 12, 12))
+    im.save(png, "PNG")
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *a):
+            pass
+
+        def _send(self, body: bytes, code=200, ctype="application/json"):
+            self.send_response(code)
+            self.send_header("Content-Type", ctype)
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_GET(self):
+            u = urlparse(self.path)
+            if u.path == "/system_stats":
+                self._send(json.dumps({"system": {"comfyui_version": "0.9.0", "pytorch_version": "2.9.0"},
+                                       "devices": [{"name": "fake", "type": "cpu"}]}).encode())
+            elif u.path == "/models/checkpoints" and state["models_route"]:
+                self._send(json.dumps(["sd15.safetensors", "sdxl_base.safetensors"]).encode())
+            elif u.path == "/object_info/CheckpointLoaderSimple":
+                spec = ["COMBO", {"options": ["v3.safetensors"]}]
+                self._send(json.dumps({"CheckpointLoaderSimple": {"input": {"required": {"ckpt_name": spec}}}}).encode())
+            elif u.path == "/history/p1":
+                state["polls"] += 1                                  # the first poll finds it still running
+                done = {"p1": {"status": {"status_str": "success", "completed": True},
+                               "outputs": {"9": {"images": [{"filename": "um_00001_.png", "subfolder": "", "type": "output"}]}}}}
+                self._send(json.dumps(done if state["polls"] > 1 else {}).encode())
+            elif u.path == "/view" and parse_qs(u.query).get("filename") == ["um_00001_.png"]:
+                self._send(png.getvalue(), ctype="image/png")
+            else:
+                self._send(b"404: Not Found", 404, "text/plain")
+
+        def do_POST(self):
+            wf = json.loads(self.rfile.read(int(self.headers["Content-Length"])))["prompt"]
+            state["prompts"].append(wf)
+            if wf.get("4", {}).get("inputs", {}).get("ckpt_name") == "missing.safetensors":
+                err = {"error": {"message": "Prompt outputs failed validation", "details": ""},
+                       "node_errors": {"4": {"class_type": "CheckpointLoaderSimple", "errors": [
+                           {"message": "Value not in list", "details": "ckpt_name: 'missing.safetensors' not in [...]"}]}}}
+                self._send(json.dumps(err).encode(), 400)
+            else:
+                self._send(json.dumps({"prompt_id": "p1", "number": 0, "node_errors": {}}).encode())
+
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    state["url"] = f"http://127.0.0.1:{srv.server_address[1]}"
+    yield state
+    srv.shutdown()
+
+
+def test_comfy_image_sprite(fake_comfy, tmp_path, monkeypatch):
+    from um import cli
+    monkeypatch.setattr(comfy.time, "sleep", lambda s: None)
+    out = tmp_path / "gen"
+    cli.main(["comfy", "image", "a red potion", "--url", fake_comfy["url"], "--out", str(out), "--seed", "7", "--sprite"])
+    wf = fake_comfy["prompts"][-1]
+    assert wf["4"]["inputs"]["ckpt_name"] == "sd15.safetensors"               # the first checkpoint listed
+    assert (wf["5"]["inputs"]["width"], wf["3"]["inputs"]["seed"]) == (512, 7)  # SD 1.5 size, the given seed
+    assert "plain flat white background" in wf["6"]["inputs"]["text"]
+    assert Image.open(out / "a_red_potion.png").size == (16, 16)
+    cut = Image.open(out / "a_red_potion_cut.png")                           # cut out and trimmed locally
+    assert cut.size == (8, 8) and cut.getpixel((0, 0)) == (200, 30, 30, 255)
+    rec = json.loads((out / "comfy_manifest.jsonl").read_text().splitlines()[-1])
+    assert rec["prompt_id"] == "p1" and rec["seed"] == 7 and rec["workflow"]["9"]["class_type"] == "SaveImage"
+
+
+def test_comfy_run_set_and_errors(fake_comfy, tmp_path, monkeypatch):
+    monkeypatch.setattr(comfy.time, "sleep", lambda s: None)
+    wf = comfy.txt2img("x", "sd15.safetensors")
+    wf["6"]["_meta"] = {"title": "Positive"}
+    (tmp_path / "wf.json").write_text(json.dumps(wf))
+    wf = comfy.apply_set(comfy.load_workflow(tmp_path / "wf.json"), ["Positive.text=a v1.5 sword=sharp", "3.seed:=42"])
+    assert (wf["6"]["inputs"]["text"], wf["3"]["inputs"]["seed"]) == ("a v1.5 sword=sharp", 42)
+    assert [Path(f).name for f in comfy.generate(fake_comfy["url"], wf, tmp_path / "o", "sword")] == ["sword.png"]
+    (tmp_path / "ui.json").write_text(json.dumps({"nodes": [], "links": []}))
+    with pytest.raises(SystemExit):
+        comfy.load_workflow(tmp_path / "ui.json")                            # UI format: needs Export (API)
+    with pytest.raises(SystemExit):
+        comfy.queue(fake_comfy["url"], comfy.txt2img("x", "missing.safetensors"))   # validation error reported
+    fake_comfy["models_route"] = False
+    assert comfy.checkpoints(fake_comfy["url"]) == ["v3.safetensors"]        # older servers: /object_info
+    assert comfy.status(fake_comfy["url"])["version"] == "0.9.0"
+
+
+def test_skill_copies_match():
+    # .agents/skills and .claude/skills are real copies of skills/ (Windows clones turn symlinks into text files)
+    root = Path(__file__).resolve().parents[1]
+    def tree(d):
+        return {p.relative_to(d).as_posix(): p.read_bytes() for p in sorted(d.rglob("*")) if p.is_file()}
+    src = tree(root / "skills")
+    for copy in (".agents/skills", ".claude/skills"):
+        assert not (root / copy).is_symlink(), f"{copy} must be a folder, not a symlink"
+        assert tree(root / copy) == src, (f"{copy} differs from skills/: rm -rf .agents/skills .claude/skills && "
+                                          "cp -r skills .agents/skills && cp -r skills .claude/skills")
+    assert not any((root / d).exists() for d in (".gemini/skills", ".github/skills")), "agents read .agents/skills"
+
+
+# --------------------------------------------------------------------------- hooks
+
+@pytest.mark.skipif(not shutil.which("cygpath"), reason="Git Bash / MSYS only")
+def test_path_hook_writes_a_posix_root(tmp_path):
+    # Claude Code passes ${CLAUDE_PLUGIN_ROOT} as C:/...; written as is, bash splits PATH at the drive colon
+    import os
+    root = tmp_path / "um root"
+    (root / "bin").mkdir(parents=True)
+    (root / "bin" / "um").write_text("#!/bin/sh\n")
+    env_file = tmp_path / "env.sh"
+    bash = str(Path(shutil.which("cygpath")).with_name("bash.exe"))
+    hook = Path(__file__).resolve().parents[1] / "hooks" / "add-to-path.sh"
+    subprocess.run([bash, str(hook), root.as_posix()], env={**os.environ, "CLAUDE_ENV_FILE": str(env_file)}, check=True)
+    value = env_file.read_text().split('"')[1]
+    prefix = value[:value.index("/bin:$PATH")]
+    assert prefix.startswith("/") and ":" not in prefix, value

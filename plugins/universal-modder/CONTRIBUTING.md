@@ -36,11 +36,17 @@ rules below.
 - **No game content:** no game files, extracted assets, ROMs or ISOs, and no links to pirated copies.
 - **No decompiled code dumps.** Describe the logic in your own words and name symbols; keep snippets of
   *your own* code short (`um kb check` fails blocks over 150 lines and warns over 60).
+- **Leaks:** knowledge from beta builds and leaked SDKs or source is fine to write up in your own words, and
+  so is saying where it came from. The leaked material itself stays out: no pasted code, attached files,
+  download links or license keys, and no instructions to fetch them.
 - **No cheating other players, and no bypasses:**
   - nothing that gives an edge over other players on servers you don't run (aimbots, ESP, speed hacks,
     bots);
   - no anti-cheat, DRM or ownership-check bypasses;
-  - no instructions for injecting into online clients protected by anti-cheat.
+  - no instructions for injecting into online clients protected by anti-cheat;
+  - one exception, for games that can no longer be bought anywhere: a note may say that a community route for
+    people without a copy exists and link the community's guide page. Its steps, keys, serials and files
+    stay out of the repo, and so do direct links to patched executables, cracks or game downloads.
 - **No secrets:** API keys, tokens, `.env` files. `um kb check` and `um publish check` catch the common
   ones.
 - **Honesty:**
@@ -56,6 +62,9 @@ rules below.
   - `uv run --with pytest pytest -q tests` must pass.
 - **Skills (`skills/`):** the Agent Skills format (`SKILL.md` with `name` + `description`). Keep them
   agent-neutral: say "the agent", not a specific product. Put deep material in `references/`.
+  - Edit `skills/` only. `.agents/skills` and `.claude/skills` are copies (no symlinks, so Windows clones
+    work). Refresh them with `rm -rf .agents/skills .claude/skills && cp -r skills .agents/skills && cp -r
+    skills .claude/skills`; a test fails while they differ.
 - **Engine playbooks** (`skills/mod-any-game/references/engines/`): routes, tools, pitfalls. Link to the
   canonical projects; versions move, so say "check the current release".
 - **Examples (`examples/`):** your own code and assets only. Use `fetch` scripts for third-party SDKs, and
