@@ -69,5 +69,5 @@
       ]
     }
   ],
-  "limits": { "maxFileSizeMb": 6, "maxPluginSizeMb": 25 }
+  "limits": { "maxFileSizeMb": 7, "maxPluginSizeMb": 30 }
 }
