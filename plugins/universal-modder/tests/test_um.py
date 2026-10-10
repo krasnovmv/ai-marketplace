@@ -3,6 +3,7 @@
     uv run --with pytest pytest -q
 """
 import json
+import os
 import shutil
 import struct
 import subprocess
@@ -65,19 +66,164 @@ def test_gamemaker_and_rpgmaker(tmp_path):
     assert engine_of(tmp_path / "b", {"www/js/rpg_core.js": "//", "Game.exe": b"MZ"})[0] == "rpgmaker-mvmz"
 
 
-def test_managed_pe(tmp_path):
-    # minimal PE32 with a CLR header directory entry
-    pe = bytearray(1024)
+def _pe(managed=True, arch=0x14C, pad=0):
+    # minimal PE (x86 PE32 by default, PE32+ for arch=0x8664), optionally with a CLR header
+    # directory entry, padded by `pad` bytes so tests can control file sizes
+    pe = bytearray(1024 + pad)
     pe[0:2] = b"MZ"
     struct.pack_into("<I", pe, 0x3C, 0x80)
     pe[0x80:0x84] = b"PE\0\0"
-    struct.pack_into("<H", pe, 0x84, 0x14C)
+    struct.pack_into("<H", pe, 0x84, arch)
     opt = 0x80 + 24
-    struct.pack_into("<H", pe, opt, 0x10B)
-    struct.pack_into("<I", pe, opt + 96 + 14 * 8, 0x2000)
+    struct.pack_into("<H", pe, opt, 0x20B if arch == 0x8664 else 0x10B)
+    if managed:
+        struct.pack_into("<I", pe, opt + (112 if arch == 0x8664 else 96) + 14 * 8, 0x2000)
+    return bytes(pe)
+
+
+def test_managed_pe(tmp_path):
     p = tmp_path / "Game.exe"
-    p.write_bytes(bytes(pe))
+    p.write_bytes(_pe())
     assert scan.pe_info(p) == {"arch": "x86", "managed": True}
+
+
+def test_zengin_detected(tmp_path):
+    key, _ = engine_of(tmp_path, {"system/Gothic2.exe": _pe(False), "Data/Textures.vdf": b"x"})
+    assert key == "zengin"
+    # volume layout alone (vdfs loader + Data/*.vdf) is enough
+    key, _ = engine_of(tmp_path / "b", {"system/vdfs32g.dll": _pe(False), "Data/Worlds.vdf": b"x"})
+    assert key == "zengin"
+
+
+def test_nested_exe_fingerprinted(tmp_path):
+    # Gothic-style layout: the game exe lives one level down in system/
+    make(tmp_path, {"system/Gothic2.exe": _pe(managed=False), "Data/worlds.vdf": b"x"})
+    _, facts = scan.detect(scan.Index(tmp_path))
+    assert facts["executables"]["system/gothic2.exe"] == {"arch": "x86", "managed": False}
+
+
+def test_redist_exes_skipped(tmp_path):
+    # installer/runtime folders (Steam _CommonRedist, GOG __redist/__support, EA __installer) and
+    # uninstallers at any depth are not the game
+    make(tmp_path, {"Game.exe": _pe(False), "_CommonRedist/vcredist/vc_redist.exe": _pe(False),
+                    "__redist/dotnet/setup.exe": _pe(), "__support/app/helper.exe": _pe(),
+                    "__installer/Touchup.exe": _pe(), "system/unins000.exe": _pe(),
+                    "system/Gothic2.exe": _pe(False)})
+    _, facts = scan.detect(scan.Index(tmp_path))
+    assert list(facts["executables"]) == ["game.exe", "system/gothic2.exe"]
+    assert scan._in_skip_dir("__redist/x.jar") and scan._in_skip_dir("a/_commonredist/b/x.exe")
+    assert not scan._in_skip_dir("supporters/x.exe") and not scan._in_skip_dir("__redist.exe")
+
+
+def _named_game(tmp_path, name, files):
+    d = tmp_path / name
+    make(d, dict({f"f{i}.txt": "x" for i in range(6)}, **files))
+    return scan.scan(str(d))
+
+
+def test_zengin_route_only_for_classic_gothic(tmp_path):
+    # classic Gothic 1/2 get the ZenGin playbook from detection, with the exe-build check in the route
+    r = _named_game(tmp_path, "Gothic II", {"system/Gothic2.exe": _pe(False), "Data/Worlds.vdf": b"x"})
+    assert r["engine"]["key"] == "zengin" and r["playbook"].endswith("zengin.md")
+    assert "exe build" in r["routes"][0]["route"]
+    # Gothic 1 Remake (UE5) and Gothic III (Genome) contain "gothic 1"/"gothic ii" but aren't ZenGin
+    for name, files in (("Gothic 1 Remake", {"Gothic1Remake/Content/Paks/a.pak": b"x"}),
+                        ("Gothic III", {"Gothic3.exe": _pe(False), "Data/a.pak": b"x"})):
+        r = _named_game(tmp_path, name, files)
+        assert all(rt["playbook"] != "zengin.md" for rt in r["routes"]), name
+        assert not r["playbook"].endswith("zengin.md"), name
+
+
+def test_deep_tooling_jars_not_java_engine(tmp_path):
+    # a Ghidra/SDK tree inside the game folder must not mislabel a native game as Java
+    make(tmp_path, {"Game.exe": _pe(False),
+                    "Dev Folder/tools/thirdparty/ghidra/support/launchsupport.jar": b"x",
+                    "Dev Folder/tools/thirdparty/ghidra/gradle/gradle-wrapper.jar": b"x"})
+    hits, _ = scan.detect(scan.Index(tmp_path))
+    assert all(k != "java" for k, *_ in hits)
+    # but a jar where the game ships it (root / one level down) still detects
+    key, _ = engine_of(tmp_path / "b", {"game.jar": b"x", "jre/bin/java.exe": _pe(False)})
+    assert key == "java"
+
+
+def test_unicode_output_on_cp1252_console(tmp_path):
+    # `um kb show` must not UnicodeEncodeError when stdout isn't UTF-8
+    kb = tmp_path / "kb"
+    (kb / "games/x").mkdir(parents=True)
+    (kb / "games/x/n.md").write_text("---\ntitle: LÖVE → test\n---\n# LÖVE →\n", encoding="utf-8")
+    env = dict(os.environ, PYTHONIOENCODING="cp1252", UM_KB=str(kb),
+               PYTHONPATH=str(Path(__file__).resolve().parents[1]))
+    r = subprocess.run([sys.executable, "-m", "um", "kb", "show", "n.md"],
+                       capture_output=True, encoding="utf-8", env=env)
+    assert r.returncode == 0 and "LÖVE →" in r.stdout
+
+
+def test_tool_exe_does_not_set_dotnet_engine(tmp_path):
+    # Kenshi shape: the only managed binary is a tool (Forgotten Construction
+    # Set); the big game binary is native, so the engine must not be dotnet.
+    # The mod manager bundle is deliberately bigger than the game exe: size
+    # alone must not elect it as the game binary.
+    make(tmp_path, {
+        "kenshi_x64.exe": _pe(False, arch=0x8664, pad=40000),
+        "forgotten construction set.exe": _pe(),
+        "KenshiModTool.exe": _pe(False, arch=0x8664, pad=90000),
+        "OgreMain_x64.dll": b"MZ",
+        "Plugins_x64.cfg": "Plugin=RE_Kenshi",
+    })
+    hits, facts = scan.detect(scan.Index(tmp_path))
+    assert hits[0][0] == "native"
+    assert hits[0][2][0] == "kenshi_x64.exe"
+    assert facts["executables"]["kenshi_x64.exe"] == {"arch": "x64", "managed": False}
+
+
+def test_managed_game_exe_still_dotnet(tmp_path):
+    # guard: a game whose own binary is managed keeps the dotnet engine even
+    # when a tool-like launcher ships next to it
+    assert engine_of(tmp_path, {
+        "Game.exe": _pe(),
+        "GameLauncher.exe": _pe(),
+    })[0] == "dotnet"
+
+
+def test_dotnet_apphost_game_exe_still_dotnet(tmp_path):
+    # .NET 5+ shape: Game.exe is a native apphost next to Game.dll + Game.runtimeconfig.json,
+    # so a small managed launcher must not demote the game to native
+    key, _ = engine_of(tmp_path, {
+        "Game.exe": _pe(False, arch=0x8664, pad=40000),
+        "Game.dll": _pe(arch=0x8664),
+        "Game.runtimeconfig.json": "{}",
+        "Launcher.exe": _pe(),
+    })
+    assert key == "dotnet"
+
+
+def test_tool_like_native_exe_never_game_binary(tmp_path):
+    # when every native exe is tool-like there is no game binary to prefer: stay dotnet
+    # rather than electing setup.exe
+    make(tmp_path, {"Editor.exe": _pe(), "setup.exe": _pe(False, pad=40000)})
+    hits, _ = scan.detect(scan.Index(tmp_path))
+    assert hits[0][0] == "dotnet"
+    assert all("setup.exe" not in ev for _, _, ev, _ in hits)
+
+
+def test_kenshi_loaders_and_route(tmp_path):
+    d = tmp_path / "Kenshi"
+    make(d, {
+        "kenshi_x64.exe": _pe(False, arch=0x8664, pad=40000),
+        "forgotten construction set.exe": _pe(),
+        "OgreMain_x64.dll": b"MZ",
+        "RE_Kenshi.dll": b"MZ", "KenshiLib.dll": b"MZ",
+        "KenshiModTool.exe": _pe(False, arch=0x8664, pad=100),
+        "mods/readme.txt": "x",
+    })
+    r = scan.scan(str(d))
+    assert r["engine"]["key"] == "native"
+    assert "RE_Kenshi (Kenshi OGRE plugin)" in r["mod_loaders_installed"]
+    assert "Kenshi Mod Manager" in r["mod_loaders_installed"]
+    assert r["routes"][0]["why"] == "known game" and r["routes"][0]["playbook"] == "native.md"
+    # a generic root masterlist.json is not a Kenshi Mod Manager install
+    make(tmp_path / "Other", {"Game.exe": _pe(False), "masterlist.json": "[]"})
+    assert "Kenshi Mod Manager" not in scan.scan(str(tmp_path / "Other"))["mod_loaders_installed"]
 
 
 def test_vdf():
