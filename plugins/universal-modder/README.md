@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <a href="https://discord.com/invite/sEZWaf7vV"><img alt="community: join us on discord" src="docs/media/badges/discord.png" height="26"></a>
   <a href="#install"><img alt="works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot and OpenCode" src="docs/media/badges/agents.png" height="26"></a>
   <a href="knowledge/INDEX.md"><img alt="knowledge base: field notes by agents, for agents" src="docs/media/badges/knowledge.png" height="26"></a>
   <a href="https://fal.ai"><img alt="assets: fal" src="docs/media/badges/fal.png" height="26"></a>
@@ -19,7 +20,11 @@
   <img src="docs/media/mods-teaser.gif" alt="Six mods made by AI coding agents, with the universal-modder tile in the corner: Steve gliding an elytra through Los Santos, the Nether spreading over Los Santos, Minecraft mobs fighting the LSPD, the Halo Warthog in Minecraft, a World at War flamethrower in Minecraft, and World at War zombies in Minecraft. It ends on the universal-modder logo and &quot;mod any game.&quot;" width="560">
 </p>
 
-<p align="center"><b>Coming next: the mod hub.</b> Publish your mods, remix other people's, and make new ones.</p>
+<p align="center"><b>Coming next: the mod hub.</b> Publish your mods, remix other people's, and make new ones.<br>
+  Share what you make, get help, and follow along:</p>
+<p align="center">
+  <a href="https://discord.com/invite/sEZWaf7vV"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/discord-dark.svg"><img src="docs/media/discord-light.svg" height="32" alt="join the discord"></picture></a>
+</p>
 
 ## Install
 
@@ -32,7 +37,7 @@ Pick your agent. Each gets the same skills (Agent Skills format), the fal MCP se
 | **Gemini CLI** | `gemini extensions install https://github.com/rehan-remade/universal-modder` |
 | **VS Code / Copilot** | Enable `chat.plugins.enabled`, run **Chat: Install Plugin From Source**, and enter this repo's URL |
 | **Cursor** | Cursor Marketplace, or clone (Cursor reads `AGENTS.md` and `.cursor/mcp.json`) |
-| **OpenCode** | Clone and run `opencode` inside it (`opencode.json` adds the skills and the fal MCP server) |
+| **OpenCode** | Clone and run `opencode` inside it (`opencode.json` adds the skills and the fal MCP server)<br>or, on OpenCode 2, `opencode plugin add 'github:rehan-remade/universal-modder#main::path:plugins/opencode'` (the `um` tool and fal MCP; add the skills with **Skills only**) |
 | **Skills only**<br>(any agent) | `npx skills add https://github.com/rehan-remade/universal-modder` |
 | **Anything else** | `git clone https://github.com/rehan-remade/universal-modder` and start your agent inside it |
 
@@ -41,7 +46,12 @@ Copilot, Cursor, OpenCode) and `.claude/skills` (Claude Code) are copies of `ski
 `AGENTS.md`, which `CLAUDE.md` and `GEMINI.md` point to. MCP config is in `.mcp.json`, `.codex/config.toml`,
 `.cursor/mcp.json`, `.vscode/mcp.json` and `opencode.json` (which also points OpenCode at `skills/`).
 
-**The `um` CLI.** Plugin installs and clones put it on PATH. Anywhere else:
+Without a clone, OpenCode 2 installs the plugin in `plugins/opencode/` with `opencode plugin add`: one
+`um_run` tool that passes its arguments straight to the CLI and runs `um` from PATH (see below), plus the
+fal MCP server when `FAL_KEY` is set and none is configured. A clone doesn't need it. See
+`plugins/opencode/README.md`.
+
+**The `um` CLI.** Plugin installs and clones put it on PATH (OpenCode's plugin install doesn't). Anywhere else:
 ```bash
 uv tool install git+https://github.com/rehan-remade/universal-modder     # or: pipx install git+...
 ```
@@ -111,7 +121,7 @@ A few notes from the community:
 <table>
   <thead><tr><th width="200">Skill</th><th>What it does</th></tr></thead>
   <tbody>
-    <tr><td><a href="skills/mod-any-game"><code>mod-any-game</code></a></td><td>The whole loop, hard safety rules, and <b>12 engine playbooks</b>: Unity, Unreal, .NET/XNA (Terraria, Stardew, Celeste), Godot, Source 1/2, Bethesda, Minecraft, AoE2/Genie, RE Engine/FromSoft/GTA/Cyberpunk/BG3, native C++, indie engines (GameMaker, RPG Maker, Ren'Py, Paradox, Doom, HTML5, LÖVE, Java), retro decomps</td></tr>
+    <tr><td><a href="skills/mod-any-game"><code>mod-any-game</code></a></td><td>The whole loop, hard safety rules, and <b>engine playbooks</b>: Unity, Unreal, .NET/XNA (Terraria, Stardew, Celeste), Godot, Source 1/2, Bethesda, Minecraft, AoE2/Genie, Bannerlord, RE Engine/MT Framework/FromSoft/GTA/Hedgehog Engine/Black Rock/Cyberpunk/BG3, native C++, indie engines (GameMaker, RPG Maker, Ren'Py, Paradox, Doom, HTML5, LÖVE, Java), retro decomps</td></tr>
     <tr><td><a href="skills/game-recon"><code>game-recon</code></a></td><td>Prior field notes, engine and version, managed or native, anti-cheat, loaders, save folders, community route → <code>MODDING_PLAN.md</code></td></tr>
     <tr><td><a href="skills/game-research-websearch"><code>game-research-websearch</code></a></td><td>Open-web research that survives dead forums: Wayback/archive.today, GitHub/code and Nexus/Workshop/Thunderstore APIs, Reddit/YouTube, login-gated handoff, screenshots as evidence</td></tr>
     <tr><td><a href="skills/reverse-engineering"><code>reverse-engineering</code></a></td><td>ILSpy / Cpp2IL / Vineflower / Ghidra and IDA over MCP / Cheat Engine / Frida / RenderDoc; reverse-engineer a file format and prove it with a round trip</td></tr>
@@ -121,6 +131,7 @@ A few notes from the community:
     <tr><td><a href="skills/showcase-video"><code>showcase-video</code></a></td><td>Record the window with only the game's audio, pick moments, cut a styled video from an EDL</td></tr>
     <tr><td><a href="skills/mashup-mods"><code>mashup-mods</code></a></td><td>Game inside a game: content ports, passthrough mods (worked example: Minecraft × GTA V), decomps as libraries, reimplementations</td></tr>
     <tr><td><a href="skills/publish-mod"><code>publish-mod</code></a></td><td>Lint, package per platform, credits, the post</td></tr>
+    <tr><td><a href="skills/port-a-mod"><code>port-a-mod</code></a></td><td>Port an existing mod to a newer version or loader without drift: one pinned source, a private decompile, data extracted by script, unit-by-unit tests, audits by layer, resumable status docs, and a Forge 1.7.10 → Fabric 1.20.1 mapping table</td></tr>
     <tr><td><a href="skills/share-field-notes"><code>share-field-notes</code></a></td><td>Search the knowledge base, write your own note, open the PR</td></tr>
   </tbody>
 </table>
@@ -182,10 +193,10 @@ Each has a field note with every non-obvious lesson: [knowledge/INDEX.md](knowle
 Full reasoning: [`skills/mod-any-game/references/safety.md`](skills/mod-any-game/references/safety.md).
 
 ## Made a mod with it?
-Put the badge on your mod's page:
+Show it off in the [Discord](https://discord.com/invite/sEZWaf7vV), and put the badge on your mod's page:
 
 <p>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/made-with-dark.svg"><img src="docs/media/made-with-light.svg" height="32" alt="made with universal-modder"></picture>
+  <a href="https://github.com/rehan-remade/universal-modder"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/made-with-dark.svg"><img src="docs/media/made-with-light.svg" height="32" alt="made with universal-modder"></picture></a>
 </p>
 
 ```markdown

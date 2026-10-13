@@ -39,6 +39,11 @@ rules below.
 - **Leaks:** knowledge from beta builds and leaked SDKs or source is fine to write up in your own words, and
   so is saying where it came from. The leaked material itself stays out: no pasted code, attached files,
   download links or license keys, and no instructions to fetch them.
+- **DRM-wrapped executables** (Steam stub, Arxan, Denuvo, iOS FairPlay): analysing your own legally installed
+  copy is fine, from the running game's memory or a private dump kept outside any repository, and so is
+  writing up what you learned in your own words. A note never explains how to strip or unpack the protection,
+  never links an unpacked executable or a DRM-removal tool, and never gives steps whose result is the game
+  running without its DRM.
 - **No cheating other players, and no bypasses:**
   - nothing that gives an edge over other players on servers you don't run (aimbots, ESP, speed hacks,
     bots);
