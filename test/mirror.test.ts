@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, lstatSync, readFileSync, readlinkSync, writeFileSync, utimesSync } from 'node:fs';
+import { existsSync, lstatSync, readFileSync, readlinkSync, rmSync, writeFileSync, utimesSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -176,6 +176,22 @@ test('validation rejects corrupt bytes/catalogs, unknown paths, and preserves mt
   write(result.root, 'plugins/unknown/file', 'private');
   assert.throws(() => sync(t, result.root, source), /unknown occupied/);
   assert.equal(readFileSync(join(result.root, 'plugins/unknown/file'), 'utf8'), 'private');
+});
+
+test('validation survives checkout conversion from an upstream .gitattributes but still rejects edits', t => {
+  const source = upstream(t);
+  save(source, 'alpha/.gitattributes', '*.cmd text eol=crlf\n');
+  save(source, 'alpha/run.cmd', '@echo off\necho sample\n');
+  commit(source);
+  const result = sync(t, mirror(t), source);
+  commit(result.root);
+  const target = join(result.root, 'plugins/alpha/run.cmd');
+  rmSync(target);
+  git(result.root, ['checkout', '--', 'plugins/alpha/run.cmd']);
+  assert.equal(readFileSync(target, 'utf8'), '@echo off\r\necho sample\r\n');
+  assert.equal(validate(result.root).accepted.size, 2);
+  writeFileSync(target, '@echo off\r\necho corrupt\r\n');
+  assert.throws(() => validate(result.root), /hash mismatch/);
 });
 
 test('portable package validation, size boundaries, executable signatures and broken references', () => {

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, readlinkSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { check, name, object, parseJson, readConfig, repository, branch, safePath } from './config.ts';
@@ -62,6 +63,7 @@ export function localFiles(root, pluginName, limits) {
       if (entry.path.startsWith(`${prefix}/`)) committedFiles.set(entry.path, entry);
     }
   }
+  const blob = oid => git(root, ['cat-file', 'blob', oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 });
   const files = [];
   let total = 0;
   function visit(path) {
@@ -77,9 +79,16 @@ export function localFiles(root, pluginName, limits) {
       check(stat.isFile() || link && indexed?.mode === '120000', path, 'special or untracked link is unsupported');
       let data;
       if (process.platform === 'win32' && symlink) {
-        data = git(root, ['cat-file', 'blob', symlink.oid], { maxBuffer: limits.maxFileSizeMb * 1048576 + 1 });
+        data = blob(symlink.oid);
       } else if (link) data = readlinkSync(full, { encoding: 'buffer' });
-      else data = readFileSync(full);
+      else {
+        data = readFileSync(full);
+        // An upstream .gitattributes (eol=crlf) may rewrite bytes on checkout. When they still
+        // clean to the index blob, that blob is the authoritative record. The in-process SHA-1
+        // only spares a Git process for the usual untouched file.
+        if (indexed && createHash('sha1').update(`blob ${data.length}\0`).update(data).digest('hex') !== indexed.oid
+          && git(root, ['hash-object', `--path=${path}`, '--stdin'], { input: data }).toString().trim() === indexed.oid) data = blob(indexed.oid);
+      }
       total += data.length;
       check(data.length <= limits.maxFileSizeMb * 1048576, path, 'file size limit exceeded');
       check(total <= limits.maxPluginSizeMb * 1048576, prefix, 'package size limit exceeded');
