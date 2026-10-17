@@ -1,6 +1,6 @@
 ---
 name: game-recon
-description: Figure out how a specific installed game can be modded, before writing any mod code. Covers where it's installed, the engine and version, managed vs native code, anti-cheat, loaders already present, save and config folders, and the community's modding route. Use when the user asks "can I mod <game>?", "what engine is <game>", "how do people mod <game>", or at the start of any modding task. Produces MODDING_PLAN.md.
+description: Figure out how a specific installed game can be modded, before writing any mod code. Covers where it's installed, the engine and version, managed vs native code, anti-cheat, loaders already present, save and config folders, and the community's modding route. Also whether this machine can run it (a Windows game on macOS or Linux, x64 on ARM). Use when the user asks "can I mod <game>?", "what engine is <game>", "how do people mod <game>", or at the start of any modding task. Produces MODDING_PLAN.md.
 ---
 
 # Game recon
@@ -33,6 +33,13 @@ The scan can't see everything, so check these by hand:
   don't live in the game folder. Search "<game> anti-cheat".
 - **Online-only or live-service games:** treat them as protected even if nothing was detected.
 
+## 1b. Can this machine run it?
+Skip this when the game is native to the host: a Windows game on Windows or from WSL, a macOS or Linux build
+on its own OS. Otherwise (a Windows-only game on macOS or Linux, an x64 game on an ARM CPU), or when a game
+that should run here won't start, search the notes by situation and exact error text first
+(`um kb search "windows game on mac"`, `um kb search "proton"`, `um kb search "<error text>"`), then follow
+`references/compatibility.md`: host checks, per-game reports, the layers, anti-cheat, probes.
+
 ## 2. Research the living community (always; versions move)
 Search, in order:
 1. "<game> modding" / "<game> mod loader" / "<game> modding wiki". The game's wiki often has a modding page.
@@ -57,6 +64,8 @@ Capture: the loader's name, repo, **current version and install steps**, the gam
 - Install: <path> (<store> <appid>), version <x>
 - Engine: <engine + version>, code: managed .NET / IL2CPP / native, 64-bit
 - Anti-cheat / online: <none | what + verdict>
+- Host / compat (if not native): <host OS, CPU, GPU> vs <game CPU + graphics API>; layer: <name + version>;
+  verified by: <probe, log or screenshot>
 - Saves: <path>   Config: <path>   Logs: <path>
 - Community route: <loader vX.Y (repo)>, install: <steps>, example mod: <link>
 - Chosen route for "<idea>": <route> because <reason>
