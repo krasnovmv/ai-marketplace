@@ -6,12 +6,12 @@
     "repository": "DietrichGebert/ponytail",
     "branch": "main",
     "path": ".",
-    "commit": "2961b52fc1fe6a5a87c7a959a79512e5c2f3ffe5"
+    "commit": "16352ac229eb08a9598dcae48fe9f2b342567d86"
   },
   "marketplace": {
     "description": "Forces the laziest solution that works. YAGNI, stdlib first, one line over fifty."
   },
   "integrity": {
-    "contentHash": "8518c47052bdbe382230d04e013ae61a662e439c49a1a27ac608eb297adb7fb6"
+    "contentHash": "e29f5803af0bd81d4b51b1d92bd7195c89cd8be837ff756bf8f603401f9f8a59"
   }
 }
