@@ -14,19 +14,19 @@
       "name": "ponytail",
       "source": "./plugins/ponytail",
       "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
-      "version": "5.2.0"
+      "version": "5.3.2"
     },
     {
       "name": "ru-text",
       "source": "./plugins/ru-text",
       "description": "Russian text quality for AI agents — neuroslop cleanup, typography, information style, editorial standards, UX writing, business correspondence. Scores text 0–10. 2,000+ linguistic atoms.",
-      "version": "2.10.9"
+      "version": "2.10.10"
     },
     {
       "name": "simplify",
       "source": "./plugins/simplify",
       "description": "Review changed code for reuse, redundancy, and over-engineering, then apply fixes.",
-      "version": "1.1.9"
+      "version": "1.1.10"
     },
     {
       "name": "superpowers",
