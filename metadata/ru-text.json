@@ -6,9 +6,9 @@
     "repository": "talkstream/ru-text",
     "branch": "main",
     "path": ".",
-    "commit": "c766cb1fb8495b42acb025a3f7849277f924834c"
+    "commit": "e398aec9e6f02d1bf28ae5a79a118e2404d52e90"
   },
   "integrity": {
-    "contentHash": "d4f23ab4900f5c59d82c9f598af597f8bee3de4f1849c9a9ad4e490a277809cf"
+    "contentHash": "50d065e6ba76ba6f64be24d6a75d80b76917b6520614577d4a1d82f386afcaec"
   }
 }
