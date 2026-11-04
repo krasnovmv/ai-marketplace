@@ -14,6 +14,7 @@ test('initial sources, defaults, all exclusions and empty selected', () => {
     'fcakyon/claude-codex-settings', 'rehan-remade/universal-modder',
   ]);
   assert(initial.sources.every(s => s.branch === 'main'));
+  assert.equal(initial.limits.maxPluginSizeMb, 50);
   const config = base();
   assert.equal(validateConfig(config).limits.maxFileSizeMb, 5);
   config.sources[0].exclude = ['skip'];
