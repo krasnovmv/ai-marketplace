@@ -6,7 +6,7 @@
     "repository": "anthropics/claude-plugins-official",
     "branch": "main",
     "path": "plugins/typescript-lsp",
-    "commit": "c447c3207a425bc4e2a0d068435f64b0477ae981"
+    "commit": "0412be76f50ab4f4f8abff3753efa9269fbbca5b"
   },
   "marketplace": {
     "description": "TypeScript/JavaScript language server for enhanced code intelligence",
@@ -32,6 +32,6 @@
     }
   },
   "integrity": {
-    "contentHash": "9070c47057e2c37332722e2eaf53b2a5602dd64877528cdcde4624ada066df8a"
+    "contentHash": "44ddbf43abc59d1470f3f1911445419aabcb5a38a4b268ac6f54374aa4615b57"
   }
 }
