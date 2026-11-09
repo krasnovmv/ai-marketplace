@@ -6,9 +6,9 @@
     "repository": "fcakyon/claude-codex-settings",
     "branch": "main",
     "path": "plugins/simplify",
-    "commit": "4f2b4bc9a74024397b4688cbafd1ae538a83a5fb"
+    "commit": "20ef1fd7033547e09636b9b179feef61b8b914ed"
   },
   "integrity": {
-    "contentHash": "c982569a798cf86d3b40ee10fba3ed2e2ba7b4ec74727e4b53b17c18d0e10bbe"
+    "contentHash": "202852bd2dc24785c6b51403afa1a5d9f310cbeb46bb525e95daf36c33935068"
   }
 }
