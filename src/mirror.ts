@@ -3,7 +3,7 @@ import { chmodSync, existsSync, lstatSync, mkdirSync, readFileSync, readdirSync,
 import { dirname, join, resolve } from 'node:path';
 import { check, name, object, parseJson, readConfig, repository, branch, safePath } from './config.ts';
 import { fetchSource, git, indexFile, readBlob, readTree, temporary } from './git.ts';
-import { checkOrigin, contentHash, metadataFor, readPackage, resolveLinks, selectPlugins, stillWanted, validatePackage } from './packages.ts';
+import { checkOrigin, contentHash, metadataFor, omitted, readPackage, resolveLinks, selectPlugins, stillWanted, validatePackage } from './packages.ts';
 
 export const catalogPaths = ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json'];
 export const json = value => `${JSON.stringify(value, null, 2)}\n`;
@@ -161,6 +161,7 @@ export function validate(root, config = readConfig(root), { bootstrap = false } 
     check(read(root, catalogPaths[i]).equals(Buffer.from(expected[i])), catalogPaths[i], 'catalog differs; run npm run generate');
   }
   const pending = config.sources.some(s => s.enabled && ![...accepted.values()].some(p => p.metadata.source.id === s.id))
+    || [...accepted.values()].some(p => p.files.some(f => omitted(f.path, config.omit[p.metadata.name] ?? [])))
     || [...accepted.values()].some(p => !stillWanted(p.metadata, config) || !config.sources.some(s =>
       s.id === p.metadata.source.id && s.repository === p.metadata.source.repository && s.branch === p.metadata.source.branch
       && s.type === p.metadata.source.type && (s.selection === 'all' || s.plugins.some(w => w.enabled && w.name === p.metadata.name
@@ -212,7 +213,7 @@ export function prepare(root, { fetch = fetchSource, dryRun = false } = {}) {
           check(!next.has(plugin.name), plugin.name, `collision between ${next.get(plugin.name)?.metadata.source.id} and ${source.id}; use exclude/selected`);
           const previous = old.get(plugin.name);
           checkOrigin(previous?.metadata, source, plugin);
-          const files = readPackage(snapshot, plugin, config.limits);
+          const files = readPackage(snapshot, plugin, config.limits, config.omit[plugin.name] ?? []);
           const info = validatePackage(files, plugin.name, config.limits, plugin.marketplace);
           const metadata = metadataFor(source, plugin, snapshot.commit, files, previous?.metadata);
           next.set(plugin.name, { metadata, info, files, marketplace: metadata.marketplace ?? {}, raw: metadata === previous?.metadata ? previous.raw : Buffer.from(json(metadata)) });

@@ -55,7 +55,14 @@ export function checkOrigin(previous, source, plugin) {
     plugin.name, `BROKEN: upstream path changed from ${old.path} to ${plugin.path}; confirm using repository selection`);
 }
 
-export function readPackage(snapshot, plugin, limits) {
+export function omitted(path, patterns) {
+  const matches = pattern => new RegExp(`^${pattern.split(/(\*\*\/|\*\*|\*)/).map(part =>
+    part === '**/' ? '(?:.*/)?' : part === '**' ? '.*' : part === '*' ? '[^/]*' : part.replace(/[.+^${}()|[\]\\]/g, '\\$&')).join('')}$`).test(path);
+  return patterns.some(p => !p.startsWith('!') && matches(p))
+    && !patterns.some(p => p.startsWith('!') && matches(p.slice(1)));
+}
+
+export function readPackage(snapshot, plugin, limits, omit = []) {
   const prefix = plugin.path === '.' ? '' : `${plugin.path}/`;
   const entries = snapshot.entries.filter(e => e.path.startsWith(prefix));
   let total = 0;
@@ -65,7 +72,7 @@ export function readPackage(snapshot, plugin, limits) {
     return { path: entry.path.slice(prefix.length), mode: entry.mode, data: readBlob(snapshot.root, entry, limits.maxFileSizeMb * 1048576, true) };
   });
   validatePackage(files, plugin.name, limits, plugin.marketplace);
-  return files;
+  return files.filter(file => !omitted(file.path, omit));
 }
 
 // Resolve only against the selected Git tree, never through the host filesystem.
@@ -166,6 +173,7 @@ export function validatePackage(files, pluginName, limits, marketplace = {}) {
     for (const field of ['skills', 'rules', 'agents', 'commands', 'hooks', 'mcpServers', 'apps', 'outputStyles']) {
       if (manifest[field] !== undefined) validateReferences(manifest[field], files, `${file.path}.${field}`);
     }
+    if (manifest.interface) validateReferences(manifest.interface, files, `${file.path}.interface`);
   }
   for (const file of files.filter(f => ['.mcp.json', 'mcp.json', '.app.json', 'hooks/hooks.json'].includes(f.path))) {
     validateReferences(parseJson((links.get(file.path) ?? file).data, file.path), files, file.path);

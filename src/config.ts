@@ -50,7 +50,7 @@ export function branch(value, field) {
 }
 
 export function validateConfig(input) {
-  object(input, ['marketplace', 'sources', 'limits'], 'config');
+  object(input, ['marketplace', 'sources', 'limits', 'omit'], 'config');
   object(input.marketplace, ['name', 'owner'], 'marketplace');
   name(input.marketplace.name, 'marketplace.name');
   object(input.marketplace.owner, ['name'], 'marketplace.owner');
@@ -105,7 +105,19 @@ export function validateConfig(input) {
   for (const [key, value] of Object.entries(limits)) {
     check(typeof value === 'number' && Number.isFinite(value) && value > 0 && Number.isSafeInteger(Math.ceil(value * 1048576)), `limits.${key}`, 'expected positive finite size');
   }
-  return { marketplace: input.marketplace, sources, limits };
+  const omit = input.omit === undefined ? {} : input.omit;
+  check(omit !== null && typeof omit === 'object' && !Array.isArray(omit), 'omit', 'expected object');
+  for (const [plugin, paths] of Object.entries(omit)) {
+    name(plugin, 'omit plugin');
+    check(Array.isArray(paths), `omit.${plugin}`, 'expected array');
+    for (const pattern of paths) {
+      check(typeof pattern === 'string', `omit.${plugin}`, 'expected pattern');
+      const path = pattern.startsWith('!') ? pattern.slice(1) : pattern;
+      check(safePath(path.replaceAll('*', 'x'), `omit.${plugin}`) === path.replaceAll('*', 'x'), `omit.${plugin}`, 'expected canonical pattern');
+    }
+    check(new Set(paths).size === paths.length, `omit.${plugin}`, 'duplicate path');
+  }
+  return { marketplace: input.marketplace, sources, limits, omit };
 }
 
 export function parseJson(bytes, label) {

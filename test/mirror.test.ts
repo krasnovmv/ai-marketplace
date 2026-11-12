@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { validateConfig } from '../src/config.ts';
 import { fetchSource, git, indexFile, readTree, temporary } from '../src/git.ts';
-import { contentHash, metadataFor, resolveLinks, validatePackage } from '../src/packages.ts';
+import { contentHash, metadataFor, omitted, resolveLinks, validatePackage } from '../src/packages.ts';
 import { catalogs, generate, json, prepare, validate, write } from '../src/mirror.ts';
 
 const config = () => ({ marketplace: { name: 'test-market', owner: { name: 'Tester' } }, sources: [
@@ -15,6 +15,15 @@ const config = () => ({ marketplace: { name: 'test-market', owner: { name: 'Test
 const limits = { maxFileSizeMb: 5, maxPluginSizeMb: 20 };
 const file = (path, data, mode = '100644') => ({ path, data: Buffer.from(data), mode });
 const pkg = () => [file('.claude-plugin/plugin.json', json({ name: 'alpha', version: '1.0.0' })), file('skills/example/SKILL.md', '# Example\n')];
+
+test('omit masks match paths by segment and preserve exceptions', () => {
+  assert(omitted('docs/a.png', ['docs/*.png']));
+  assert(!omitted('docs/nested/a.png', ['docs/*.png']));
+  assert(omitted('docs/.hidden/a.png', ['docs/**']));
+  assert(omitted('docs/a.png', ['docs/**/*.png']));
+  assert(!omitted('docs/logo.png', ['!docs/logo.png', 'docs/**']));
+  assert(!omitted('docsXpng', ['docs.png']));
+});
 
 function repo(t) {
   const temp = temporary('marketplace-test-');
@@ -125,6 +134,28 @@ test('full pipeline: immutable snapshot, isolated candidate, no-op, unchanged ve
   const preview = sync(t, update.root, source, { dryRun: true });
   assert.equal(preview.root, null);
   assert.deepEqual(readFileSync(join(update.root, 'metadata/beta.json')), betaMeta);
+});
+
+test('sync omits only explicitly selected files and retains manifest assets', t => {
+  const source = upstream(t);
+  save(source, 'alpha/docs/banner.png', 'banner');
+  save(source, 'alpha/docs/logo.png', 'logo');
+  save(source, 'alpha/.codex-plugin/plugin.json', json({ name: 'alpha', interface: { logo: './docs/logo.png' } }));
+  const input = config();
+  save(source, 'alpha/docs/nested/new.png', 'new');
+  commit(source);
+  input.omit = { alpha: ['docs/**', '!docs/logo.png'] };
+  const result = sync(t, mirror(t, input), source);
+  assert(!existsSync(join(result.root, 'plugins/alpha/docs/banner.png')));
+  assert(!existsSync(join(result.root, 'plugins/alpha/docs/nested/new.png')));
+  assert(existsSync(join(result.root, 'plugins/alpha/docs/logo.png')));
+  commit(result.root);
+  assert.equal(validate(result.root).accepted.size, 2);
+  assert.deepEqual(sync(t, result.root, source).changed, []);
+  input.omit.alpha = ['docs/**'];
+  write(result.root, 'config/upstreams.json', json(input));
+  assert.equal(validate(result.root).pending, true);
+  assert.throws(() => sync(t, result.root, source), /missing local reference/);
 });
 
 test('fetch freezes a SHA, root packages retain tracked files, rejects special modes and missing branch', t => {

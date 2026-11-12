@@ -69,5 +69,17 @@
       ]
     }
   ],
-  "limits": { "maxFileSizeMb": 7, "maxPluginSizeMb": 50 }
+  "limits": { "maxFileSizeMb": 7, "maxPluginSizeMb": 50 },
+  "omit": {
+    "ponytail": [
+      "assets/**",
+      "!assets/codex-icon.png",
+      "!assets/logo.png"
+    ],
+    "universal-modder": [
+      "docs/media/**",
+      "!docs/media/logo-128.png",
+      "!docs/media/logo.png"
+    ]
+  }
 }
