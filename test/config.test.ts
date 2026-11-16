@@ -10,7 +10,8 @@ const base = () => ({ marketplace: { name: 'test', owner: { name: 'Test' } }, so
 test('initial sources, defaults, all exclusions and empty selected', () => {
   const initial = readConfig(fileURLToPath(new URL('..', import.meta.url)));
   assert.deepEqual(initial.sources.map(s => s.repository), [
-    'DietrichGebert/ponytail', 'mattpocock/skills', 'obra/superpowers', 'anthropics/claude-plugins-official', 'talkstream/ru-text',
+    'DietrichGebert/ponytail', 'mattpocock/skills', 'obra/superpowers', 'anthropics/claude-plugins-official',
+    'anthropics/knowledge-work-plugins', 'talkstream/ru-text',
     'fcakyon/claude-codex-settings', 'rehan-remade/universal-modder',
   ]);
   assert(initial.sources.every(s => s.branch === 'main'));

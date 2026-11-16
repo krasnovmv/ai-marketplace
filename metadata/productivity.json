@@ -1,0 +1,17 @@
+{
+  "name": "productivity",
+  "source": {
+    "id": "anthropic-knowledge-work",
+    "type": "marketplace",
+    "repository": "anthropics/knowledge-work-plugins",
+    "branch": "main",
+    "path": "productivity",
+    "commit": "e91a134584eb798bac7fb0379358006a2b63b965"
+  },
+  "marketplace": {
+    "description": "Manage tasks, plan your day, and build up memory of important context about your work. Syncs with your calendar, email, and chat to keep everything organized and on track."
+  },
+  "integrity": {
+    "contentHash": "3c64bc9ca617a501876b5534639b203c8619762929109a5acc94c25aebec7d05"
+  }
+}

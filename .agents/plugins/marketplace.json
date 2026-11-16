@@ -5,6 +5,42 @@
   },
   "plugins": [
     {
+      "name": "data",
+      "source": {
+        "source": "local",
+        "path": "./plugins/data"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "design",
+      "source": {
+        "source": "local",
+        "path": "./plugins/design"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "engineering",
+      "source": {
+        "source": "local",
+        "path": "./plugins/engineering"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
       "name": "mattpocock-skills",
       "source": {
         "source": "local",
@@ -21,6 +57,18 @@
       "source": {
         "source": "local",
         "path": "./plugins/ponytail"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "productivity",
+      "source": {
+        "source": "local",
+        "path": "./plugins/productivity"
       },
       "policy": {
         "installation": "AVAILABLE",

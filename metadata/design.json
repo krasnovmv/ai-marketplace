@@ -1,0 +1,17 @@
+{
+  "name": "design",
+  "source": {
+    "id": "anthropic-knowledge-work",
+    "type": "marketplace",
+    "repository": "anthropics/knowledge-work-plugins",
+    "branch": "main",
+    "path": "design",
+    "commit": "e91a134584eb798bac7fb0379358006a2b63b965"
+  },
+  "marketplace": {
+    "description": "Accelerate design workflows — critique, design system management, UX writing, accessibility audits, research synthesis, and dev handoff. From exploration to pixel-perfect specs."
+  },
+  "integrity": {
+    "contentHash": "17f7a5f0c34dfdbb0a0816642540183b88c1bb9bb6f4037870d4659be81edd3b"
+  }
+}

@@ -39,6 +39,19 @@
       ]
     },
     {
+      "id": "anthropic-knowledge-work",
+      "type": "marketplace",
+      "repository": "anthropics/knowledge-work-plugins",
+      "branch": "main",
+      "selection": "selected",
+      "plugins": [
+        { "name": "engineering" },
+        { "name": "design" },
+        { "name": "data" },
+        { "name": "productivity" }
+      ]
+    },
+    {
       "id": "ru-text",
       "type": "repository",
       "repository": "talkstream/ru-text",
