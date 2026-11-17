@@ -84,6 +84,10 @@
   ],
   "limits": { "maxFileSizeMb": 7, "maxPluginSizeMb": 50 },
   "omit": {
+    "engineering": [".mcp.json"],
+    "design": [".mcp.json"],
+    "data": [".mcp.json"],
+    "productivity": [".mcp.json"],
     "ponytail": [
       "assets/**",
       "!assets/codex-icon.png",
