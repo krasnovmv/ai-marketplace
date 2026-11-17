@@ -1,0 +1,17 @@
+{
+  "name": "data",
+  "source": {
+    "id": "anthropic-knowledge-work",
+    "type": "marketplace",
+    "repository": "anthropics/knowledge-work-plugins",
+    "branch": "main",
+    "path": "data",
+    "commit": "e91a134584eb798bac7fb0379358006a2b63b965"
+  },
+  "marketplace": {
+    "description": "Write SQL, explore datasets, and generate insights faster. Build visualizations and dashboards, and turn raw data into clear stories for stakeholders."
+  },
+  "integrity": {
+    "contentHash": "01ee9d441c890e92bd81081821f811526e28ce79caf895315d24c13028799163"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "engineering",
+  "source": {
+    "id": "anthropic-knowledge-work",
+    "type": "marketplace",
+    "repository": "anthropics/knowledge-work-plugins",
+    "branch": "main",
+    "path": "engineering",
+    "commit": "e91a134584eb798bac7fb0379358006a2b63b965"
+  },
+  "marketplace": {
+    "description": "Streamline engineering workflows — standups, code review, architecture decisions, incident response, and technical documentation. Works with your existing tools or standalone."
+  },
+  "integrity": {
+    "contentHash": "118e8cbce85cb6038ae7b309212171dc2be4a394865a4345fc3c864e3c891497"
+  }
+}
