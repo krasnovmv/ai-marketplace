@@ -6,12 +6,12 @@
     "repository": "mattpocock/skills",
     "branch": "main",
     "path": ".",
-    "commit": "5863806dd4e15c63174bee4e7515a4256792ecfa"
+    "commit": "abeeaf95660ba9e8b7c753eb38f441ca707a8823"
   },
   "marketplace": {
     "description": "Matt Pocock's agent skills for real engineering (grilling, spec/ticket flows, TDD, code review, domain modelling and more)."
   },
   "integrity": {
-    "contentHash": "59d5e3bc1f88df8dd85bdb3fb5a7e42487797e38eae0128fafa84e4604701810"
+    "contentHash": "95c78b970967e529a8de06631f4a66cc1a3499cf0f5bd4a3ea56b261915708fd"
   }
 }
